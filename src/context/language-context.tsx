@@ -3,119 +3,119 @@
 
 import { createContext, useContext, useState, ReactNode, useMemo } from 'react';
 
-const en = {
-  "header": {
-    "fileReport": "File a Report",
-    "viewReports": "View Reports"
-  },
-  "home": {
-    "title": "Jana Awaz: Your Voice for Justice",
-    "subtitle": "Anonymously report crimes and corruption in Nepal. Your identity is always protected. Together, we can build a more accountable and transparent society.",
-    "fileReport": "File a National Report",
-    "viewReports": "View Public Reports",
-    "transparentNepal": {
-      "title": "A Transparent & Accountable Nepal",
-      "description": "Jana Awaz provides a secure and anonymous platform for citizens to expose wrongdoing, ensuring that every voice is heard and every report is taken seriously.",
-      "reportsSubmitted": "Reports Submitted",
-      "casesActioned": "Cases Actioned"
+const translations = {
+  en: {
+    "header": {
+      "fileReport": "File a Report",
+      "viewReports": "View Reports"
     },
-    "howItWorks": {
-      "title": "How It Works",
-      "description": "Our platform ensures your report reaches the correct authorities without revealing who you are.",
-      "step1": {
-        "title": "1. Submit Your Report",
-        "description": "Fill out a simple, anonymous form with details of the incident and upload a photo as evidence."
+    "home": {
+      "title": "Jana Awaz: Your Voice for Justice",
+      "subtitle": "Anonymously report crimes and corruption in Nepal. Your identity is always protected. Together, we can build a more accountable and transparent society.",
+      "fileReport": "File a National Report",
+      "viewReports": "View Public Reports",
+      "transparentNepal": {
+        "title": "A Transparent & Accountable Nepal",
+        "description": "Jana Awaz provides a secure and anonymous platform for citizens to expose wrongdoing, ensuring that every voice is heard and every report is taken seriously.",
+        "reportsSubmitted": "Reports Submitted",
+        "casesActioned": "Cases Actioned"
       },
-      "step2": {
-        "title": "2. AI-Powered Routing",
-        "description": "Our intelligent system analyzes your report and automatically forwards it to the appropriate body—the CIAA for official corruption or the Police for other crimes."
+      "howItWorks": {
+        "title": "How It Works",
+        "description": "Our platform ensures your report reaches the correct authorities without revealing who you are.",
+        "step1": {
+          "title": "1. Submit Your Report",
+          "description": "Fill out a simple, anonymous form with details of the incident and upload a photo as evidence."
+        },
+        "step2": {
+          "title": "2. AI-Powered Routing",
+          "description": "Our intelligent system analyzes your report and automatically forwards it to the appropriate body—the CIAA for official corruption or the Police for other crimes."
+        },
+        "step3": {
+          "title": "3. Public Transparency",
+          "description": "Submitted reports are made public to ensure transparency and accountability, driving systemic change."
+        }
       },
-      "step3": {
-        "title": "3. Public Transparency",
-        "description": "Submitted reports are made public to ensure transparency and accountability, driving systemic change."
+      "iccSection": {
+        "title": "International Accountability",
+        "description": "For crimes of severe magnitude, such as those involving the entire top level of government or situations beyond national capacity to handle, reports and evidence will be securely escalated and directly submitted to the International Criminal Court (ICC) to ensure justice is pursued without boundaries.",
+        "warning": "Warning: Submitting a report to the ICC is a serious action. If a report is found to be submitted with mischievous intent, you may be identified through hardware tracking and could face criminal charges. This tracking only applies to ICC submissions.",
+        "reportButton": "Report Directly to ICC"
       }
     },
-    "iccSection": {
-      "title": "International Accountability",
-      "description": "For crimes of severe magnitude, such as those involving the entire top level of government or situations beyond national capacity to handle, reports and evidence will be securely escalated and directly submitted to the International Criminal Court (ICC) to ensure justice is pursued without boundaries.",
-      "warning": "Warning: Submitting a report to the ICC is a serious action. If a report is found to be submitted with mischievous intent, you may be identified through hardware tracking and could face criminal charges. This tracking only applies to ICC submissions.",
-      "reportButton": "Report Directly to ICC"
+    "reportForm": {
+      "title": "File an Anonymous Report",
+      "description": "Your identity is protected. Please provide as much detail as possible. A photo is required.",
+      "crimeType": "Type of Crime",
+      "governmentCrime": {
+        "title": "Government Crime",
+        "description": "e.g., corruption, abuse of authority"
+      },
+      "civilianCrime": {
+        "title": "Civilian Crime",
+        "description": "e.g., theft, assault, property damage"
+      },
+      "district": "District",
+      "selectDistrict": "Select a district",
+      "localAddress": "Local Address / Tole",
+      "localAddressPlaceholder": "e.g., Ward No. 5, Near the old temple",
+      "reportDetails": "Report Details",
+      "reportDetailsPlaceholder": "Describe the incident: who was involved, what happened, where, and when.",
+      "uploadEvidence": "Upload Photo Evidence",
+      "removePhoto": "Remove photo",
+      "uploadPhotoAriaLabel": "Upload photo",
+      "clickToUpload": "Click to upload",
+      "dragAndDrop": "or drag and drop",
+      "fileTypes": "PNG, JPG up to 4MB",
+      "submitting": "Submitting...",
+      "submitAnonymously": "Submit Report Anonymously"
+    },
+    "iccReportForm": {
+      "title": "Submit a Report to the ICC",
+      "description": "This form is for reporting severe crimes that fall under the jurisdiction of the International Criminal Court. All submissions are treated with the utmost seriousness.",
+      "warningTitle": "Legal Warning",
+      "warningDescription": "Submitting a report to the ICC is a formal legal action. If a report is found to be submitted with mischievous or malicious intent, you consent to be identified through hardware and network analysis, and you may face severe criminal charges. Do not proceed unless your report is genuine.",
+      "agreeWarning": "I have read and understood the warning and wish to proceed."
+    },
+    "reportsPage": {
+      "title": "Browse Reports",
+      "description": "Explore anonymous reports submitted by citizens. Reports are automatically routed to the appropriate agency for action.",
+      "ciaaReports": "CIAA Reports",
+      "policeReports": "Police Reports",
+      "iccReports": "ICC Reports",
+      "ciaaDescription": "Reports concerning government officials and corruption, routed to the Commission for the Investigation of Abuse of Authority (CIAA).",
+      "policeDescription": "Reports concerning civilian-related crimes, routed to the Nepal Police.",
+      "iccDescription": "Reports concerning severe crimes escalated to the International Criminal Court (ICC)."
+    },
+    "reportsList": {
+      "searchPlaceholder": "Search by keywords in reports...",
+      "noReportsFound": "No Reports Found",
+      "noReportsMatched": "No reports matched your search criteria."
+    },
+    "reportCard": {
+      "evidenceAlt": "Crime scene evidence",
+      "aiAnalysis": "AI Routing Analysis"
+    },
+    "confirmation": {
+      "title": "Report Submitted Successfully!",
+      "description": "Your report has been received and routed to the {recipient}. Thank you for your contribution.",
+      "saveId": "Please save your tracking ID. This ID will not be shown again.",
+      "trackingId": "Your Tracking ID",
+      "viewReports": "View {recipient} Reports",
+      "backToHome": "Back to Home"
+    },
+    "toast": {
+      "submissionError": {
+        "title": "Submission Error"
+      },
+      "fileTooLarge": {
+        "title": "File too large",
+        "description": "Please upload an image smaller than 4MB."
+      },
+      "error": "Error"
     }
   },
-  "reportForm": {
-    "title": "File an Anonymous Report",
-    "description": "Your identity is protected. Please provide as much detail as possible. A photo is required.",
-    "crimeType": "Type of Crime",
-    "governmentCrime": {
-      "title": "Government Crime",
-      "description": "e.g., corruption, abuse of authority"
-    },
-    "civilianCrime": {
-      "title": "Civilian Crime",
-      "description": "e.g., theft, assault, property damage"
-    },
-    "district": "District",
-    "selectDistrict": "Select a district",
-    "localAddress": "Local Address / Tole",
-    "localAddressPlaceholder": "e.g., Ward No. 5, Near the old temple",
-    "reportDetails": "Report Details",
-    "reportDetailsPlaceholder": "Describe the incident: who was involved, what happened, where, and when.",
-    "uploadEvidence": "Upload Photo Evidence",
-    "removePhoto": "Remove photo",
-    "uploadPhotoAriaLabel": "Upload photo",
-    "clickToUpload": "Click to upload",
-    "dragAndDrop": "or drag and drop",
-    "fileTypes": "PNG, JPG up to 4MB",
-    "submitting": "Submitting...",
-    "submitAnonymously": "Submit Report Anonymously"
-  },
-  "iccReportForm": {
-    "title": "Submit a Report to the ICC",
-    "description": "This form is for reporting severe crimes that fall under the jurisdiction of the International Criminal Court. All submissions are treated with the utmost seriousness.",
-    "warningTitle": "Legal Warning",
-    "warningDescription": "Submitting a report to the ICC is a formal legal action. If a report is found to be submitted with mischievous or malicious intent, you consent to be identified through hardware and network analysis, and you may face severe criminal charges. Do not proceed unless your report is genuine.",
-    "agreeWarning": "I have read and understood the warning and wish to proceed."
-  },
-  "reportsPage": {
-    "title": "Browse Reports",
-    "description": "Explore anonymous reports submitted by citizens. Reports are automatically routed to the appropriate agency for action.",
-    "ciaaReports": "CIAA Reports",
-    "policeReports": "Police Reports",
-    "iccReports": "ICC Reports",
-    "ciaaDescription": "Reports concerning government officials and corruption, routed to the Commission for the Investigation of Abuse of Authority (CIAA).",
-    "policeDescription": "Reports concerning civilian-related crimes, routed to the Nepal Police.",
-    "iccDescription": "Reports concerning severe crimes escalated to the International Criminal Court (ICC)."
-  },
-  "reportsList": {
-    "searchPlaceholder": "Search by keywords in reports...",
-    "noReportsFound": "No Reports Found",
-    "noReportsMatched": "No reports matched your search criteria."
-  },
-  "reportCard": {
-    "evidenceAlt": "Crime scene evidence",
-    "aiAnalysis": "AI Routing Analysis"
-  },
-  "confirmation": {
-    "title": "Report Submitted Successfully!",
-    "description": "Your report has been received and routed to the {recipient}. Thank you for your contribution.",
-    "saveId": "Please save your tracking ID. This ID will not be shown again.",
-    "trackingId": "Your Tracking ID",
-    "viewReports": "View {recipient} Reports",
-    "backToHome": "Back to Home"
-  },
-  "toast": {
-    "submissionError": {
-      "title": "Submission Error"
-    },
-    "fileTooLarge": {
-      "title": "File too large",
-      "description": "Please upload an image smaller than 4MB."
-    },
-    "error": "Error"
-  }
-};
-
-const ne = {
+  ne: {
     "header": {
       "fileReport": "उजुरी दर्ता गर्नुहोस्",
       "viewReports": "उजुरीहरू हेर्नुहोस्"
@@ -228,7 +228,6 @@ const ne = {
   }
 };
 
-
 type Language = 'en' | 'ne';
 
 interface LanguageContextType {
@@ -236,8 +235,6 @@ interface LanguageContextType {
   setLanguage: (language: Language) => void;
   translations: any;
 }
-
-const translations = { en, ne };
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
@@ -264,5 +261,3 @@ export function useLanguage() {
   }
   return context;
 }
-
-    
