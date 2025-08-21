@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { submitReport } from '@/app/report/actions';
 import type { FormState } from '@/app/report/schema';
@@ -35,7 +36,7 @@ function SubmitButton() {
 }
 
 export function ReportForm() {
-  const [state, formAction] = useFormState(submitReport, initialState);
+  const [state, formAction] = useActionState(submitReport, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
