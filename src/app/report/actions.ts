@@ -1,9 +1,23 @@
 'use server';
 
+import { z } from "zod";
 import { routeCrimeReport } from "@/ai/flows/route-crime-report";
 import { addReport } from "@/lib/reports";
 import { redirect } from 'next/navigation';
-import { reportSchema, FormState } from "./schema";
+
+export const reportSchema = z.object({
+  reportText: z.string().min(50, { message: 'Report must be at least 50 characters long.' }),
+  photoDataUri: z.string({required_error: "A photo is required."}).min(1, { message: 'A photo is required.' }),
+});
+
+export type FormState = {
+    message: string;
+    errors?: {
+        reportText?: string[];
+        photoDataUri?: string[];
+    };
+}
+
 
 export async function submitReport(prevState: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = reportSchema.safeParse({

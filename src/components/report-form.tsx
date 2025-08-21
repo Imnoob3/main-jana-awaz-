@@ -1,10 +1,9 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import { useFormStatus } from 'react-dom';
-import { useEffect, useRef, useState } from 'react';
 import { submitReport } from '@/app/report/actions';
-import type { FormState } from '@/app/report/schema';
+import type { FormState } from '@/app/report/actions';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -24,7 +23,7 @@ function SubmitButton() {
   const { pending } = useFormStatus();
   const { t } = useTranslation();
   return (
-    <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={pending}>
+    <Button type="submit" className="w-full" disabled={pending}>
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
