@@ -39,7 +39,7 @@ export function addReport(report: Omit<Report, 'id' | 'createdAt'>): Report {
   return newReport;
 }
 
-export function getReportsByAgency(agency: 'CIAA' | 'Police'): Report[] {
+export function getReportsByAgency(agency: 'CIAA' | 'Police' | 'ICC'): Report[] {
   return reports.filter(report => report.recipient === agency).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 

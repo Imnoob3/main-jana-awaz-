@@ -2,9 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Shield, Users, TrendingUp, Landmark } from 'lucide-react';
+import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/use-translation';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export default function Home() {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ export default function Home() {
           {t('home.subtitle')}
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+          <Button asChild size="lg">
             <Link href="/report">{t('home.fileReport')}</Link>
           </Button>
           <Button asChild size="lg" variant="outline">
@@ -53,6 +54,31 @@ export default function Home() {
                 </Card>
             </div>
         </div>
+      </section>
+
+      <section className="py-16">
+        <Card className="max-w-4xl mx-auto bg-card border-destructive/20 shadow-lg">
+            <CardHeader className="text-center">
+                 <div className="mx-auto bg-destructive/10 p-3 rounded-lg w-fit mb-4">
+                    <Landmark className="h-8 w-8 text-destructive" />
+                  </div>
+                <CardTitle className="text-2xl font-headline">{t('home.iccSection.title')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <p className="text-center text-muted-foreground max-w-3xl mx-auto">{t('home.iccSection.description')}</p>
+                <Alert variant="destructive" className="max-w-3xl mx-auto border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                        {t('home.iccSection.warning')}
+                    </AlertDescription>
+                </Alert>
+                <div className="flex justify-center">
+                    <Button asChild variant="destructive">
+                        <Link href="/report/icc">{t('home.iccSection.reportButton')}</Link>
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
       </section>
 
       <section className="text-center py-24">
@@ -95,20 +121,6 @@ export default function Home() {
               </CardContent>
             </Card>
          </div>
-      </section>
-
-      <section className="py-16">
-        <Card className="max-w-4xl mx-auto bg-card border-primary/20 shadow-lg">
-            <CardHeader className="text-center">
-                 <div className="mx-auto bg-primary/10 p-3 rounded-lg w-fit mb-4">
-                    <Landmark className="h-8 w-8 text-primary" />
-                  </div>
-                <CardTitle className="text-2xl font-headline">{t('home.iccSection.title')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-                <p className="text-center text-muted-foreground max-w-3xl mx-auto">{t('home.iccSection.description')}</p>
-            </CardContent>
-        </Card>
       </section>
     </main>
   );

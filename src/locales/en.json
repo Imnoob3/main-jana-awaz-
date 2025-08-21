@@ -6,8 +6,8 @@
   "home": {
     "title": "Jana Awaz: Your Voice for Justice",
     "subtitle": "Anonymously report crimes and corruption in Nepal. Your identity is always protected. Together, we can build a more accountable and transparent society.",
-    "fileReport": "File a Report Now",
-    "viewReports": "View Reports",
+    "fileReport": "File a National Report",
+    "viewReports": "View Public Reports",
     "transparentNepal": {
       "title": "A Transparent & Accountable Nepal",
       "description": "Jana Awaz provides a secure and anonymous platform for citizens to expose wrongdoing, ensuring that every voice is heard and every report is taken seriously.",
@@ -32,7 +32,9 @@
     },
     "iccSection": {
       "title": "International Accountability",
-      "description": "For crimes of severe magnitude, such as those involving the entire top level of government or situations beyond national capacity to handle, reports and evidence will be securely escalated and directly submitted to the International Criminal Court (ICC) to ensure justice is pursued without boundaries."
+      "description": "For crimes of severe magnitude, such as those involving the entire top level of government or situations beyond national capacity to handle, reports and evidence will be securely escalated and directly submitted to the International Criminal Court (ICC) to ensure justice is pursued without boundaries.",
+      "warning": "Warning: Submitting a report to the ICC is a serious action. If a report is found to be submitted with mischievous intent, you may be identified through hardware tracking and could face criminal charges. This tracking only applies to ICC submissions.",
+      "reportButton": "Report Directly to ICC"
     }
   },
   "reportForm": {
@@ -49,13 +51,22 @@
     "submitting": "Submitting...",
     "submitAnonymously": "Submit Report Anonymously"
   },
+  "iccReportForm": {
+    "title": "Submit a Report to the ICC",
+    "description": "This form is for reporting severe crimes that fall under the jurisdiction of the International Criminal Court. All submissions are treated with the utmost seriousness.",
+    "warningTitle": "Legal Warning",
+    "warningDescription": "Submitting a report to the ICC is a formal legal action. If a report is found to be submitted with mischievous or malicious intent, you consent to be identified through hardware and network analysis, and you may face severe criminal charges. Do not proceed unless your report is genuine.",
+    "agreeWarning": "I have read and understood the warning and wish to proceed."
+  },
   "reportsPage": {
     "title": "Browse Reports",
     "description": "Explore anonymous reports submitted by citizens. Reports are automatically routed to the appropriate agency for action.",
     "ciaaReports": "CIAA Reports",
     "policeReports": "Police Reports",
+    "iccReports": "ICC Reports",
     "ciaaDescription": "Reports concerning government officials and corruption, routed to the Commission for the Investigation of Abuse of Authority (CIAA).",
-    "policeDescription": "Reports concerning civilian-related crimes, routed to the Nepal Police."
+    "policeDescription": "Reports concerning civilian-related crimes, routed to the Nepal Police.",
+    "iccDescription": "Reports concerning severe crimes escalated to the International Criminal Court (ICC)."
   },
   "reportsList": {
     "searchPlaceholder": "Search by keywords in reports...",

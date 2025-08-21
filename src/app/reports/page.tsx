@@ -2,7 +2,7 @@
 
 import { ReportsList } from '@/components/reports-list';
 import { getReportsByAgency } from '@/lib/reports';
-import { Shield, Users } from 'lucide-react';
+import { Landmark, Shield, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from '@/hooks/use-translation';
 
@@ -10,6 +10,7 @@ export default function ViewReportsPage() {
   const { t } = useTranslation();
   const ciaaReports = getReportsByAgency('CIAA');
   const policeReports = getReportsByAgency('Police');
+  const iccReports = getReportsByAgency('ICC');
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -21,7 +22,7 @@ export default function ViewReportsPage() {
       </div>
 
       <Tabs defaultValue="ciaa" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-md mx-auto">
+        <TabsList className="grid w-full grid-cols-3 max-w-xl mx-auto">
           <TabsTrigger value="ciaa">
             <Shield className="mr-2" />
             {t('reportsPage.ciaaReports')}
@@ -29,6 +30,10 @@ export default function ViewReportsPage() {
           <TabsTrigger value="police">
             <Users className="mr-2" />
             {t('reportsPage.policeReports')}
+          </TabsTrigger>
+          <TabsTrigger value="icc">
+            <Landmark className="mr-2" />
+            {t('reportsPage.iccReports')}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="ciaa" className="mt-8">
@@ -57,6 +62,20 @@ export default function ViewReportsPage() {
                     </div>
                 </div>
                 <ReportsList initialReports={JSON.parse(JSON.stringify(policeReports))} />
+            </div>
+        </TabsContent>
+        <TabsContent value="icc" className="mt-8">
+            <div className="space-y-4">
+                <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                        <Landmark className="h-8 w-8 text-destructive" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">{t('reportsPage.iccReports')}</h2>
+                        <p className="text-muted-foreground mt-1 max-w-3xl">{t('reportsPage.iccDescription')}</p>
+                    </div>
+                </div>
+                <ReportsList initialReports={JSON.parse(JSON.stringify(iccReports))} />
             </div>
         </TabsContent>
       </Tabs>
