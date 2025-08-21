@@ -5,6 +5,8 @@ import { getReportsByAgency } from '@/lib/reports';
 import { Landmark, Shield, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from '@/hooks/use-translation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 export default function ViewReportsPage() {
   const { t } = useTranslation();
@@ -22,7 +24,7 @@ export default function ViewReportsPage() {
       </div>
 
       <Tabs defaultValue="ciaa" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 max-w-xl mx-auto">
+        <TabsList className="grid w-full grid-cols-2 max-w-lg mx-auto">
           <TabsTrigger value="ciaa">
             <Shield className="mr-2" />
             {t('reportsPage.ciaaReports')}
@@ -30,10 +32,6 @@ export default function ViewReportsPage() {
           <TabsTrigger value="police">
             <Users className="mr-2" />
             {t('reportsPage.policeReports')}
-          </TabsTrigger>
-          <TabsTrigger value="icc">
-            <Landmark className="mr-2" />
-            {t('reportsPage.iccReports')}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="ciaa" className="mt-8">
@@ -64,21 +62,29 @@ export default function ViewReportsPage() {
                 <ReportsList initialReports={JSON.parse(JSON.stringify(policeReports))} />
             </div>
         </TabsContent>
-        <TabsContent value="icc" className="mt-8">
-            <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0">
+      </Tabs>
+
+      <Separator className="my-16" />
+
+      <Card className="border-destructive/50">
+        <CardHeader>
+             <div className="flex items-start gap-4">
+                <div className="flex-shrink-0">
+                    <div className="bg-destructive/10 p-3 rounded-lg w-fit">
                         <Landmark className="h-8 w-8 text-destructive" />
                     </div>
-                    <div>
-                        <h2 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">{t('reportsPage.iccReports')}</h2>
-                        <p className="text-muted-foreground mt-1 max-w-3xl">{t('reportsPage.iccDescription')}</p>
-                    </div>
                 </div>
-                <ReportsList initialReports={JSON.parse(JSON.stringify(iccReports))} />
+                <div>
+                    <CardTitle className="text-2xl md:text-3xl font-headline tracking-tight text-destructive">{t('reportsPage.iccReports')}</CardTitle>
+                    <p className="text-muted-foreground mt-1 max-w-3xl">{t('reportsPage.iccDescription')}</p>
+                </div>
             </div>
-        </TabsContent>
-      </Tabs>
+        </CardHeader>
+        <CardContent>
+             <ReportsList initialReports={JSON.parse(JSON.stringify(iccReports))} />
+        </CardContent>
+      </Card>
+
     </main>
   );
 }
