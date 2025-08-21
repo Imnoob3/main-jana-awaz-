@@ -10,6 +10,8 @@ let reports: Report[] = [
         recipient: 'CIAA',
         reason: 'The report involves a government official and potential corruption, which falls under the jurisdiction of the CIAA.',
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 2).toISOString(),
+        district: 'Kathmandu',
+        localAddress: 'Singha Durbar',
     },
     {
         id: 'e9b3f3a2-1b0c-4e2b-9c9d-8f1e5d4c6a4b',
@@ -18,6 +20,8 @@ let reports: Report[] = [
         recipient: 'Police',
         reason: 'The report describes a theft by a civilian, which is a matter for the Police to investigate.',
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 1).toISOString(),
+        district: 'Kathmandu',
+        localAddress: 'Thamel',
     },
     {
         id: 'f7a2e2b1-0c1b-5d3c-8a8b-7e0d4c5b6a3c',
@@ -26,6 +30,8 @@ let reports: Report[] = [
         recipient: 'Police',
         reason: 'The report concerns illegal activities by a civilian contractor, which should be handled by the Police.',
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 12).toISOString(),
+        district: 'Kathmandu',
+        localAddress: 'New Baneshwor',
     }
 ];
 

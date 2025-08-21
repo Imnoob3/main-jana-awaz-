@@ -40,6 +40,19 @@
   "reportForm": {
     "title": "File an Anonymous Report",
     "description": "Your identity is protected. Please provide as much detail as possible. A photo is required.",
+    "crimeType": "Type of Crime",
+    "governmentCrime": {
+      "title": "Government Crime",
+      "description": "e.g., corruption, abuse of authority"
+    },
+    "civilianCrime": {
+      "title": "Civilian Crime",
+      "description": "e.g., theft, assault, property damage"
+    },
+    "district": "District",
+    "selectDistrict": "Select a district",
+    "localAddress": "Local Address / Tole",
+    "localAddressPlaceholder": "e.g., Ward No. 5, Near the old temple",
     "reportDetails": "Report Details",
     "reportDetailsPlaceholder": "Describe the incident: who was involved, what happened, where, and when.",
     "uploadEvidence": "Upload Photo Evidence",

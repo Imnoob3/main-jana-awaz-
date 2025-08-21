@@ -4,7 +4,7 @@
 import { Report } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
-import { Clock, ShieldAlert } from 'lucide-react';
+import { Clock, ShieldAlert, MapPin } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useTranslation } from '@/hooks/use-translation';
 
@@ -26,6 +26,10 @@ export function ReportCard({ report }: { report: Report }) {
         </div>
       </CardHeader>
       <CardContent className="p-4 space-y-2 flex-grow">
+        <div className="flex items-center text-xs text-muted-foreground gap-2 mb-2">
+            <MapPin className="h-3 w-3" />
+            <span>{report.localAddress}, {report.district}</span>
+        </div>
         <p className="text-sm text-muted-foreground line-clamp-4">{report.reportText}</p>
       </CardContent>
        <CardFooter className="p-4 pt-0 flex-col items-start gap-4">

@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { cn } from '@/lib/utils';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { districtsOfNepal } from '@/lib/districts';
 
 const initialState: FormState = {
   message: '',
@@ -48,7 +50,7 @@ export function ReportForm() {
 
   useEffect(() => {
     if (state.message && state.errors) {
-      const errorMsg = state.errors.reportText?.[0] || state.errors.photoDataUri?.[0] || state.errors.crimeType?.[0] || state.message;
+      const errorMsg = state.errors.reportText?.[0] || state.errors.photoDataUri?.[0] || state.errors.crimeType?.[0] || state.errors.district?.[0] || state.errors.localAddress?.[0] || state.message;
       toast({
         variant: "destructive",
         title: t('toast.submissionError.title'),
@@ -94,7 +96,7 @@ export function ReportForm() {
         </CardHeader>
         <CardContent className="space-y-6">
            <div className="space-y-3">
-              <Label>Type of Crime</Label>
+              <Label>{t('reportForm.crimeType')}</Label>
               <RadioGroup 
                 name="crimeType" 
                 className="grid grid-cols-1 md:grid-cols-2 gap-4" 
@@ -113,8 +115,8 @@ export function ReportForm() {
                     )}
                   >
                     <Shield className="mb-3 h-6 w-6" />
-                    Government Crime
-                    <span className="text-xs text-muted-foreground text-center mt-1">e.g., corruption, abuse of authority</span>
+                    {t('reportForm.governmentCrime.title')}
+                    <span className="text-xs text-muted-foreground text-center mt-1">{t('reportForm.governmentCrime.description')}</span>
                   </Label>
                 </div>
                 <div>
@@ -127,12 +129,43 @@ export function ReportForm() {
                     )}
                   >
                     <Users className="mb-3 h-6 w-6" />
-                    Civilian Crime
-                     <span className="text-xs text-muted-foreground text-center mt-1">e.g., theft, assault, property damage</span>
+                    {t('reportForm.civilianCrime.title')}
+                     <span className="text-xs text-muted-foreground text-center mt-1">{t('reportForm.civilianCrime.description')}</span>
                   </Label>
                 </div>
               </RadioGroup>
               {state.errors?.crimeType && <p id="crimeType-error" className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="district">{t('reportForm.district')}</Label>
+                <Select name="district" required>
+                    <SelectTrigger id="district" aria-invalid={!!state.errors?.district} aria-describedby="district-error">
+                        <SelectValue placeholder={t('reportForm.selectDistrict')} />
+                    </SelectTrigger>
+                    <SelectContent>
+                        {districtsOfNepal.map((district) => (
+                            <SelectItem key={district} value={district}>
+                                {district}
+                            </SelectItem>
+                        ))}
+                    </SelectContent>
+                </Select>
+                 {state.errors?.district && <p id="district-error" className="text-sm font-medium text-destructive">{state.errors.district[0]}</p>}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="localAddress">{t('reportForm.localAddress')}</Label>
+                <Input 
+                  id="localAddress" 
+                  name="localAddress" 
+                  placeholder={t('reportForm.localAddressPlaceholder')} 
+                  required
+                  aria-invalid={!!state.errors?.localAddress}
+                  aria-describedby="localAddress-error"
+                />
+                {state.errors?.localAddress && <p id="localAddress-error" className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
+              </div>
             </div>
 
           <div className="space-y-2">

@@ -11,6 +11,8 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     reportText: formData.get('reportText'),
     photoDataUri: formData.get('photoDataUri'),
     crimeType: formData.get('crimeType'),
+    district: formData.get('district'),
+    localAddress: formData.get('localAddress'),
   });
 
   if (!validatedFields.success) {
@@ -20,7 +22,7 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     };
   }
 
-  const { reportText, photoDataUri, crimeType } = validatedFields.data;
+  const { reportText, photoDataUri, crimeType, district, localAddress } = validatedFields.data;
 
   try {
     // The AI routing can still be used for more detailed analysis or verification,
@@ -42,6 +44,8 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
         photoDataUri,
         recipient: recipient,
         reason: reason,
+        district,
+        localAddress,
     });
     
     redirect(`/submission-confirmation/${newReport.id}`);

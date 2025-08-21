@@ -5,4 +5,6 @@ export type Report = {
   recipient: 'CIAA' | 'Police' | 'ICC';
   reason: string;
   createdAt: string; // Using string to avoid serialization issues between server/client
+  district: string;
+  localAddress: string;
 };
