@@ -47,7 +47,7 @@ export const districtsOfNepal = [
     "Myagdi",
     "Nawalparasi (East)",
     "Nawalparasi (West)",
-t    "Nuwakot",
+    "Nuwakot",
     "Okhaldhunga",
     "Palpa",
     "Panchthar",
