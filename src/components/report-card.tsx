@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Report } from '@/lib/types';
@@ -20,11 +21,12 @@ export function ReportCard({ report }: { report: Report }) {
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              data-ai-hint="crime scene"
             />
         </div>
       </CardHeader>
       <CardContent className="p-4 space-y-2 flex-grow">
-        <p className="text-sm text-muted-foreground line-clamp-3 h-[4.5rem]">{report.reportText}</p>
+        <p className="text-sm text-muted-foreground line-clamp-4">{report.reportText}</p>
       </CardContent>
        <CardFooter className="p-4 pt-0 flex-col items-start gap-4">
          <div className="flex items-center text-xs text-muted-foreground gap-2">
