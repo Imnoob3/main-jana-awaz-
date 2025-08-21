@@ -23,24 +23,14 @@ export default function Home() {
           </Button>
         </div>
       </section>
-
-      <section className="py-16 grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <Image
-            src="https://placehold.co/600x400.png"
-            alt="A person holding a phone to report an incident"
-            data-ai-hint="justice freedom"
-            width={600}
-            height={400}
-            className="rounded-lg shadow-xl"
-          />
-        </div>
-        <div className="space-y-6">
+      
+      <section className="text-center py-16">
+         <div className="space-y-6">
             <h2 className="text-3xl font-bold font-headline">A Transparent & Accountable Nepal</h2>
-            <p className="text-muted-foreground">
+            <p className="text-muted-foreground max-w-3xl mx-auto">
               Jana Awaz provides a secure and anonymous platform for citizens to expose wrongdoing, ensuring that every voice is heard and every report is taken seriously.
             </p>
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-md mx-auto pt-4">
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-3xl font-bold">2,500+</CardTitle>
