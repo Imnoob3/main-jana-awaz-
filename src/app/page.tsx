@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -56,31 +57,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16">
-        <Card className="max-w-4xl mx-auto bg-card border-destructive/20 shadow-lg">
-            <CardHeader className="text-center">
-                 <div className="mx-auto bg-destructive/10 p-3 rounded-lg w-fit mb-4">
-                    <Landmark className="h-8 w-8 text-destructive" />
-                  </div>
-                <CardTitle className="text-2xl font-headline">{t('home.iccSection.title')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <p className="text-center text-muted-foreground max-w-3xl mx-auto">{t('home.iccSection.description')}</p>
-                <Alert variant="destructive" className="max-w-3xl mx-auto border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive">
-                    <AlertTriangle className="h-4 w-4" />
-                    <AlertDescription>
-                        {t('home.iccSection.warning')}
-                    </AlertDescription>
-                </Alert>
-                <div className="flex justify-center">
-                    <Button asChild variant="destructive">
-                        <Link href="/report/icc">{t('home.iccSection.reportButton')}</Link>
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
-      </section>
-
       <section className="text-center py-24">
          <h2 className="text-3xl font-bold font-headline mb-4">{t('home.howItWorks.title')}</h2>
          <p className="max-w-2xl mx-auto text-muted-foreground mb-12">
@@ -121,6 +97,31 @@ export default function Home() {
               </CardContent>
             </Card>
          </div>
+      </section>
+
+      <section className="py-16">
+        <Card className="max-w-4xl mx-auto bg-card border-destructive/20 shadow-lg">
+            <CardHeader className="text-center">
+                 <div className="mx-auto bg-destructive/10 p-3 rounded-lg w-fit mb-4">
+                    <Landmark className="h-8 w-8 text-destructive" />
+                  </div>
+                <CardTitle className="text-2xl font-headline">{t('home.iccSection.title')}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6 text-center">
+                <p className="text-muted-foreground max-w-3xl mx-auto">{t('home.iccSection.description')}</p>
+                <Alert variant="destructive" className="max-w-3xl mx-auto border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                        {t('home.iccSection.warning')}
+                    </AlertDescription>
+                </Alert>
+                <div className="flex justify-center">
+                    <Button asChild variant="destructive">
+                        <Link href="/report/icc">{t('home.iccSection.reportButton')}</Link>
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
       </section>
     </main>
   );
