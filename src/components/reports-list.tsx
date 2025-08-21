@@ -5,9 +5,11 @@ import { Report } from '@/lib/types';
 import { Input } from '@/components/ui/input';
 import { ReportCard } from './report-card';
 import { Search } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 export function ReportsList({ initialReports }: { initialReports: Report[] }) {
   const [searchTerm, setSearchTerm] = useState('');
+  const { t } = useTranslation();
 
   const filteredReports = useMemo(() => {
     if (!searchTerm) return initialReports;
@@ -24,7 +26,7 @@ export function ReportsList({ initialReports }: { initialReports: Report[] }) {
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search by keywords in reports..."
+          placeholder={t('reportsList.searchPlaceholder')}
           className="w-full max-w-lg pl-10"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -38,8 +40,8 @@ export function ReportsList({ initialReports }: { initialReports: Report[] }) {
         </div>
       ) : (
         <div className="text-center py-20 border-2 border-dashed rounded-lg">
-            <h3 className="text-xl font-semibold">No Reports Found</h3>
-            <p className="text-muted-foreground mt-2">No reports matched your search criteria.</p>
+            <h3 className="text-xl font-semibold">{t('reportsList.noReportsFound')}</h3>
+            <p className="text-muted-foreground mt-2">{t('reportsList.noReportsMatched')}</p>
         </div>
       )}
     </div>

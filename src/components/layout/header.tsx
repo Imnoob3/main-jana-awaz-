@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -5,8 +7,10 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSelector } from '@/components/language-selector';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
+import { useTranslation } from '@/hooks/use-translation';
 
 export default function Header() {
+  const { t } = useTranslation();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -17,10 +21,10 @@ export default function Header() {
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-              File a Report
+              {t('header.fileReport')}
             </Link>
             <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-              View Reports
+              {t('header.viewReports')}
             </Link>
           </nav>
         </div>
@@ -40,10 +44,10 @@ export default function Header() {
               </Link>
               <nav className="flex flex-col space-y-4 text-lg">
                  <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                  File a Report
+                  {t('header.fileReport')}
                 </Link>
                 <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                  View Reports
+                  {t('header.viewReports')}
                 </Link>
               </nav>
             </SheetContent>

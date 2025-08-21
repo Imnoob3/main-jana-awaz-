@@ -1,17 +1,22 @@
+'use client';
+
 import { Report } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
 import { Clock, ShieldAlert } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { useTranslation } from '@/hooks/use-translation';
 
 export function ReportCard({ report }: { report: Report }) {
+  const { t } = useTranslation();
+  
   return (
     <Card className="overflow-hidden flex flex-col h-full">
       <CardHeader className="p-0 border-b">
         <div className="aspect-video relative">
             <Image
               src={report.photoDataUri}
-              alt="Crime scene evidence"
+              alt={t('reportCard.evidenceAlt')}
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -27,7 +32,7 @@ export function ReportCard({ report }: { report: Report }) {
             <span>{formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })}</span>
         </div>
          <div className="w-full text-xs bg-muted/50 dark:bg-muted/20 p-3 rounded-md border">
-           <p className="font-semibold text-muted-foreground flex items-center gap-1.5"><ShieldAlert className="h-4 w-4"/>AI Routing Analysis:</p>
+           <p className="font-semibold text-muted-foreground flex items-center gap-1.5"><ShieldAlert className="h-4 w-4"/>{t('reportCard.aiAnalysis')}:</p>
            <p className="text-muted-foreground/80 pl-1">{report.reason}</p>
          </div>
        </CardFooter>

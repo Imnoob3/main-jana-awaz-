@@ -1,0 +1,83 @@
+{
+  "header": {
+    "fileReport": "File a Report",
+    "viewReports": "View Reports"
+  },
+  "home": {
+    "title": "Jana Awaz: Your Voice for Justice",
+    "subtitle": "Anonymously report crimes and corruption in Nepal. Your identity is always protected. Together, we can build a more accountable and transparent society.",
+    "fileReport": "File a Report Now",
+    "viewReports": "View Reports",
+    "transparentNepal": {
+      "title": "A Transparent & Accountable Nepal",
+      "description": "Jana Awaz provides a secure and anonymous platform for citizens to expose wrongdoing, ensuring that every voice is heard and every report is taken seriously.",
+      "reportsSubmitted": "Reports Submitted",
+      "casesActioned": "Cases Actioned"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "description": "Our platform ensures your report reaches the correct authorities without revealing who you are.",
+      "step1": {
+        "title": "1. Submit Your Report",
+        "description": "Fill out a simple, anonymous form with details of the incident and upload a photo as evidence."
+      },
+      "step2": {
+        "title": "2. AI-Powered Routing",
+        "description": "Our intelligent system analyzes your report and automatically forwards it to the appropriate body—the CIAA for official corruption or the Police for other crimes."
+      },
+      "step3": {
+        "title": "3. Public Transparency",
+        "description": "Submitted reports are made public to ensure transparency and accountability, driving systemic change."
+      }
+    }
+  },
+  "reportForm": {
+    "title": "File an Anonymous Report",
+    "description": "Your identity is protected. Please provide as much detail as possible. A photo is required.",
+    "reportDetails": "Report Details",
+    "reportDetailsPlaceholder": "Describe the incident: who was involved, what happened, where, and when.",
+    "uploadEvidence": "Upload Photo Evidence",
+    "removePhoto": "Remove photo",
+    "uploadPhotoAriaLabel": "Upload photo",
+    "clickToUpload": "Click to upload",
+    "dragAndDrop": "or drag and drop",
+    "fileTypes": "PNG, JPG up to 4MB",
+    "submitting": "Submitting...",
+    "submitAnonymously": "Submit Report Anonymously"
+  },
+  "reportsPage": {
+    "title": "Browse Reports",
+    "description": "Explore anonymous reports submitted by citizens. Reports are automatically routed to the appropriate agency for action.",
+    "ciaaReports": "CIAA Reports",
+    "policeReports": "Police Reports",
+    "ciaaDescription": "Reports concerning government officials and corruption, routed to the Commission for the Investigation of Abuse of Authority (CIAA).",
+    "policeDescription": "Reports concerning civilian-related crimes, routed to the Nepal Police."
+  },
+  "reportsList": {
+    "searchPlaceholder": "Search by keywords in reports...",
+    "noReportsFound": "No Reports Found",
+    "noReportsMatched": "No reports matched your search criteria."
+  },
+  "reportCard": {
+    "evidenceAlt": "Crime scene evidence",
+    "aiAnalysis": "AI Routing Analysis"
+  },
+  "confirmation": {
+    "title": "Report Submitted Successfully!",
+    "description": "Your report has been received and routed to the {recipient}. Thank you for your contribution.",
+    "saveId": "Please save your tracking ID. This ID will not be shown again.",
+    "trackingId": "Your Tracking ID",
+    "viewReports": "View {recipient} Reports",
+    "backToHome": "Back to Home"
+  },
+  "toast": {
+    "submissionError": {
+      "title": "Submission Error"
+    },
+    "fileTooLarge": {
+      "title": "File too large",
+      "description": "Please upload an image smaller than 4MB."
+    },
+    "error": "Error"
+  }
+}

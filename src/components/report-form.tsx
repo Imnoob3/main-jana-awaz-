@@ -14,6 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { AlertCircle, Loader2, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from '@/hooks/use-translation';
 
 const initialState: FormState = {
   message: '',
@@ -21,21 +22,23 @@ const initialState: FormState = {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
+  const { t } = useTranslation();
   return (
     <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={pending}>
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Submitting...
+          {t('reportForm.submitting')}
         </>
       ) : (
-        'Submit Report Anonymously'
+        t('reportForm.submitAnonymously')
       )}
     </Button>
   );
 }
 
 export function ReportForm() {
+  const { t } = useTranslation();
   const [state, formAction] = useActionState(submitReport, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -46,17 +49,21 @@ export function ReportForm() {
       const errorMsg = state.errors.reportText?.[0] || state.errors.photoDataUri?.[0] || state.message;
       toast({
         variant: "destructive",
-        title: "Submission Error",
+        title: t('toast.submissionError.title'),
         description: errorMsg,
       });
     }
-  }, [state, toast]);
+  }, [state, toast, t]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 4 * 1024 * 1024) { // 4MB limit
-          toast({ variant: "destructive", title: "File too large", description: "Please upload an image smaller than 4MB." });
+          toast({ 
+            variant: "destructive", 
+            title: t('toast.fileTooLarge.title'), 
+            description: t('toast.fileTooLarge.description') 
+          });
           return;
       }
       const reader = new FileReader();
@@ -78,18 +85,18 @@ export function ReportForm() {
     <form action={formAction}>
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>File an Anonymous Report</CardTitle>
+          <CardTitle>{t('reportForm.title')}</CardTitle>
           <CardDescription>
-            Your identity is protected. Please provide as much detail as possible. A photo is required.
+            {t('reportForm.description')}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="reportText">Report Details</Label>
+            <Label htmlFor="reportText">{t('reportForm.reportDetails')}</Label>
             <Textarea
               id="reportText"
               name="reportText"
-              placeholder="Describe the incident: who was involved, what happened, where, and when."
+              placeholder={t('reportForm.reportDetailsPlaceholder')}
               rows={8}
               required
               aria-invalid={!!state.errors?.reportText}
@@ -99,14 +106,14 @@ export function ReportForm() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="photo">Upload Photo Evidence</Label>
+            <Label htmlFor="photo">{t('reportForm.uploadEvidence')}</Label>
             <input type="hidden" name="photoDataUri" value={photoPreview || ''} />
             {photoPreview ? (
               <div className="relative group">
                 <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border" />
                 <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto}>
                   <X className="h-4 w-4" />
-                  <span className="sr-only">Remove photo</span>
+                  <span className="sr-only">{t('reportForm.removePhoto')}</span>
                 </Button>
               </div>
             ) : (
@@ -116,14 +123,14 @@ export function ReportForm() {
                 onKeyDown={(e) => e.key === 'Enter' && photoInputRef.current?.click()}
                 tabIndex={0}
                 role="button"
-                aria-label="Upload photo"
+                aria-label={t('reportForm.uploadPhotoAriaLabel')}
               >
                 <div className="space-y-1 text-center flex flex-col justify-center">
                   <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">
-                    <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                    <span className="font-semibold text-primary">{t('reportForm.clickToUpload')}</span> {t('reportForm.dragAndDrop')}
                   </p>
-                  <p className="text-xs text-muted-foreground">PNG, JPG up to 4MB</p>
+                  <p className="text-xs text-muted-foreground">{t('reportForm.fileTypes')}</p>
                 </div>
               </div>
             )}
@@ -147,7 +154,7 @@ export function ReportForm() {
           {state.message && !state.errors && (
              <Alert variant="destructive">
                <AlertCircle className="h-4 w-4" />
-               <AlertTitle>Error</AlertTitle>
+               <AlertTitle>{t('toast.error')}</AlertTitle>
                <AlertDescription>{state.message}</AlertDescription>
              </Alert>
           )}

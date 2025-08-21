@@ -8,8 +8,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useLanguage } from "@/context/language-context"
 
 export function LanguageSelector() {
+  const { setLanguage } = useLanguage();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -19,8 +22,8 @@ export function LanguageSelector() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem>English</DropdownMenuItem>
-        <DropdownMenuItem>नेपाली</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('en')}>English</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setLanguage('ne')}>नेपाली</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )
