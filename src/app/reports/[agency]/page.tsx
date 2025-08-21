@@ -2,6 +2,8 @@ import { getReportsByAgency } from '@/lib/reports';
 import { notFound } from 'next/navigation';
 import { ReportsList } from '@/components/reports-list';
 import { Shield, Users } from 'lucide-react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
 const agencyConfig = {
     ciaa: {
@@ -18,7 +20,7 @@ const agencyConfig = {
     }
 };
 
-export default function ReportsPage({ params }: { params: { agency: 'ciaa' | 'police' } }) {
+export default function ReportsByAgencyPage({ params }: { params: { agency: 'ciaa' | 'police' } }) {
   const agencyKey = params.agency.toLowerCase();
   
   if (agencyKey !== 'ciaa' && agencyKey !== 'police') {
@@ -29,18 +31,23 @@ export default function ReportsPage({ params }: { params: { agency: 'ciaa' | 'po
   const reports = getReportsByAgency(config.dbKey);
 
   return (
-    <div className="space-y-12">
-        <div className="flex items-start gap-4">
-            <div className="flex-shrink-0">
-                {config.icon}
+    <main className="container mx-auto px-4 py-12">
+        <Button asChild variant="outline" className="mb-8">
+            <Link href="/reports"> &larr; Back to All Reports</Link>
+        </Button>
+        <div className="space-y-12">
+            <div className="flex items-start gap-4">
+                <div className="flex-shrink-0">
+                    {config.icon}
+                </div>
+                <div>
+                    <h2 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">{config.title}</h2>
+                    <p className="text-muted-foreground mt-1 max-w-3xl">{config.description}</p>
+                </div>
             </div>
-            <div>
-                <h2 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">{config.title}</h2>
-                <p className="text-muted-foreground mt-1 max-w-3xl">{config.description}</p>
-            </div>
+            <ReportsList initialReports={JSON.parse(JSON.stringify(reports))} />
         </div>
-        <ReportsList initialReports={JSON.parse(JSON.stringify(reports))} />
-    </div>
+    </main>
   );
 }
 
