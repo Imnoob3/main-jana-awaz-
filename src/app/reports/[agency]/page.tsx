@@ -29,18 +29,18 @@ export default function ReportsPage({ params }: { params: { agency: 'ciaa' | 'po
   const reports = getReportsByAgency(config.dbKey);
 
   return (
-    <main className="container mx-auto px-4 py-12">
-        <div className="flex items-start gap-4 mb-8">
+    <div className="space-y-12">
+        <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
                 {config.icon}
             </div>
             <div>
-                <h1 className="text-3xl md:text-4xl font-bold font-headline tracking-tight">{config.title}</h1>
+                <h2 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">{config.title}</h2>
                 <p className="text-muted-foreground mt-1 max-w-3xl">{config.description}</p>
             </div>
         </div>
         <ReportsList initialReports={JSON.parse(JSON.stringify(reports))} />
-    </main>
+    </div>
   );
 }
 

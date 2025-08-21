@@ -19,11 +19,8 @@ export default function Header() {
             <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
               File a Report
             </Link>
-            <Link href="/reports/ciaa" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-              CIAA Reports
-            </Link>
-            <Link href="/reports/police" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-              Police Reports
+            <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+              View Reports
             </Link>
           </nav>
         </div>
@@ -45,11 +42,8 @@ export default function Header() {
                  <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
                   File a Report
                 </Link>
-                <Link href="/reports/ciaa" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                  CIAA Reports
-                </Link>
-                <Link href="/reports/police" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                  Police Reports
+                <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+                  View Reports
                 </Link>
               </nav>
             </SheetContent>
