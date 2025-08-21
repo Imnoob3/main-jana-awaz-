@@ -2,7 +2,8 @@
 
 import { useFormState, useFormStatus } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
-import { submitReport, FormState } from '@/app/report/actions';
+import { submitReport } from '@/app/report/actions';
+import type { FormState } from '@/app/report/schema';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
