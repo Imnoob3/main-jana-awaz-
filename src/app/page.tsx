@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Shield, Users, TrendingUp } from 'lucide-react';
+import { FileText, Shield, Users, TrendingUp, Landmark } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/use-translation';
 
@@ -95,6 +95,20 @@ export default function Home() {
               </CardContent>
             </Card>
          </div>
+      </section>
+
+      <section className="py-16">
+        <Card className="max-w-4xl mx-auto bg-card border-primary/20 shadow-lg">
+            <CardHeader className="text-center">
+                 <div className="mx-auto bg-primary/10 p-3 rounded-lg w-fit mb-4">
+                    <Landmark className="h-8 w-8 text-primary" />
+                  </div>
+                <CardTitle className="text-2xl font-headline">{t('home.iccSection.title')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p className="text-center text-muted-foreground max-w-3xl mx-auto">{t('home.iccSection.description')}</p>
+            </CardContent>
+        </Card>
       </section>
     </main>
   );
