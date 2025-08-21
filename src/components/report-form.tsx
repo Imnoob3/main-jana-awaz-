@@ -10,10 +10,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { AlertCircle, Loader2, Upload, X } from 'lucide-react';
+import { AlertCircle, Loader2, Upload, X, Shield, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
+import { RadioGroup, RadioGroupItem } from './ui/radio-group';
+import { cn } from '@/lib/utils';
 
 const initialState: FormState = {
   message: '',
@@ -42,10 +44,11 @@ export function ReportForm() {
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
 
   useEffect(() => {
     if (state.message && state.errors) {
-      const errorMsg = state.errors.reportText?.[0] || state.errors.photoDataUri?.[0] || state.message;
+      const errorMsg = state.errors.reportText?.[0] || state.errors.photoDataUri?.[0] || state.errors.crimeType?.[0] || state.message;
       toast({
         variant: "destructive",
         title: t('toast.submissionError.title'),
@@ -90,6 +93,48 @@ export function ReportForm() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+           <div className="space-y-3">
+              <Label>Type of Crime</Label>
+              <RadioGroup 
+                name="crimeType" 
+                className="grid grid-cols-1 md:grid-cols-2 gap-4" 
+                onValueChange={(value) => setCrimeType(value as 'government' | 'civilian')}
+                required
+                aria-invalid={!!state.errors?.crimeType}
+                aria-describedby="crimeType-error"
+              >
+                <div>
+                  <RadioGroupItem value="government" id="government" className="peer sr-only" />
+                  <Label
+                    htmlFor="government"
+                    className={cn(
+                      "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
+                      crimeType === 'government' && "border-primary"
+                    )}
+                  >
+                    <Shield className="mb-3 h-6 w-6" />
+                    Government Crime
+                    <span className="text-xs text-muted-foreground text-center mt-1">e.g., corruption, abuse of authority</span>
+                  </Label>
+                </div>
+                <div>
+                  <RadioGroupItem value="civilian" id="civilian" className="peer sr-only" />
+                  <Label
+                    htmlFor="civilian"
+                    className={cn(
+                      "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
+                       crimeType === 'civilian' && "border-primary"
+                    )}
+                  >
+                    <Users className="mb-3 h-6 w-6" />
+                    Civilian Crime
+                     <span className="text-xs text-muted-foreground text-center mt-1">e.g., theft, assault, property damage</span>
+                  </Label>
+                </div>
+              </RadioGroup>
+              {state.errors?.crimeType && <p id="crimeType-error" className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
+            </div>
+
           <div className="space-y-2">
             <Label htmlFor="reportText">{t('reportForm.reportDetails')}</Label>
             <Textarea

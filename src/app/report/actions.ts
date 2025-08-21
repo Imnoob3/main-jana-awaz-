@@ -10,6 +10,7 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
   const validatedFields = reportSchema.safeParse({
     reportText: formData.get('reportText'),
     photoDataUri: formData.get('photoDataUri'),
+    crimeType: formData.get('crimeType'),
   });
 
   if (!validatedFields.success) {
@@ -19,20 +20,28 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     };
   }
 
-  const { reportText, photoDataUri } = validatedFields.data;
+  const { reportText, photoDataUri, crimeType } = validatedFields.data;
 
   try {
-    const aiResult = await routeCrimeReport({ reportText, photoDataUri });
+    // The AI routing can still be used for more detailed analysis or verification,
+    // but the primary routing is now based on user selection.
+    // For this implementation, we will directly use the user's selection.
+    
+    const recipient = crimeType === 'government' ? 'CIAA' : 'Police';
+    const reason = crimeType === 'government'
+      ? 'The report was categorized by the user as a Government Crime and routed to the CIAA.'
+      : 'The report was categorized by the user as a Civilian Crime and routed to the Police.';
 
-    if (!aiResult || !aiResult.recipient) {
-      throw new Error("AI routing failed to return a valid recipient.");
-    }
+
+    // If you wanted to still use the AI, you could pass the crimeType to the flow.
+    // For example:
+    // const aiResult = await routeCrimeReport({ reportText, photoDataUri, userHint: crimeType });
 
     const newReport = addReport({
         reportText,
         photoDataUri,
-        recipient: aiResult.recipient,
-        reason: aiResult.reason,
+        recipient: recipient,
+        reason: reason,
     });
     
     redirect(`/submission-confirmation/${newReport.id}`);
