@@ -1,0 +1,157 @@
+'use client';
+
+import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef, useState } from 'react';
+import { submitReport, FormState } from '@/app/report/actions';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from './ui/alert';
+import { AlertCircle, Loader2, Upload, X } from 'lucide-react';
+import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
+
+const initialState: FormState = {
+  message: '',
+};
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" className="w-full bg-accent hover:bg-accent/90 text-accent-foreground" disabled={pending}>
+      {pending ? (
+        <>
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          Submitting...
+        </>
+      ) : (
+        'Submit Report Anonymously'
+      )}
+    </Button>
+  );
+}
+
+export function ReportForm() {
+  const [state, formAction] = useFormState(submitReport, initialState);
+  const { toast } = useToast();
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (state.message && state.errors) {
+      const errorMsg = state.errors.reportText?.[0] || state.errors.photoDataUri?.[0] || state.message;
+      toast({
+        variant: "destructive",
+        title: "Submission Error",
+        description: errorMsg,
+      });
+    }
+  }, [state, toast]);
+
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 4 * 1024 * 1024) { // 4MB limit
+          toast({ variant: "destructive", title: "File too large", description: "Please upload an image smaller than 4MB." });
+          return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removePhoto = () => {
+    setPhotoPreview(null);
+    if(photoInputRef.current) {
+      photoInputRef.current.value = "";
+    }
+  };
+
+  return (
+    <form action={formAction}>
+      <Card className="w-full max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle>File an Anonymous Report</CardTitle>
+          <CardDescription>
+            Your identity is protected. Please provide as much detail as possible. A photo is required.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="reportText">Report Details</Label>
+            <Textarea
+              id="reportText"
+              name="reportText"
+              placeholder="Describe the incident: who was involved, what happened, where, and when."
+              rows={8}
+              required
+              aria-invalid={!!state.errors?.reportText}
+              aria-describedby="reportText-error"
+            />
+            {state.errors?.reportText && <p id="reportText-error" className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="photo">Upload Photo Evidence</Label>
+            <input type="hidden" name="photoDataUri" value={photoPreview || ''} />
+            {photoPreview ? (
+              <div className="relative group">
+                <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border" />
+                <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto}>
+                  <X className="h-4 w-4" />
+                  <span className="sr-only">Remove photo</span>
+                </Button>
+              </div>
+            ) : (
+              <div 
+                className="flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md cursor-pointer hover:border-primary transition-colors"
+                onClick={() => photoInputRef.current?.click()}
+                onKeyDown={(e) => e.key === 'Enter' && photoInputRef.current?.click()}
+                tabIndex={0}
+                role="button"
+                aria-label="Upload photo"
+              >
+                <div className="space-y-1 text-center flex flex-col justify-center">
+                  <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">
+                    <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                  </p>
+                  <p className="text-xs text-muted-foreground">PNG, JPG up to 4MB</p>
+                </div>
+              </div>
+            )}
+             <Input
+                id="photo"
+                name="photo"
+                type="file"
+                className="hidden"
+                ref={photoInputRef}
+                accept="image/png, image/jpeg"
+                onChange={handlePhotoChange}
+                required
+                aria-invalid={!!state.errors?.photoDataUri}
+                aria-describedby="photo-error"
+            />
+            {state.errors?.photoDataUri && <p id="photo-error" className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
+          </div>
+
+        </CardContent>
+        <CardFooter className="flex-col items-stretch gap-4">
+          {state.message && !state.errors && (
+             <Alert variant="destructive">
+               <AlertCircle className="h-4 w-4" />
+               <AlertTitle>Error</AlertTitle>
+               <AlertDescription>{state.message}</AlertDescription>
+             </Alert>
+          )}
+          <SubmitButton />
+        </CardFooter>
+      </Card>
+    </form>
+  );
+}
