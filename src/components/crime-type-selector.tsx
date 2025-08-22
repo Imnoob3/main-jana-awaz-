@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useLayoutEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
@@ -33,27 +33,46 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
   const { t } = useTranslation();
   const options = crimeType === 'government' ? governmentCrimeTypes : civilianCrimeTypes;
   const [selectedValue, setSelectedValue] = useState(options[0]);
+  const [bubbleStyle, setBubbleStyle] = useState({});
+  const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+
+  useLayoutEffect(() => {
+    const selectedIndex = options.indexOf(selectedValue);
+    const selectedButton = buttonsRef.current[selectedIndex];
+    const container = containerRef.current;
+    
+    if (selectedButton && container) {
+        const containerRect = container.getBoundingClientRect();
+        const buttonRect = selectedButton.getBoundingClientRect();
+
+        setBubbleStyle({
+          width: `${buttonRect.width}px`,
+          left: `${buttonRect.left - containerRect.left}px`,
+        });
+    }
+  }, [selectedValue, options]);
+
 
   return (
     <div className="space-y-3">
       <Label>{t('reportForm.specificCrimeType')}</Label>
       <Input type="hidden" name="crimeSubType" value={selectedValue} />
-      <div className="relative w-full rounded-full bg-muted p-1 grid" style={{ gridTemplateColumns: `repeat(${options.length}, 1fr)`}}>
+      <div ref={containerRef} className="relative w-full rounded-full bg-muted p-1 flex justify-between items-center">
         <div 
           className="absolute top-1 bottom-1 bg-primary rounded-full transition-all duration-300 ease-in-out shadow-md"
-          style={{
-            width: `calc(${100 / options.length}% - 4px)`,
-            left: `calc(${(options.indexOf(selectedValue) / options.length) * 100}% + 2px)`
-          }}
+          style={bubbleStyle}
         />
-        {options.map((option) => (
+        {options.map((option, index) => (
           <button
             key={option}
+            ref={el => buttonsRef.current[index] = el}
             type="button"
             disabled={isPending}
             onClick={() => setSelectedValue(option)}
             className={cn(
-              "relative z-10 rounded-full py-1.5 text-sm font-medium transition-colors duration-300 ease-in-out",
+              "relative z-10 rounded-full py-1.5 px-4 text-sm font-medium transition-colors duration-300 ease-in-out flex-grow text-center",
               selectedValue === option ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
             )}
           >
