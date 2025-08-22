@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 export const iccReportSchema = z.object({
@@ -15,4 +16,7 @@ export type IccFormState = {
         photoDataUri?: string[];
         agreeWarning?: string[];
     };
+    isSuccess: boolean;
+    reportId?: string;
+    recipient?: 'CIAA' | 'Police' | 'ICC';
 }

@@ -1,3 +1,4 @@
+
 'use server';
 
 import { addReport } from "@/lib/reports";
@@ -15,6 +16,7 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
     return {
       message: 'Failed to submit report. Please check the errors.',
       errors: validatedFields.error.flatten().fieldErrors,
+      isSuccess: false,
     };
   }
 
@@ -26,11 +28,18 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
         photoDataUri,
         recipient: 'ICC',
         reason: 'This report has been directly submitted to the ICC due to its potential severity and international implications.',
+        // District and local address are not required for ICC reports in this schema
+        district: 'International', 
+        localAddress: 'N/A',
     });
     
+    // For testing, we return success data instead of redirecting.
     // redirect(`/submission-confirmation/${newReport.id}`);
     return {
-      message: `SUCCESS (testing only): ICC Report created with ID ${newReport.id}. Redirection is disabled.`
+      message: `ICC Report created with ID ${newReport.id}.`,
+      isSuccess: true,
+      reportId: newReport.id,
+      recipient: newReport.recipient,
     }
 
   } catch (error) {
@@ -38,6 +47,7 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return {
       message: `An unexpected error occurred: ${errorMessage}`,
+      isSuccess: false,
     };
   }
 }

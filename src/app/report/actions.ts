@@ -1,3 +1,4 @@
+
 'use server';
 
 import { routeCrimeReport } from "@/ai/flows/route-crime-report";
@@ -19,25 +20,17 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     return {
       message: 'Failed to submit report. Please check the errors.',
       errors: validatedFields.error.flatten().fieldErrors,
+      isSuccess: false,
     };
   }
 
   const { reportText, photoDataUri, crimeType, district, localAddress } = validatedFields.data;
 
   try {
-    // The AI routing can still be used for more detailed analysis or verification,
-    // but the primary routing is now based on user selection.
-    // For this implementation, we will directly use the user's selection.
-    
     const recipient = crimeType === 'government' ? 'CIAA' : 'Police';
     const reason = crimeType === 'government'
       ? 'The report was categorized by the user as a Government Crime and routed to the CIAA.'
       : 'The report was categorized by the user as a Civilian Crime and routed to the Police.';
-
-
-    // If you wanted to still use the AI, you could pass the crimeType to the flow.
-    // For example:
-    // const aiResult = await routeCrimeReport({ reportText, photoDataUri, userHint: crimeType });
 
     const newReport = addReport({
         reportText,
@@ -48,9 +41,13 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
         localAddress,
     });
     
+    // For testing, we return success data instead of redirecting.
     // redirect(`/submission-confirmation/${newReport.id}`);
     return {
-      message: `SUCCESS (testing only): Report created with ID ${newReport.id}. Redirection is disabled.`
+      message: `Report created with ID ${newReport.id}.`,
+      isSuccess: true,
+      reportId: newReport.id,
+      recipient: newReport.recipient,
     }
 
   } catch (error) {
@@ -58,6 +55,7 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return {
       message: `An unexpected error occurred: ${errorMessage}`,
+      isSuccess: false,
     };
   }
 }

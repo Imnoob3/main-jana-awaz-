@@ -1,3 +1,4 @@
+
 import { z } from "zod";
 
 export const reportSchema = z.object({
@@ -17,4 +18,7 @@ export type FormState = {
         district?: string[];
         localAddress?: string[];
     };
+    isSuccess: boolean;
+    reportId?: string;
+    recipient?: 'CIAA' | 'Police' | 'ICC';
 }
