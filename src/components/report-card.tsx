@@ -12,7 +12,7 @@ export function ReportCard({ report }: { report: Report }) {
   const { t } = useTranslation();
   
   return (
-    <Card className="overflow-hidden flex flex-col h-full">
+    <Card className="overflow-hidden flex flex-col h-full hover:shadow-lg hover:-translate-y-1">
       <CardHeader className="p-0 border-b">
         <div className="aspect-video relative">
             <Image
