@@ -32,8 +32,9 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
 
   } catch (error) {
     console.error(error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return {
-      message: 'An unexpected error occurred while processing your report. Please try again later.',
+      message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
 }
