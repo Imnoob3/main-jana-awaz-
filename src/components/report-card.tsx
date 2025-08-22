@@ -12,7 +12,7 @@ export function ReportCard({ report }: { report: Report }) {
   const { t } = useTranslation();
   
   return (
-    <Card className="overflow-hidden flex flex-col h-full hover:shadow-lg hover:-translate-y-1">
+    <Card className="overflow-hidden flex flex-col h-full hover:-translate-y-1">
       <CardHeader className="p-0 border-b">
         <div className="aspect-video relative">
             <Image
@@ -37,7 +37,7 @@ export function ReportCard({ report }: { report: Report }) {
             <Clock className="h-3 w-3" />
             <span>{formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })}</span>
         </div>
-         <div className="w-full text-xs bg-muted/50 dark:bg-muted/20 p-3 rounded-md border">
+         <div className="w-full text-xs bg-muted/50 dark:bg-muted/20 p-3 rounded-md border shadow-inner">
            <p className="font-semibold text-muted-foreground flex items-center gap-1.5"><ShieldAlert className="h-4 w-4"/>{t('reportCard.aiAnalysis')}:</p>
            <p className="text-muted-foreground/80 pl-1">{report.reason}</p>
          </div>

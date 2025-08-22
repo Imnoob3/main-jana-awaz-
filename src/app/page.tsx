@@ -30,7 +30,7 @@ export default function Home() {
         </div>
       </section>
       
-      <section className="text-center py-12 md:py-16 bg-muted/30 dark:bg-muted/10 rounded-lg">
+      <section className="text-center py-12 md:py-16 bg-muted/30 dark:bg-muted/10 rounded-lg shadow-inner">
          <div className="space-y-6 px-4">
             <h2 className="text-2xl md:text-3xl font-bold font-headline">{t('home.transparentNepal.title')}</h2>
             <p className="text-muted-foreground max-w-3xl mx-auto text-sm md:text-base">
