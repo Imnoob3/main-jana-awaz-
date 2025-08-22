@@ -24,7 +24,7 @@ export default function Home() {
           <Button asChild size="lg">
             <Link href="/report">{t('home.fileReport')}</Link>
           </Button>
-          <Button asChild size="lg" variant="outline">
+          <Button asChild size="lg">
             <Link href="/reports">{t('home.viewReports')}</Link>
           </Button>
         </div>
