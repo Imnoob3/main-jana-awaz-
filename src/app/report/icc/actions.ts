@@ -28,7 +28,10 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
         reason: 'This report has been directly submitted to the ICC due to its potential severity and international implications.',
     });
     
-    redirect(`/submission-confirmation/${newReport.id}`);
+    // redirect(`/submission-confirmation/${newReport.id}`);
+    return {
+      message: `SUCCESS (testing only): ICC Report created with ID ${newReport.id}. Redirection is disabled.`
+    }
 
   } catch (error) {
     console.error(error);

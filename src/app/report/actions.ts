@@ -48,7 +48,10 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
         localAddress,
     });
     
-    redirect(`/submission-confirmation/${newReport.id}`);
+    // redirect(`/submission-confirmation/${newReport.id}`);
+    return {
+      message: `SUCCESS (testing only): Report created with ID ${newReport.id}. Redirection is disabled.`
+    }
 
   } catch (error) {
     console.error(error);

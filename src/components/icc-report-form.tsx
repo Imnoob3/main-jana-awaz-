@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { AlertCircle, Landmark, Loader2, Upload, X } from 'lucide-react';
+import { AlertCircle, CheckCircle, Landmark, Loader2, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
@@ -80,6 +80,8 @@ export function IccReportForm() {
       photoInputRef.current.value = "";
     }
   };
+  
+  const isSuccess = state.message && !state.errors;
 
   return (
     <form action={formAction}>
@@ -176,7 +178,14 @@ export function IccReportForm() {
 
         </CardContent>
         <CardFooter className="flex-col items-stretch gap-4">
-          {state.message && !state.errors && (
+          {isSuccess && (
+            <Alert>
+              <CheckCircle className="h-4 w-4" />
+              <AlertTitle>Success (Testing Mode)</AlertTitle>
+              <AlertDescription>{state.message}</AlertDescription>
+            </Alert>
+          )}
+          {state.message && !isSuccess && (
              <Alert variant="destructive">
                <AlertCircle className="h-4 w-4" />
                <AlertTitle>{t('toast.error')}</AlertTitle>
