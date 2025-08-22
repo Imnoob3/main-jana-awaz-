@@ -141,7 +141,7 @@ export function ReportForm() {
                     <Label
                       htmlFor="government"
                       className={cn(
-                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary shadow-lg transition-all hover:-translate-y-1",
+                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary shadow-lg transition-all hover:-translate-y-1 cursor-pointer",
                         crimeType === 'government' && "border-primary",
                          isPending && "opacity-50 cursor-not-allowed"
                       )}
@@ -156,7 +156,7 @@ export function ReportForm() {
                     <Label
                       htmlFor="civilian"
                       className={cn(
-                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary shadow-lg transition-all hover:-translate-y-1",
+                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary shadow-lg transition-all hover:-translate-y-1 cursor-pointer",
                         crimeType === 'civilian' && "border-primary",
                         isPending && "opacity-50 cursor-not-allowed"
                       )}
