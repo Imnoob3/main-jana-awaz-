@@ -5,11 +5,11 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 48 33% 94%;
     --foreground: 210 40% 3.9%;
-    --card: 210 40% 98%;
+    --card: 48 33% 94%;
     --card-foreground: 210 40% 3.9%;
-    --popover: 210 40% 98%;
+    --popover: 48 33% 94%;
     --popover-foreground: 210 40% 3.9%;
     --primary: 217 91% 50%;
     --primary-foreground: 210 40% 98%;
@@ -30,7 +30,7 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 80% 65%;
     --chart-5: 330 80% 60%;
-    --sidebar-background: 210 40% 98%;
+    --sidebar-background: 48 33% 94%;
     --sidebar-foreground: 210 40% 3.9%;
     --sidebar-primary: 217 91% 50%;
     --sidebar-primary-foreground: 210 40% 98%;
