@@ -47,6 +47,7 @@ const translations = {
       "title": "File an Anonymous Report",
       "description": "Your identity is protected. Please provide as much detail as possible. A photo is required.",
       "crimeType": "Type of Crime",
+      "specificCrimeType": "Specific Type of Crime",
       "governmentCrime": {
         "title": "Government Crime",
         "description": "e.g., corruption, abuse of authority"
@@ -69,6 +70,17 @@ const translations = {
       "fileTypes": "PNG, JPG up to 4MB",
       "submitting": "Submitting...",
       "submitAnonymously": "Submit Report Anonymously"
+    },
+     "crimeSubTypes": {
+      "bribery": "Bribery",
+      "embezzlement": "Embezzlement",
+      "nepotism": "Nepotism",
+      "abuseofauthority": "Abuse of Authority",
+      "theft": "Theft",
+      "assault": "Assault",
+      "vandalism": "Vandalism",
+      "fraud": "Fraud",
+      "other": "Other"
     },
     "iccReportForm": {
       "title": "Submit a Report to the ICC",
@@ -158,6 +170,7 @@ const translations = {
       "title": "गुमनाम उजुरी दर्ता गर्नुहोस्",
       "description": "तपाईंको पहिचान सुरक्षित छ। कृपया सकेसम्म धेरै विवरण प्रदान गर्नुहोस्। फोटो अनिवार्य छ।",
       "crimeType": "अपराधको प्रकार",
+      "specificCrimeType": "अपराधको विशिष्ट प्रकार",
       "governmentCrime": {
         "title": "सरकारी अपराध",
         "description": "उदाहरण: भ्रष्टाचार, अख्तियारको दुरुपयोग"
@@ -180,6 +193,17 @@ const translations = {
       "fileTypes": "PNG, JPG ४MB सम्म",
       "submitting": "दर्ता हुँदैछ...",
       "submitAnonymously": "गुमनाम रूपमा उजुरी दर्ता गर्नुहोस्"
+    },
+    "crimeSubTypes": {
+      "bribery": "घुसखोरी",
+      "embezzlement": "हिनामिना",
+      "nepotism": "नातावाद",
+      "abuseofauthority": "अख्तियारको दुरुपयोग",
+      "theft": "चोरी",
+      "assault": "हमला",
+      "vandalism": "तोडफोड",
+      "fraud": "छल",
+      "other": "अन्य"
     },
     "iccReportForm": {
         "title": "ICC मा उजुरी दर्ता गर्नुहोस्",
@@ -226,7 +250,7 @@ const translations = {
       "error": "त्रुटि"
     }
   }
-};
+}
 
 type Language = 'en' | 'ne';
 

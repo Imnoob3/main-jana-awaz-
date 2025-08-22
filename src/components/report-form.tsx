@@ -22,6 +22,7 @@ import { districtsOfNepal } from '@/lib/districts';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from './ui/dialog';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { CrimeTypeSelector } from './crime-type-selector';
 
 const initialState: FormState = {
   message: '',
@@ -64,7 +65,8 @@ export function ReportForm() {
     if (!isPending && state.message && state.errors) {
       const errorMsg = state.errors?.reportText?.[0] 
         || state.errors?.photoDataUri?.[0] 
-        || state.errors?.crimeType?.[0] 
+        || state.errors?.crimeType?.[0]
+        || state.errors?.crimeSubType?.[0]
         || state.errors?.district?.[0] 
         || state.errors?.localAddress?.[0] 
         || state.message;
@@ -114,7 +116,7 @@ export function ReportForm() {
   return (
     <>
       <form action={formAction} ref={formRef}>
-        <Card className="w-full max-w-2xl mx-auto">
+        <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <CardTitle>{t('reportForm.title')}</CardTitle>
             <CardDescription>
@@ -139,7 +141,7 @@ export function ReportForm() {
                     <Label
                       htmlFor="government"
                       className={cn(
-                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
+                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary shadow-lg transition-all hover:-translate-y-1",
                         crimeType === 'government' && "border-primary",
                          isPending && "opacity-50 cursor-not-allowed"
                       )}
@@ -154,7 +156,7 @@ export function ReportForm() {
                     <Label
                       htmlFor="civilian"
                       className={cn(
-                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary",
+                        "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary shadow-lg transition-all hover:-translate-y-1",
                         crimeType === 'civilian' && "border-primary",
                         isPending && "opacity-50 cursor-not-allowed"
                       )}
@@ -168,11 +170,23 @@ export function ReportForm() {
                 {state.errors?.crimeType && <p id="crimeType-error" className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
               </div>
 
+              {crimeType && (
+                <div className="space-y-3">
+                    <CrimeTypeSelector
+                      key={crimeType} // Re-mount when crimeType changes
+                      crimeType={crimeType}
+                      isPending={isPending}
+                      error={state.errors?.crimeSubType?.[0]}
+                    />
+                </div>
+              )}
+
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <Label htmlFor="district">{t('reportForm.district')}</Label>
                   <Select name="district" required disabled={isPending}>
-                      <SelectTrigger id="district" aria-invalid={!!state.errors?.district} aria-describedby="district-error">
+                      <SelectTrigger id="district" aria-invalid={!!state.errors?.district} aria-describedby="district-error" className="shadow-lg">
                           <SelectValue placeholder={t('reportForm.selectDistrict')} />
                       </SelectTrigger>
                       <SelectContent>
@@ -195,6 +209,7 @@ export function ReportForm() {
                     aria-invalid={!!state.errors?.localAddress}
                     aria-describedby="localAddress-error"
                     disabled={isPending}
+                    className="shadow-lg"
                   />
                   {state.errors?.localAddress && <p id="localAddress-error" className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
                 </div>
@@ -211,6 +226,7 @@ export function ReportForm() {
                 aria-invalid={!!state.errors?.reportText}
                 aria-describedby="reportText-error"
                 disabled={isPending}
+                className="shadow-lg"
               />
               {state.errors?.reportText && <p id="reportText-error" className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
             </div>
@@ -220,7 +236,7 @@ export function ReportForm() {
               <input type="hidden" name="photoDataUri" value={photoPreview || ''} />
               {photoPreview ? (
                 <div className="relative group">
-                  <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border" />
+                  <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border shadow-lg" />
                   <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto} disabled={isPending}>
                     <X className="h-4 w-4" />
                     <span className="sr-only">{t('reportForm.removePhoto')}</span>
@@ -229,7 +245,7 @@ export function ReportForm() {
               ) : (
                 <div 
                   className={cn(
-                    "flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition-colors",
+                    "flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition-colors shadow-lg",
                     !isPending && "cursor-pointer hover:border-primary",
                     isPending && "opacity-50 cursor-not-allowed"
                   )}
@@ -279,7 +295,7 @@ export function ReportForm() {
       </form>
       
       <Dialog open={isSuccess} onOpenChange={handleDialogClose}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md shadow-2xl">
             <DialogHeader className="items-center text-center">
                  <div className="bg-green-100 dark:bg-green-900/50 p-3 rounded-full w-fit mb-4">
                     <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />

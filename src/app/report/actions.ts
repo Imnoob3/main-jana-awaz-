@@ -12,6 +12,7 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     reportText: formData.get('reportText'),
     photoDataUri: formData.get('photoDataUri'),
     crimeType: formData.get('crimeType'),
+    crimeSubType: formData.get('crimeSubType'),
     district: formData.get('district'),
     localAddress: formData.get('localAddress'),
   });
@@ -24,13 +25,13 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     };
   }
 
-  const { reportText, photoDataUri, crimeType, district, localAddress } = validatedFields.data;
+  const { reportText, photoDataUri, crimeType, crimeSubType, district, localAddress } = validatedFields.data;
 
   try {
     const recipient = crimeType === 'government' ? 'CIAA' : 'Police';
     const reason = crimeType === 'government'
-      ? 'The report was categorized by the user as a Government Crime and routed to the CIAA.'
-      : 'The report was categorized by the user as a Civilian Crime and routed to the Police.';
+      ? `The report was categorized by the user as a Government Crime (${crimeSubType}) and routed to the CIAA.`
+      : `The report was categorized by the user as a Civilian Crime (${crimeSubType}) and routed to the Police.`;
 
     const newReport = addReport({
         reportText,
