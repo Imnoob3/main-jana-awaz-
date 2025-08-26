@@ -8,7 +8,7 @@ import { ReactNode } from 'react';
 const pageVariants = {
   initial: {
     opacity: 0,
-    y: 20,
+    y: 5,
   },
   in: {
     opacity: 1,
@@ -16,14 +16,14 @@ const pageVariants = {
   },
   out: {
     opacity: 0,
-    y: -20,
+    y: -5,
   },
 };
 
 const pageTransition = {
   type: 'tween',
-  ease: 'anticipate',
-  duration: 0.5,
+  ease: 'easeInOut',
+  duration: 0.4,
 };
 
 export function PageTransition({ children }: { children: ReactNode }) {
