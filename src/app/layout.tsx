@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import { LanguageProvider } from '@/context/language-context';
+import { PageTransition } from '@/components/page-transition';
 
 export const metadata: Metadata = {
   title: 'Jana Awaz',
@@ -35,7 +36,7 @@ export default function RootLayout({
           >
             <Header />
             <div className="flex-grow">
-              {children}
+              <PageTransition>{children}</PageTransition>
             </div>
             <Toaster />
           </ThemeProvider>
