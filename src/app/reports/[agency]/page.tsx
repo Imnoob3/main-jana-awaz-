@@ -50,7 +50,3 @@ export default function ReportsByAgencyPage({ params }: { params: { agency: 'cia
     </main>
   );
 }
-
-export function generateStaticParams() {
-    return [{ agency: 'ciaa' }, { agency: 'police' }];
-}
