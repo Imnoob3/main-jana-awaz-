@@ -1,3 +1,4 @@
+
 'use client';
 
 import { ReportsList } from '@/components/reports-list';
@@ -7,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from '@/hooks/use-translation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+
+export const dynamic = 'force-dynamic';
 
 export default function ViewReportsPage() {
   const { t } = useTranslation();
