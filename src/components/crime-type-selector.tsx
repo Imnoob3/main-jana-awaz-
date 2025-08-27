@@ -49,6 +49,8 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
 
         setBubbleStyle({
           width: `${buttonRect.width}px`,
+          height: `${buttonRect.height}px`,
+          top: `${buttonRect.top - containerRect.top}px`,
           left: `${buttonRect.left - containerRect.left}px`,
         });
     }
@@ -59,9 +61,9 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
     <div className="space-y-3">
       <Label>{t('reportForm.specificCrimeType')}</Label>
       <Input type="hidden" name="crimeSubType" value={selectedValue} />
-      <div ref={containerRef} className="relative w-full rounded-full bg-muted p-1 flex justify-between items-center">
+      <div ref={containerRef} className="relative w-full rounded-2xl bg-muted p-1 flex flex-wrap justify-center items-center gap-1">
         <div 
-          className="absolute top-1 bottom-1 bg-primary rounded-full transition-all duration-300 ease-in-out shadow-md"
+          className="absolute bg-primary rounded-full transition-all duration-300 ease-in-out shadow-md"
           style={bubbleStyle}
         />
         {options.map((option, index) => (
