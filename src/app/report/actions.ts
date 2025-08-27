@@ -27,16 +27,11 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
 
   let newReportId: string;
   try {
-    const recipient = crimeType === 'government' ? 'CIAA' : 'Police';
-    const reason = crimeType === 'government'
-      ? `The report was categorized by the user as a Government Crime (${crimeSubType}) and routed to the CIAA.`
-      : `The report was categorized by the user as a Civilian Crime (${crimeSubType}) and routed to the Police.`;
-
     const newReport = addReport({
         reportText,
         photoDataUri,
-        recipient: recipient,
-        reason: reason,
+        crimeType: crimeType === 'government' ? 'Government' : 'Civilian',
+        crimeSubType,
         district,
         localAddress,
     });

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -16,7 +17,9 @@ export function ReportsList({ initialReports }: { initialReports: Report[] }) {
     const lowercasedTerm = searchTerm.toLowerCase();
     return initialReports.filter(report =>
       report.reportText.toLowerCase().includes(lowercasedTerm) ||
-      report.reason.toLowerCase().includes(lowercasedTerm)
+      report.crimeSubType.toLowerCase().includes(lowercasedTerm) ||
+      report.district.toLowerCase().includes(lowercasedTerm) ||
+      report.localAddress.toLowerCase().includes(lowercasedTerm)
     );
   }, [searchTerm, initialReports]);
 

@@ -4,13 +4,27 @@
 import { Report } from '@/lib/types';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import Image from 'next/image';
-import { Clock, ShieldAlert, MapPin } from 'lucide-react';
+import { Clock, Shield, Users, MapPin, Tag } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import { useTranslation } from '@/hooks/use-translation';
+import { Badge } from './ui/badge';
 
 export function ReportCard({ report }: { report: Report }) {
   const { t } = useTranslation();
   
+  const getCrimeTypeIcon = () => {
+    switch (report.crimeType) {
+      case 'Government':
+        return <Shield className="h-4 w-4 text-primary" />;
+      case 'Civilian':
+        return <Users className="h-4 w-4 text-primary" />;
+      default:
+        return null;
+    }
+  };
+  
+  const recipient = report.crimeType === 'Government' ? 'CIAA' : report.crimeType === 'Civilian' ? 'Police' : 'ICC';
+
   return (
     <Card className="overflow-hidden flex flex-col h-full hover:-translate-y-1">
       <CardHeader className="p-0 border-b">
@@ -23,24 +37,33 @@ export function ReportCard({ report }: { report: Report }) {
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               data-ai-hint="crime scene"
             />
+             <div className="absolute top-2 right-2 flex items-center gap-2">
+                <Badge variant="secondary" className="gap-1.5 pl-1.5">
+                    {getCrimeTypeIcon()}
+                    {report.crimeType}
+                </Badge>
+             </div>
         </div>
       </CardHeader>
-      <CardContent className="p-4 space-y-2 flex-grow">
-        <div className="flex items-center text-xs text-muted-foreground gap-2 mb-2">
-            <MapPin className="h-3 w-3" />
-            <span>{report.localAddress}, {report.district}</span>
+      <CardContent className="p-4 space-y-3 flex-grow">
+        <div className="flex items-center text-xs text-muted-foreground gap-2">
+            <MapPin className="h-3 w-3 flex-shrink-0" />
+            <span className="truncate">{report.localAddress}, {report.district}</span>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-4">{report.reportText}</p>
-      </CardContent>
-       <CardFooter className="p-4 pt-0 flex-col items-start gap-4">
          <div className="flex items-center text-xs text-muted-foreground gap-2">
-            <Clock className="h-3 w-3" />
-            <span>{formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })}</span>
+            <Tag className="h-3 w-3 flex-shrink-0" />
+            <span>{report.crimeSubType}</span>
         </div>
-         <div className="w-full text-xs bg-muted/50 dark:bg-muted/20 p-3 rounded-md border shadow-inner">
-           <p className="font-semibold text-muted-foreground flex items-center gap-1.5"><ShieldAlert className="h-4 w-4"/>{t('reportCard.aiAnalysis')}:</p>
-           <p className="text-muted-foreground/80 pl-1">{report.reason}</p>
-         </div>
+        <p className="text-sm text-muted-foreground line-clamp-4 pt-2">{report.reportText}</p>
+      </CardContent>
+       <CardFooter className="p-4 pt-0 flex flex-col items-start gap-2">
+        <div className="w-full border-t pt-3 flex items-center justify-between text-xs text-muted-foreground">
+            <div className="flex items-center gap-2">
+                <Clock className="h-3 w-3" />
+                <span>{formatDistanceToNow(new Date(report.createdAt), { addSuffix: true })}</span>
+            </div>
+            <span className="font-medium">Routed to: {recipient}</span>
+        </div>
        </CardFooter>
     </Card>
   );

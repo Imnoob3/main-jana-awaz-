@@ -11,8 +11,8 @@ import { Separator } from '@/components/ui/separator';
 
 export default function ViewReportsPage() {
   const { t } = useTranslation();
-  const ciaaReports = getReportsByAgency('CIAA');
-  const policeReports = getReportsByAgency('Police');
+  const ciaaReports = getReportsByAgency('Government');
+  const policeReports = getReportsByAgency('Civilian');
   const iccReports = getReportsByAgency('ICC');
 
   return (

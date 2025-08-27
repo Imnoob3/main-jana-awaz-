@@ -26,8 +26,8 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
     const newReport = addReport({
         reportText,
         photoDataUri,
-        recipient: 'ICC',
-        reason: 'This report has been directly submitted to the ICC due to its potential severity and international implications.',
+        crimeType: 'ICC',
+        crimeSubType: 'International Crime',
         // District and local address are not required for ICC reports in this schema
         district: 'International', 
         localAddress: 'N/A',

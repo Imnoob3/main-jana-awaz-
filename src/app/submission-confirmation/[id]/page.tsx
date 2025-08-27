@@ -18,6 +18,9 @@ export default function SubmissionConfirmationPage() {
   if (!report) {
     notFound();
   }
+  
+  const recipient = report.crimeType === 'Government' ? 'CIAA' : report.crimeType === 'Civilian' ? 'Police' : 'ICC';
+
 
   return (
     <main className="container mx-auto px-4 py-12 flex justify-center items-center">
@@ -28,7 +31,7 @@ export default function SubmissionConfirmationPage() {
           </div>
           <CardTitle className="text-2xl">{t('confirmation.title')}</CardTitle>
           <CardDescription>
-            {t('confirmation.description', { recipient: report.recipient })}
+            {t('confirmation.description', { recipient: recipient })}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -40,7 +43,7 @@ export default function SubmissionConfirmationPage() {
         </CardContent>
         <CardFooter className="flex-col sm:flex-row justify-center gap-4 pt-6">
             <Button asChild>
-              <Link href={`/reports`}>{t('confirmation.viewReports', { recipient: report.recipient })}</Link>
+              <Link href={`/reports`}>{t('confirmation.viewReports', { recipient: recipient })}</Link>
             </Button>
             <Button asChild variant="outline">
               <Link href="/">{t('confirmation.backToHome')}</Link>

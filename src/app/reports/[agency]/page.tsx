@@ -1,3 +1,4 @@
+
 import { getReportsByAgency } from '@/lib/reports';
 import { notFound } from 'next/navigation';
 import { ReportsList } from '@/components/reports-list';
@@ -12,13 +13,13 @@ const agencyConfig = {
         title: 'CIAA Reports',
         description: 'Reports concerning government officials and corruption, routed to the Commission for the Investigation of Abuse of Authority (CIAA).',
         icon: <Shield className="h-8 w-8 text-primary" />,
-        dbKey: 'CIAA' as const
+        dbKey: 'Government' as const
     },
     police: {
         title: 'Police Reports',
         description: 'Reports concerning civilian-related crimes, routed to the Nepal Police.',
         icon: <Users className="h-8 w-8 text-primary" />,
-        dbKey: 'Police' as const
+        dbKey: 'Civilian' as const
     }
 };
 
