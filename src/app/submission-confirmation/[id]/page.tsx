@@ -1,3 +1,4 @@
+
 'use client';
 
 import { getReportById } from '@/lib/reports';
@@ -9,7 +10,8 @@ import { CheckCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 
 export default function SubmissionConfirmationPage({ params }: { params: { id: string } }) {
-  const report = getReportById(params.id);
+  const { id } = params;
+  const report = getReportById(id);
   const { t } = useTranslation();
 
   if (!report) {
