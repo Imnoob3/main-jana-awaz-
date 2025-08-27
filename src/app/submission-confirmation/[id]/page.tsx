@@ -2,15 +2,16 @@
 'use client';
 
 import { getReportById } from '@/lib/reports';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 
-export default function SubmissionConfirmationPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default function SubmissionConfirmationPage() {
+  const params = useParams();
+  const id = typeof params.id === 'string' ? params.id : '';
   const report = getReportById(id);
   const { t } = useTranslation();
 
