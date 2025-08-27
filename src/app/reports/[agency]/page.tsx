@@ -5,6 +5,8 @@ import { Shield, Users } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
+export const dynamic = 'force-dynamic';
+
 const agencyConfig = {
     ciaa: {
         title: 'CIAA Reports',
