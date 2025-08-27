@@ -9,8 +9,6 @@ import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 
-export const dynamic = 'force-dynamic';
-
 export default function SubmissionConfirmationPage() {
   const params = useParams();
   const id = typeof params.id === 'string' ? params.id : '';
