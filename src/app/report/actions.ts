@@ -1,7 +1,6 @@
 
 'use server';
 
-import { routeCrimeReport } from "@/ai/flows/route-crime-report";
 import { addReport } from "@/lib/reports";
 import { redirect } from 'next/navigation';
 import { reportSchema, FormState } from "./schema";
@@ -26,6 +25,7 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
 
   const { reportText, photoDataUri, crimeType, crimeSubType, district, localAddress } = validatedFields.data;
 
+  let newReportId: string;
   try {
     const recipient = crimeType === 'government' ? 'CIAA' : 'Police';
     const reason = crimeType === 'government'
@@ -40,9 +40,8 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
         district,
         localAddress,
     });
+    newReportId = newReport.id;
     
-    redirect(`/submission-confirmation/${newReport.id}`);
-
   } catch (error) {
     console.error(error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
@@ -50,4 +49,6 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
+  
+  redirect(`/submission-confirmation/${newReportId}`);
 }

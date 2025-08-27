@@ -21,6 +21,7 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
 
   const { reportText, photoDataUri } = validatedFields.data;
 
+  let newReportId: string;
   try {
     const newReport = addReport({
         reportText,
@@ -31,9 +32,8 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
         district: 'International', 
         localAddress: 'N/A',
     });
+    newReportId = newReport.id;
     
-    redirect(`/submission-confirmation/${newReport.id}`);
-
   } catch (error) {
     console.error(error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
@@ -41,4 +41,6 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
+  
+  redirect(`/submission-confirmation/${newReportId}`);
 }
