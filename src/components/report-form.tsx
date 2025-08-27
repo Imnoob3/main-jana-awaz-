@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { AlertCircle, CheckCircle, Loader2, Upload, X, Shield, Users } from 'lucide-react';
+import { AlertCircle, Loader2, Upload, X, Shield, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
@@ -19,15 +19,9 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { districtsOfNepal } from '@/lib/districts';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from './ui/dialog';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { CrimeTypeSelector } from './crime-type-selector';
 
-const initialState: FormState = {
-  message: '',
-  isSuccess: false,
-};
+const initialState: FormState = {};
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -52,17 +46,11 @@ export function ReportForm() {
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-  const formRef = useRef<HTMLFormElement>(null);
   const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
-  const router = useRouter();
 
 
   useEffect(() => {
-    if (!isPending && state.isSuccess) {
-      // Don't show toast on success, the dialog is shown instead
-      return;
-    }
-    if (!isPending && state.message && state.errors) {
+    if (state?.message && state?.errors) {
       const errorMsg = state.errors?.reportText?.[0] 
         || state.errors?.photoDataUri?.[0] 
         || state.errors?.crimeType?.[0]
@@ -75,8 +63,14 @@ export function ReportForm() {
         title: t('toast.submissionError.title'),
         description: errorMsg,
       });
+    } else if (state?.message) {
+       toast({
+        variant: "destructive",
+        title: t('toast.error'),
+        description: state.message,
+      });
     }
-  }, [state, toast, t, isPending]);
+  }, [state, toast, t]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -103,19 +97,10 @@ export function ReportForm() {
       photoInputRef.current.value = "";
     }
   };
-  
-  const handleDialogClose = () => {
-    formRef.current?.reset();
-    setPhotoPreview(null);
-    setCrimeType(null);
-    router.push('/');
-  }
-
-  const isSuccess = !isPending && state.isSuccess;
 
   return (
     <>
-      <form action={formAction} ref={formRef}>
+      <form action={formAction}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <CardTitle>{t('reportForm.title')}</CardTitle>
@@ -131,7 +116,7 @@ export function ReportForm() {
                   className="grid grid-cols-1 md:grid-cols-2 gap-4" 
                   onValueChange={(value) => setCrimeType(value as 'government' | 'civilian')}
                   required
-                  aria-invalid={!!state.errors?.crimeType}
+                  aria-invalid={!!state?.errors?.crimeType}
                   aria-describedby="crimeType-error"
                   value={crimeType || ''}
                   disabled={isPending}
@@ -167,7 +152,7 @@ export function ReportForm() {
                     </Label>
                   </div>
                 </RadioGroup>
-                {state.errors?.crimeType && <p id="crimeType-error" className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
+                {state?.errors?.crimeType && <p id="crimeType-error" className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
               </div>
 
               {crimeType && (
@@ -176,7 +161,7 @@ export function ReportForm() {
                       key={crimeType} // Re-mount when crimeType changes
                       crimeType={crimeType}
                       isPending={isPending}
-                      error={state.errors?.crimeSubType?.[0]}
+                      error={state?.errors?.crimeSubType?.[0]}
                     />
                 </div>
               )}
@@ -186,7 +171,7 @@ export function ReportForm() {
                 <div className="space-y-2">
                   <Label htmlFor="district">{t('reportForm.district')}</Label>
                   <Select name="district" required disabled={isPending}>
-                      <SelectTrigger id="district" aria-invalid={!!state.errors?.district} aria-describedby="district-error" className="shadow-lg">
+                      <SelectTrigger id="district" aria-invalid={!!state?.errors?.district} aria-describedby="district-error" className="shadow-lg">
                           <SelectValue placeholder={t('reportForm.selectDistrict')} />
                       </SelectTrigger>
                       <SelectContent>
@@ -197,7 +182,7 @@ export function ReportForm() {
                           ))}
                       </SelectContent>
                   </Select>
-                  {state.errors?.district && <p id="district-error" className="text-sm font-medium text-destructive">{state.errors.district[0]}</p>}
+                  {state?.errors?.district && <p id="district-error" className="text-sm font-medium text-destructive">{state.errors.district[0]}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="localAddress">{t('reportForm.localAddress')}</Label>
@@ -206,12 +191,12 @@ export function ReportForm() {
                     name="localAddress" 
                     placeholder={t('reportForm.localAddressPlaceholder')} 
                     required
-                    aria-invalid={!!state.errors?.localAddress}
+                    aria-invalid={!!state?.errors?.localAddress}
                     aria-describedby="localAddress-error"
                     disabled={isPending}
                     className="shadow-lg"
                   />
-                  {state.errors?.localAddress && <p id="localAddress-error" className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
+                  {state?.errors?.localAddress && <p id="localAddress-error" className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
                 </div>
               </div>
 
@@ -223,12 +208,12 @@ export function ReportForm() {
                 placeholder={t('reportForm.reportDetailsPlaceholder')}
                 rows={8}
                 required
-                aria-invalid={!!state.errors?.reportText}
+                aria-invalid={!!state?.errors?.reportText}
                 aria-describedby="reportText-error"
                 disabled={isPending}
                 className="shadow-lg"
               />
-              {state.errors?.reportText && <p id="reportText-error" className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
+              {state?.errors?.reportText && <p id="reportText-error" className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -273,16 +258,16 @@ export function ReportForm() {
                   accept="image/png, image/jpeg"
                   onChange={handlePhotoChange}
                   required
-                  aria-invalid={!!state.errors?.photoDataUri}
+                  aria-invalid={!!state?.errors?.photoDataUri}
                   aria-describedby="photo-error"
                   disabled={isPending}
               />
-              {state.errors?.photoDataUri && <p id="photo-error" className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
+              {state?.errors?.photoDataUri && <p id="photo-error" className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
             </div>
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-            {!isPending && state.message && !state.isSuccess && (
+            {state?.message && !state?.errors && (
               <Alert variant="destructive">
                 <AlertCircle className="h-4 w-4" />
                 <AlertTitle>{t('toast.error')}</AlertTitle>
@@ -293,35 +278,6 @@ export function ReportForm() {
           </CardFooter>
         </Card>
       </form>
-      
-      <Dialog open={isSuccess} onOpenChange={handleDialogClose}>
-        <DialogContent className="sm:max-w-md shadow-2xl">
-            <DialogHeader className="items-center text-center">
-                 <div className="bg-green-100 dark:bg-green-900/50 p-3 rounded-full w-fit mb-4">
-                    <CheckCircle className="h-10 w-10 text-green-600 dark:text-green-400" />
-                </div>
-                <DialogTitle className="text-2xl">{t('confirmation.title')}</DialogTitle>
-                <DialogDescription>
-                    {t('confirmation.description', { recipient: state.recipient || 'the authorities' })}
-                </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4 py-4">
-                <p className="text-center text-muted-foreground">{t('confirmation.saveId')}</p>
-                <div className="p-4 bg-muted/50 dark:bg-muted/20 rounded-md border text-center">
-                    <p className="text-sm font-semibold text-muted-foreground">{t('confirmation.trackingId')}</p>
-                    <p className="text-lg font-mono tracking-widest break-all text-primary">{state.reportId}</p>
-                </div>
-            </div>
-            <DialogFooter className="sm:justify-center flex-col sm:flex-row gap-2">
-                <Button asChild type="button">
-                    <Link href={`/reports`}>{t('confirmation.viewReports', { recipient: state.recipient || 'All' })}</Link>
-                </Button>
-                <Button asChild type="button" variant="outline" onClick={handleDialogClose}>
-                    <Link href="/">{t('confirmation.backToHome')}</Link>
-                </Button>
-            </DialogFooter>
-        </DialogContent>
-    </Dialog>
     </>
   );
 }

@@ -21,7 +21,6 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
     return {
       message: 'Failed to submit report. Please check the errors.',
       errors: validatedFields.error.flatten().fieldErrors,
-      isSuccess: false,
     };
   }
 
@@ -42,21 +41,13 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
         localAddress,
     });
     
-    // For testing, we return success data instead of redirecting.
-    // redirect(`/submission-confirmation/${newReport.id}`);
-    return {
-      message: `Report created with ID ${newReport.id}.`,
-      isSuccess: true,
-      reportId: newReport.id,
-      recipient: newReport.recipient,
-    }
+    redirect(`/submission-confirmation/${newReport.id}`);
 
   } catch (error) {
     console.error(error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
     return {
       message: `An unexpected error occurred: ${errorMessage}`,
-      isSuccess: false,
     };
   }
 }

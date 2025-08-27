@@ -11,7 +11,7 @@ export const reportSchema = z.object({
 });
 
 export type FormState = {
-    message: string;
+    message?: string;
     errors?: {
         reportText?: string[];
         photoDataUri?: string[];
@@ -20,7 +20,4 @@ export type FormState = {
         district?: string[];
         localAddress?: string[];
     };
-    isSuccess: boolean;
-    reportId?: string;
-    recipient?: 'CIAA' | 'Police' | 'ICC';
 }

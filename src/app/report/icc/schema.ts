@@ -10,13 +10,10 @@ export const iccReportSchema = z.object({
 });
 
 export type IccFormState = {
-    message: string;
+    message?: string;
     errors?: {
         reportText?: string[];
         photoDataUri?: string[];
         agreeWarning?: string[];
     };
-    isSuccess: boolean;
-    reportId?: string;
-    recipient?: 'CIAA' | 'Police' | 'ICC';
 }
