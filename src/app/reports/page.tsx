@@ -11,8 +11,8 @@ import { Separator } from '@/components/ui/separator';
 
 export default function ViewReportsPage() {
   const { t } = useTranslation();
-  // Fetching data on the client side can lead to inconsistencies.
-  // This data is already fetched on the server components that this page uses.
+  // Fetching data on the client side for initial render can be inconsistent in dev.
+  // We re-fetch dynamically within the tabs content for consistency.
   const ciaaReports = getReportsByAgency('Government');
   const policeReports = getReportsByAgency('Civilian');
   const iccReports = getReportsByAgency('ICC');
