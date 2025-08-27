@@ -78,7 +78,7 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
               selectedValue === option ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
             )}
           >
-            {t(`crimeSubTypes.${option.toLowerCase().replace(' ', '')}`)}
+            {t(`crimeSubTypes.${option.toLowerCase().replace(/ /g, '')}`)}
           </button>
         ))}
       </div>

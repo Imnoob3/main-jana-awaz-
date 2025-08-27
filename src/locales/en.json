@@ -41,6 +41,7 @@
     "title": "File an Anonymous Report",
     "description": "Your identity is protected. Please provide as much detail as possible. A photo is required.",
     "crimeType": "Type of Crime",
+    "specificCrimeType": "Specific Type of Crime",
     "governmentCrime": {
       "title": "Government Crime",
       "description": "e.g., corruption, abuse of authority"
@@ -63,6 +64,17 @@
     "fileTypes": "PNG, JPG up to 4MB",
     "submitting": "Submitting...",
     "submitAnonymously": "Submit Report Anonymously"
+  },
+  "crimeSubTypes": {
+    "bribery": "Bribery",
+    "embezzlement": "Embezzlement",
+    "nepotism": "Nepotism",
+    "abuseofauthority": "Abuse of Authority",
+    "theft": "Theft",
+    "assault": "Assault",
+    "vandalism": "Vandalism",
+    "fraud": "Fraud",
+    "other": "Other"
   },
   "iccReportForm": {
     "title": "Submit a Report to the ICC",

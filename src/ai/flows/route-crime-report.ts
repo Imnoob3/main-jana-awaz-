@@ -3,7 +3,7 @@
 /**
  * @fileOverview Automatically routes crime reports to the appropriate authority based on the content of the report.
  *
- * - routeCrimeReport - A function that analyzes the crime report and determines the appropriate recipient.
+ * - routeCrimeReport - a function that analyzes the crime report and determines the appropriate recipient.
  * - RouteCrimeReportInput - The input type for the routeCrimeReport function.
  * - RouteCrimeReportOutput - The return type for the routeCrimeReport function.
  */

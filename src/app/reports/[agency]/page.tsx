@@ -27,7 +27,7 @@ export default function ReportsByAgencyPage({ params }: { params: { agency: 'cia
     notFound();
   }
   
-  const config = agencyConfig[agencyKey];
+  const config = agencyConfig[agencyKey as keyof typeof agencyConfig];
   const reports = getReportsByAgency(config.dbKey);
 
   return (

@@ -41,6 +41,7 @@
       "title": "गुमनाम उजुरी दर्ता गर्नुहोस्",
       "description": "तपाईंको पहिचान सुरक्षित छ। कृपया सकेसम्म धेरै विवरण प्रदान गर्नुहोस्। फोटो अनिवार्य छ।",
       "crimeType": "अपराधको प्रकार",
+      "specificCrimeType": "अपराधको विशिष्ट प्रकार",
       "governmentCrime": {
         "title": "सरकारी अपराध",
         "description": "उदाहरण: भ्रष्टाचार, अख्तियारको दुरुपयोग"
@@ -63,6 +64,17 @@
       "fileTypes": "PNG, JPG ४MB सम्म",
       "submitting": "दर्ता हुँदैछ...",
       "submitAnonymously": "गुमनाम रूपमा उजुरी दर्ता गर्नुहोस्"
+    },
+    "crimeSubTypes": {
+      "bribery": "घुसखोरी",
+      "embezzlement": "हिनामिना",
+      "nepotism": "नातावाद",
+      "abuseofauthority": "अख्तियारको दुरुपयोग",
+      "theft": "चोरी",
+      "assault": "हमला",
+      "vandalism": "तोडफोड",
+      "fraud": "छल",
+      "other": "अन्य"
     },
     "iccReportForm": {
         "title": "ICC मा उजुरी दर्ता गर्नुहोस्",
@@ -109,4 +121,4 @@
       "error": "त्रुटि"
     }
   }
-  
+}
