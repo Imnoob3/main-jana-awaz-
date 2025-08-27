@@ -118,7 +118,6 @@ export function ReportForm() {
                   required
                   aria-invalid={!!state?.errors?.crimeType}
                   aria-describedby="crimeType-error"
-                  value={crimeType || ''}
                   disabled={isPending}
                 >
                   <div>
