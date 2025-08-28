@@ -9,3 +9,11 @@ export type Report = {
   district: string;
   localAddress: string;
 };
+
+export type Grievance = {
+  id: string;
+  title: string;
+  description: string;
+  photoDataUri: string;
+  createdAt: string;
+};

@@ -1,5 +1,5 @@
 
-import type { Report } from './types';
+import type { Report, Grievance } from './types';
 import { randomUUID } from 'crypto';
 
 // In-memory store for reports. In a real application, you would use a database.
@@ -36,6 +36,8 @@ let reports: Report[] = [
     }
 ];
 
+let grievances: Grievance[] = [];
+
 export function addReport(report: Omit<Report, 'id' | 'createdAt'>): Report {
   const newReport: Report = {
     ...report,
@@ -52,4 +54,18 @@ export function getReportsByAgency(agency: 'Government' | 'Civilian' | 'ICC'): R
 
 export function getReportById(id: string): Report | undefined {
   return reports.find(report => report.id === id);
+}
+
+export function addGrievance(grievance: Omit<Grievance, 'id' | 'createdAt'>): Grievance {
+    const newGrievance: Grievance = {
+        ...grievance,
+        id: randomUUID(),
+        createdAt: new Date().toISOString(),
+    };
+    grievances.unshift(newGrievance);
+    return newGrievance;
+}
+
+export function getGrievanceById(id: string): Grievance | undefined {
+    return grievances.find(g => g.id === id);
 }
