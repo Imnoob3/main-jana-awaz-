@@ -34,7 +34,7 @@ export default function Home() {
            <Button asChild size="lg">
             <Link href="/grievance">{t('home.voiceGrievance')}</Link>
           </Button>
-          <Button asChild size="lg" variant="secondary">
+          <Button asChild size="lg">
             <Link href="/reports">{t('home.viewReports')}</Link>
           </Button>
         </div>
