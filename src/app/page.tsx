@@ -13,27 +13,36 @@ export default function Home() {
 
   const handleMouseOver = (e: React.MouseEvent<HTMLSpanElement>) => {
     const target = e.target as HTMLSpanElement;
-    if (target.tagName === 'SPAN') {
-      target.classList.add('word-hover-effect');
+    const h1 = target.closest('h1');
+    if (h1 && target.dataset.index) {
+      h1.classList.add('is-hovered');
+      h1.style.setProperty('--hovered-index', target.dataset.index);
     }
   };
 
   const handleMouseLeave = (e: React.MouseEvent<HTMLHeadingElement>) => {
-    const spans = e.currentTarget.querySelectorAll('span.word-hover-effect');
-    spans.forEach(span => span.classList.remove('word-hover-effect'));
+    e.currentTarget.classList.remove('is-hovered');
   };
+
+  const titleWords = t('home.title').split(' ');
 
   return (
     <main className="container mx-auto px-4">
       <section className="text-center py-12 md:py-20">
         <h1 
-          className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4"
+          className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4 title-animate"
           onMouseLeave={handleMouseLeave}
         >
-          {t('home.title').split(' ').map((word, wordIndex) => (
-            <span key={wordIndex} className="inline-block" onMouseOver={handleMouseOver}>
-                {word}
-              {wordIndex < t('home.title').split(' ').length - 1 && <span>&nbsp;</span>}
+          {titleWords.map((word, wordIndex) => (
+            <span 
+              key={wordIndex} 
+              className="inline-block word" 
+              onMouseOver={handleMouseOver}
+              data-index={wordIndex}
+              style={{ '--index': wordIndex } as React.CSSProperties}
+            >
+              {word}
+              {wordIndex < titleWords.length - 1 && <span>&nbsp;</span>}
             </span>
           ))}
         </h1>

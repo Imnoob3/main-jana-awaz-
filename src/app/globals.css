@@ -85,6 +85,18 @@
   .word-hover-effect {
     @apply inline-block scale-110 text-primary drop-shadow-lg transition-all duration-200 ease-in-out;
   }
+
+  .title-animate .word {
+    transition: transform 0.3s cubic-bezier(0.2, 1, 0.3, 1), color 0.3s, text-shadow 0.3s;
+    transition-delay: var(--delay);
+  }
+
+  .title-animate.is-hovered .word {
+    transform: scale(1.1);
+    color: hsl(var(--primary));
+    text-shadow: 0 4px 15px hsla(var(--primary) / 0.4);
+    --delay: calc( abs( var(--index) - var(--hovered-index) ) * 50ms );
+  }
 }
 
 @layer components {
