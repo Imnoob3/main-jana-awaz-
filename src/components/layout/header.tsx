@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -5,7 +6,7 @@ import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSelector } from '@/components/language-selector';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 
@@ -23,6 +24,9 @@ export default function Header() {
             <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
               {t('header.fileReport')}
             </Link>
+             <Link href="/grievance" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+              {t('home.voiceGrievance')}
+            </Link>
             <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
               {t('header.viewReports')}
             </Link>
@@ -38,13 +42,20 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left">
-              <Link href="/" className="mr-6 flex items-center space-x-2 mb-8">
-                <Logo className="h-6 w-6 text-primary" />
-                <span className="font-bold">Jana Awaz</span>
-              </Link>
-              <nav className="flex flex-col space-y-4 text-lg">
+                <SheetHeader>
+                    <SheetTitle>
+                        <Link href="/" className="flex items-center space-x-2">
+                            <Logo className="h-6 w-6 text-primary" />
+                            <span className="font-bold">Jana Awaz</span>
+                        </Link>
+                    </SheetTitle>
+                </SheetHeader>
+              <nav className="flex flex-col space-y-4 text-lg mt-8">
                  <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
                   {t('header.fileReport')}
+                </Link>
+                 <Link href="/grievance" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+                    {t('home.voiceGrievance')}
                 </Link>
                 <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
                   {t('header.viewReports')}
