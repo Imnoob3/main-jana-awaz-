@@ -11,7 +11,7 @@
     --card-foreground: 222 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 84% 4.9%;
-    --primary: 231 55% 52%;
+    --primary: 231 65% 55%;
     --primary-foreground: 210 40% 98%;
     --secondary: 240 5% 96%;
     --secondary-foreground: 240 6% 10%;
@@ -82,53 +82,53 @@
   body {
     @apply bg-background text-foreground;
   }
-  .title-hover-effect > span > span {
+  .title-hover-effect > span {
     @apply inline-block transition-all duration-300 ease-in-out;
   }
-  .title-hover-effect:hover > span > span {
+  .title-hover-effect:hover > span {
     @apply scale-110 text-primary drop-shadow-lg;
   }
   
-  .title-hover-effect:hover > span > span:nth-child(1) { transition-delay: 25ms; }
-  .title-hover-effect:hover > span > span:nth-child(2) { transition-delay: 50ms; }
-  .title-hover-effect:hover > span > span:nth-child(3) { transition-delay: 75ms; }
-  .title-hover-effect:hover > span > span:nth-child(4) { transition-delay: 100ms; }
-  .title-hover-effect:hover > span > span:nth-child(5) { transition-delay: 125ms; }
-  .title-hover-effect:hover > span > span:nth-child(6) { transition-delay: 150ms; }
-  .title-hover-effect:hover > span > span:nth-child(7) { transition-delay: 175ms; }
-  .title-hover-effect:hover > span > span:nth-child(8) { transition-delay: 200ms; }
-  .title-hover-effect:hover > span > span:nth-child(9) { transition-delay: 225ms; }
-  .title-hover-effect:hover > span > span:nth-child(10) { transition-delay: 250ms; }
-  .title-hover-effect:hover > span > span:nth-child(11) { transition-delay: 275ms; }
-  .title-hover-effect:hover > span > span:nth-child(12) { transition-delay: 300ms; }
-  .title-hover-effect:hover > span > span:nth-child(13) { transition-delay: 325ms; }
-  .title-hover-effect:hover > span > span:nth-child(14) { transition-delay: 350ms; }
-  .title-hover-effect:hover > span > span:nth-child(15) { transition-delay: 375ms; }
-  .title-hover-effect:hover > span > span:nth-child(16) { transition-delay: 400ms; }
-  .title-hover-effect:hover > span > span:nth-child(17) { transition-delay: 425ms; }
-  .title-hover-effect:hover > span > span:nth-child(18) { transition-delay: 450ms; }
-  .title-hover-effect:hover > span > span:nth-child(19) { transition-delay: 475ms; }
-  .title-hover-effect:hover > span > span:nth-child(20) { transition-delay: 500ms; }
-  .title-hover-effect:hover > span > span:nth-child(21) { transition-delay: 525ms; }
-  .title-hover-effect:hover > span > span:nth-child(22) { transition-delay: 550ms; }
-  .title-hover-effect:hover > span > span:nth-child(23) { transition-delay: 575ms; }
-  .title-hover-effect:hover > span > span:nth-child(24) { transition-delay: 600ms; }
-  .title-hover-effect:hover > span > span:nth-child(25) { transition-delay: 625ms; }
-  .title-hover-effect:hover > span > span:nth-child(26) { transition-delay: 650ms; }
-  .title-hover-effect:hover > span > span:nth-child(27) { transition-delay: 675ms; }
-  .title-hover-effect:hover > span > span:nth-child(28) { transition-delay: 700ms; }
-  .title-hover-effect:hover > span > span:nth-child(29) { transition-delay: 725ms; }
-  .title-hover-effect:hover > span > span:nth-child(30) { transition-delay: 750ms; }
-  .title-hover-effect:hover > span > span:nth-child(31) { transition-delay: 775ms; }
-  .title-hover-effect:hover > span > span:nth-child(32) { transition-delay: 800ms; }
-  .title-hover-effect:hover > span > span:nth-child(33) { transition-delay: 825ms; }
-  .title-hover-effect:hover > span > span:nth-child(34) { transition-delay: 850ms; }
-  .title-hover-effect:hover > span > span:nth-child(35) { transition-delay: 875ms; }
-  .title-hover-effect:hover > span > span:nth-child(36) { transition-delay: 900ms; }
-  .title-hover-effect:hover > span > span:nth-child(37) { transition-delay: 925ms; }
-  .title-hover-effect:hover > span > span:nth-child(38) { transition-delay: 950ms; }
-  .title-hover-effect:hover > span > span:nth-child(39) { transition-delay: 975ms; }
-  .title-hover-effect:hover > span > span:nth-child(40) { transition-delay: 1000ms; }
+  .title-hover-effect:hover > span:nth-child(1) { transition-delay: 25ms; }
+  .title-hover-effect:hover > span:nth-child(2) { transition-delay: 50ms; }
+  .title-hover-effect:hover > span:nth-child(3) { transition-delay: 75ms; }
+  .title-hover-effect:hover > span:nth-child(4) { transition-delay: 100ms; }
+  .title-hover-effect:hover > span:nth-child(5) { transition-delay: 125ms; }
+  .title-hover-effect:hover > span:nth-child(6) { transition-delay: 150ms; }
+  .title-hover-effect:hover > span:nth-child(7) { transition-delay: 175ms; }
+  .title-hover-effect:hover > span:nth-child(8) { transition-delay: 200ms; }
+  .title-hover-effect:hover > span:nth-child(9) { transition-delay: 225ms; }
+  .title-hover-effect:hover > span:nth-child(10) { transition-delay: 250ms; }
+  .title-hover-effect:hover > span:nth-child(11) { transition-delay: 275ms; }
+  .title-hover-effect:hover > span:nth-child(12) { transition-delay: 300ms; }
+  .title-hover-effect:hover > span:nth-child(13) { transition-delay: 325ms; }
+  .title-hover-effect:hover > span:nth-child(14) { transition-delay: 350ms; }
+  .title-hover-effect:hover > span:nth-child(15) { transition-delay: 375ms; }
+  .title-hover-effect:hover > span:nth-child(16) { transition-delay: 400ms; }
+  .title-hover-effect:hover > span:nth-child(17) { transition-delay: 425ms; }
+  .title-hover-effect:hover > span:nth-child(18) { transition-delay: 450ms; }
+  .title-hover-effect:hover > span:nth-child(19) { transition-delay: 475ms; }
+  .title-hover-effect:hover > span:nth-child(20) { transition-delay: 500ms; }
+  .title-hover-effect:hover > span:nth-child(21) { transition-delay: 525ms; }
+  .title-hover-effect:hover > span:nth-child(22) { transition-delay: 550ms; }
+  .title-hover-effect:hover > span:nth-child(23) { transition-delay: 575ms; }
+  .title-hover-effect:hover > span:nth-child(24) { transition-delay: 600ms; }
+  .title-hover-effect:hover > span:nth-child(25) { transition-delay: 625ms; }
+  .title-hover-effect:hover > span:nth-child(26) { transition-delay: 650ms; }
+  .title-hover-effect:hover > span:nth-child(27) { transition-delay: 675ms; }
+  .title-hover-effect:hover > span:nth-child(28) { transition-delay: 700ms; }
+  .title-hover-effect:hover > span:nth-child(29) { transition-delay: 725ms; }
+  .title-hover-effect:hover > span:nth-child(30) { transition-delay: 750ms; }
+  .title-hover-effect:hover > span:nth-child(31) { transition-delay: 775ms; }
+  .title-hover-effect:hover > span:nth-child(32) { transition-delay: 800ms; }
+  .title-hover-effect:hover > span:nth-child(33) { transition-delay: 825ms; }
+  .title-hover-effect:hover > span:nth-child(34) { transition-delay: 850ms; }
+  .title-hover-effect:hover > span:nth-child(35) { transition-delay: 875ms; }
+  .title-hover-effect:hover > span:nth-child(36) { transition-delay: 900ms; }
+  .title-hover-effect:hover > span:nth-child(37) { transition-delay: 925ms; }
+  .title-hover-effect:hover > span:nth-child(38) { transition-delay: 950ms; }
+  .title-hover-effect:hover > span:nth-child(39) { transition-delay: 975ms; }
+  .title-hover-effect:hover > span:nth-child(40) { transition-delay: 1000ms; }
 
 }
 
