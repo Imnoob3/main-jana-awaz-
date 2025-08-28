@@ -17,7 +17,7 @@ export default function Home() {
         <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4 title-hover-effect">
           {t('home.title').split(' ').map((word, wordIndex) => (
             <span key={wordIndex} className="inline-block">
-              {word.split('').map((char, charIndex) => (
+              {Array.from(word).map((char, charIndex) => (
                 <span key={charIndex}>{char}</span>
               ))}
               {wordIndex < t('home.title').split(' ').length - 1 && <span>&nbsp;</span>}
