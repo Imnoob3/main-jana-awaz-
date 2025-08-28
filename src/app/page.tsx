@@ -14,8 +14,12 @@ export default function Home() {
   return (
     <main className="container mx-auto px-4">
       <section className="text-center py-12 md:py-20">
-        <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4">
-          {t('home.title')}
+        <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4 title-hover-effect">
+          {t('home.title').split('').map((char, index) => (
+            <span key={index}>
+              {char === ' ' ? '\u00A0' : char}
+            </span>
+          ))}
         </h1>
         <p className="max-w-3xl mx-auto text-base md:text-lg text-muted-foreground mb-8 px-4">
           {t('home.subtitle')}
@@ -27,7 +31,7 @@ export default function Home() {
            <Button asChild size="lg">
             <Link href="/grievance">{t('home.voiceGrievance')}</Link>
           </Button>
-          <Button asChild size="lg">
+          <Button asChild size="lg" variant="secondary">
             <Link href="/reports">{t('home.viewReports')}</Link>
           </Button>
         </div>
