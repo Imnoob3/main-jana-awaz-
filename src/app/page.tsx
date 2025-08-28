@@ -11,13 +11,28 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 export default function Home() {
   const { t } = useTranslation();
 
+  const handleMouseOver = (e: React.MouseEvent<HTMLSpanElement>) => {
+    const target = e.target as HTMLSpanElement;
+    if (target.tagName === 'SPAN') {
+      target.classList.add('word-hover-effect');
+    }
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLHeadingElement>) => {
+    const spans = e.currentTarget.querySelectorAll('span.word-hover-effect');
+    spans.forEach(span => span.classList.remove('word-hover-effect'));
+  };
+
   return (
     <main className="container mx-auto px-4">
       <section className="text-center py-12 md:py-20">
-        <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4 title-hover-effect">
+        <h1 
+          className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4"
+          onMouseLeave={handleMouseLeave}
+        >
           {t('home.title').split(' ').map((word, wordIndex) => (
-            <span key={wordIndex} className="inline-block">
-              {word}
+            <span key={wordIndex} className="inline-block" onMouseOver={handleMouseOver}>
+                {word}
               {wordIndex < t('home.title').split(' ').length - 1 && <span>&nbsp;</span>}
             </span>
           ))}
