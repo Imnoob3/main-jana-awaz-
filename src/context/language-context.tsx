@@ -13,6 +13,7 @@ const translations = {
       "title": "Jana Awaz: Your Voice for Justice",
       "subtitle": "Anonymously report crimes and corruption in Nepal. Your identity is always protected. Together, we can build a more accountable and transparent society.",
       "fileReport": "File a National Report",
+      "voiceGrievance": "Voice a Grievance",
       "viewReports": "View Public Reports",
       "transparentNepal": {
         "title": "A Transparent & Accountable Nepal",
@@ -136,6 +137,7 @@ const translations = {
       "title": "जन आवाज: न्यायको लागि तपाईंको आवाज",
       "subtitle": "नेपालमा अपराध र भ्रष्टाचारको गुमनाम रूपमा रिपोर्ट गर्नुहोस्। तपाईंको पहिचान सधैं सुरक्षित रहन्छ। सँगै, हामी एक थप जवाफदेही र पारदर्शी समाज निर्माण गर्न सक्छौं।",
       "fileReport": "राष्ट्रिय उजुरी दर्ता गर्नुहोस्",
+      "voiceGrievance": "गुनासो व्यक्त गर्नुहोस्",
       "viewReports": "सार्वजनिक उजुरीहरू हेर्नुहोस्",
       "transparentNepal": {
         "title": "एक पारदर्शी र जवाफदेही नेपाल",

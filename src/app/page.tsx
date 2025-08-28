@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle } from 'lucide-react';
+import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle, MessageSquareWarning } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/use-translation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -20,9 +20,12 @@ export default function Home() {
         <p className="max-w-3xl mx-auto text-base md:text-lg text-muted-foreground mb-8 px-4">
           {t('home.subtitle')}
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4 px-4">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 flex-wrap">
           <Button asChild size="lg">
             <Link href="/report">{t('home.fileReport')}</Link>
+          </Button>
+           <Button asChild size="lg" variant="secondary">
+            <Link href="/grievance">{t('home.voiceGrievance')}</Link>
           </Button>
           <Button asChild size="lg">
             <Link href="/reports">{t('home.viewReports')}</Link>
