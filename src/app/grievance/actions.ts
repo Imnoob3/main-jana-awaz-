@@ -10,7 +10,7 @@ export async function submitGrievance(prevState: GrievanceFormState, formData: F
   const validatedFields = grievanceSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
-    photoDataUri: formData.get('photoDataUri'),
+    photoDataUri: formData.get('photoDataUri') || undefined,
   });
 
   if (!validatedFields.success) {

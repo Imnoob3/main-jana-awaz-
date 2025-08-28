@@ -30,7 +30,7 @@ function SubmitButton() {
           {t('reportForm.submitting')}
         </>
       ) : (
-        t('reportForm.submitAnonymously')
+        'Submit Grievance Anonymously'
       )}
     </Button>
   );
@@ -137,7 +137,7 @@ export function GrievanceForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="photo">Upload Supporting Photo</Label>
+              <Label htmlFor="photo">Upload Supporting Photo (Optional)</Label>
               <input type="hidden" name="photoDataUri" value={photoPreview || ''} />
               {photoPreview ? (
                 <div className="relative group">
@@ -177,7 +177,6 @@ export function GrievanceForm() {
                   ref={photoInputRef}
                   accept="image/png, image/jpeg"
                   onChange={handlePhotoChange}
-                  required
                   aria-invalid={!!state?.errors?.photoDataUri}
                   aria-describedby="photo-error"
                   disabled={isPending}

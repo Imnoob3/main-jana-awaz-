@@ -14,6 +14,6 @@ export type Grievance = {
   id: string;
   title: string;
   description: string;
-  photoDataUri: string;
+  photoDataUri?: string;
   createdAt: string;
 };
