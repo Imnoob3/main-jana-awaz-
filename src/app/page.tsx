@@ -15,9 +15,12 @@ export default function Home() {
     <main className="container mx-auto px-4">
       <section className="text-center py-12 md:py-20">
         <h1 className="text-4xl md:text-5xl font-bold font-headline tracking-tighter mb-4 title-hover-effect">
-          {t('home.title').split('').map((char, index) => (
-            <span key={index}>
-              {char === ' ' ? '\u00A0' : char}
+          {t('home.title').split(' ').map((word, wordIndex) => (
+            <span key={wordIndex} className="inline-block">
+              {word.split('').map((char, charIndex) => (
+                <span key={charIndex}>{char}</span>
+              ))}
+              {wordIndex < t('home.title').split(' ').length - 1 && <span>&nbsp;</span>}
             </span>
           ))}
         </h1>
