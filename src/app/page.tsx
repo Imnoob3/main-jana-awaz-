@@ -24,7 +24,7 @@ export default function Home() {
           <Button asChild size="lg">
             <Link href="/report">{t('home.fileReport')}</Link>
           </Button>
-           <Button asChild size="lg" variant="secondary">
+           <Button asChild size="lg">
             <Link href="/grievance">{t('home.voiceGrievance')}</Link>
           </Button>
           <Button asChild size="lg">
