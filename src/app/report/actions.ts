@@ -25,7 +25,6 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
 
   const { reportText, photoDataUri, crimeType, crimeSubType, district, localAddress } = validatedFields.data;
 
-  let newReportId: string;
   try {
     const newReport = addReport({
         reportText,
@@ -35,7 +34,7 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
         district,
         localAddress,
     });
-    newReportId = newReport.id;
+    redirect(`/submission-confirmation/${newReport.id}`);
     
   } catch (error) {
     console.error(error);
@@ -44,6 +43,5 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
-  
-  redirect(`/submission-confirmation/${newReportId}`);
 }
+

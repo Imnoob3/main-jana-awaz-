@@ -22,14 +22,13 @@ export async function submitGrievance(prevState: GrievanceFormState, formData: F
 
   const { title, description, photoDataUri } = validatedFields.data;
 
-  let newGrievanceId: string;
   try {
     const newGrievance = addGrievance({
         title,
         description,
         photoDataUri,
     });
-    newGrievanceId = newGrievance.id;
+    redirect(`/submission-confirmation/${newGrievance.id}?type=grievance`);
     
   } catch (error) {
     console.error(error);
@@ -38,6 +37,4 @@ export async function submitGrievance(prevState: GrievanceFormState, formData: F
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
-  
-  redirect(`/submission-confirmation/${newGrievanceId}?type=grievance`);
 }
