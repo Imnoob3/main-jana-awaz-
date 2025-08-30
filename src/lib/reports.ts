@@ -1,6 +1,5 @@
 
 import type { Report, Grievance } from './types';
-import { randomUUID } from 'crypto';
 
 // In-memory store for reports. In a real application, you would use a database.
 let reports: Report[] = [
@@ -45,10 +44,18 @@ let grievances: Grievance[] = [
     }
 ];
 
+// A simple UUID generator that works in all environments.
+const simpleUUID = () => {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 export function addReport(report: Omit<Report, 'id' | 'createdAt'>): Report {
   const newReport: Report = {
     ...report,
-    id: randomUUID(),
+    id: simpleUUID(),
     createdAt: new Date().toISOString(),
   };
   reports.unshift(newReport); // Add to the beginning of the array
@@ -66,7 +73,7 @@ export function getReportById(id: string): Report | undefined {
 export function addGrievance(grievance: Omit<Grievance, 'id' | 'createdAt'>): Grievance {
     const newGrievance: Grievance = {
         ...grievance,
-        id: randomUUID(),
+        id: simpleUUID(),
         createdAt: new Date().toISOString(),
     };
     grievances.unshift(newGrievance);
