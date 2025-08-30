@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle, MessageSquareWarning, ScanSearch } from 'lucide-react';
+import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle, MessageSquarePlus, ScanSearch, FilePenLine, Newspaper } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/use-translation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -51,13 +51,22 @@ export default function Home() {
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4 px-4 flex-wrap">
           <Button asChild size="lg">
-            <Link href="/report">{t('home.fileReport')}</Link>
+            <Link href="/report">
+                <FilePenLine />
+                {t('home.fileReport')}
+            </Link>
           </Button>
            <Button asChild size="lg">
-            <Link href="/grievance">{t('home.voiceGrievance')}</Link>
+            <Link href="/grievance">
+                <MessageSquarePlus />
+                {t('home.voiceGrievance')}
+            </Link>
           </Button>
           <Button asChild size="lg">
-            <Link href="/reports">{t('home.viewReports')}</Link>
+            <Link href="/reports">
+                <Newspaper />
+                {t('home.viewReports')}
+            </Link>
           </Button>
           <Button asChild size="lg">
             <Link href="/track">
