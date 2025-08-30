@@ -3,7 +3,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle, MessageSquareWarning } from 'lucide-react';
+import { FileText, Shield, Users, TrendingUp, Landmark, AlertTriangle, MessageSquareWarning, ScanSearch } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslation } from '@/hooks/use-translation';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -58,6 +58,12 @@ export default function Home() {
           </Button>
           <Button asChild size="lg">
             <Link href="/reports">{t('home.viewReports')}</Link>
+          </Button>
+          <Button asChild size="lg" variant="outline">
+            <Link href="/track">
+              <ScanSearch />
+              {t('home.trackSubmission')}
+            </Link>
           </Button>
         </div>
       </section>

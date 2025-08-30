@@ -6,7 +6,7 @@ import { notFound, useParams, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, ScanSearch } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 import { Report, Grievance } from '@/lib/types';
 
@@ -66,11 +66,12 @@ export default function SubmissionConfirmationPage() {
           </div>
         </CardContent>
         <CardFooter className="flex-col sm:flex-row justify-center gap-4 pt-6">
-            {type !== 'grievance' && (
-                <Button asChild>
-                <Link href={backLink}>{t('confirmation.viewReports', { recipient: recipient })}</Link>
-                </Button>
-            )}
+            <Button asChild>
+                <Link href={`/track/${submission.id}`}>
+                    <ScanSearch />
+                    {t('confirmation.trackButton')}
+                </Link>
+            </Button>
             <Button asChild variant="outline">
               <Link href="/">{t('confirmation.backToHome')}</Link>
             </Button>

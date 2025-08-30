@@ -6,7 +6,7 @@ import Logo from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { LanguageSelector } from '@/components/language-selector';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
 
@@ -30,6 +30,9 @@ export default function Header() {
             <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
               {t('header.viewReports')}
             </Link>
+             <Link href="/track" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+              {t('header.trackSubmission')}
+            </Link>
           </nav>
         </div>
 
@@ -51,15 +54,26 @@ export default function Header() {
                     </SheetTitle>
                 </SheetHeader>
               <nav className="flex flex-col space-y-4 text-lg mt-8">
-                 <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                  {t('header.fileReport')}
-                </Link>
-                 <Link href="/grievance" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                    {t('home.voiceGrievance')}
-                </Link>
-                <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
-                  {t('header.viewReports')}
-                </Link>
+                <SheetClose asChild>
+                    <Link href="/report" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+                    {t('header.fileReport')}
+                    </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                    <Link href="/grievance" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+                        {t('home.voiceGrievance')}
+                    </Link>
+                </SheetClose>
+                <SheetClose asChild>
+                    <Link href="/reports" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+                    {t('header.viewReports')}
+                    </Link>
+                </SheetClose>
+                 <SheetClose asChild>
+                    <Link href="/track" className="transition-colors hover:text-foreground/80 text-muted-foreground">
+                    {t('header.trackSubmission')}
+                    </Link>
+                </SheetClose>
               </nav>
             </SheetContent>
           </Sheet>

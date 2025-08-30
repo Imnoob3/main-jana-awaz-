@@ -2,12 +2,14 @@
 'use client';
 
 import { ReportsList } from '@/components/reports-list';
-import { getReportsByAgency } from '@/lib/reports';
-import { Landmark, Shield, Users } from 'lucide-react';
+import { getReportsByAgency, getGrievances } from '@/lib/reports';
+import { Landmark, MessageSquareWarning, Shield, Users } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from '@/hooks/use-translation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Grievance } from '@/lib/types';
+import { GrievanceCard } from '@/components/grievance-card';
 
 export default function ViewReportsPage() {
   const { t } = useTranslation();
@@ -16,6 +18,7 @@ export default function ViewReportsPage() {
   const ciaaReports = getReportsByAgency('Government');
   const policeReports = getReportsByAgency('Civilian');
   const iccReports = getReportsByAgency('ICC');
+  const grievances = getGrievances();
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -27,7 +30,7 @@ export default function ViewReportsPage() {
       </div>
 
       <Tabs defaultValue="ciaa" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-lg mx-auto">
+        <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto bg-muted/60">
           <TabsTrigger value="ciaa">
             <Shield className="mr-2" />
             {t('reportsPage.ciaaReports')}
@@ -35,6 +38,10 @@ export default function ViewReportsPage() {
           <TabsTrigger value="police">
             <Users className="mr-2" />
             {t('reportsPage.policeReports')}
+          </TabsTrigger>
+          <TabsTrigger value="grievances">
+            <MessageSquareWarning className="mr-2" />
+            {t('reportsPage.grievances')}
           </TabsTrigger>
         </TabsList>
         <TabsContent value="ciaa" className="mt-8">
@@ -63,6 +70,24 @@ export default function ViewReportsPage() {
                     </div>
                 </div>
                 <ReportsList initialReports={JSON.parse(JSON.stringify(policeReports))} />
+            </div>
+        </TabsContent>
+        <TabsContent value="grievances" className="mt-8">
+            <div className="space-y-4">
+                 <div className="flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                        <MessageSquareWarning className="h-8 w-8 text-primary" />
+                    </div>
+                    <div>
+                        <h2 className="text-2xl md:text-3xl font-bold font-headline tracking-tight">{t('reportsPage.grievances')}</h2>
+                        <p className="text-muted-foreground mt-1 max-w-3xl">{t('reportsPage.grievancesDescription')}</p>
+                    </div>
+                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {grievances.map((g: Grievance) => (
+                        <GrievanceCard key={g.id} grievance={g} />
+                    ))}
+                </div>
             </div>
         </TabsContent>
       </Tabs>

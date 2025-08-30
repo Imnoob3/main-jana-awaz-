@@ -36,7 +36,14 @@ let reports: Report[] = [
     }
 ];
 
-let grievances: Grievance[] = [];
+let grievances: Grievance[] = [
+    {
+        id: 'g1c4f4b1-2a1d-4f1c-8b8a-9e2c6f3d7b5a',
+        title: 'Lack of Public Toilets in Ratna Park',
+        description: 'The number of public toilets in the Ratna Park area is severely insufficient. This causes great inconvenience to the thousands of commuters and pedestrians who use the area daily. We request the local government to install more clean and accessible public toilets.',
+        createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
+    }
+];
 
 export function addReport(report: Omit<Report, 'id' | 'createdAt'>): Report {
   const newReport: Report = {
@@ -64,6 +71,10 @@ export function addGrievance(grievance: Omit<Grievance, 'id' | 'createdAt'>): Gr
     };
     grievances.unshift(newGrievance);
     return newGrievance;
+}
+
+export function getGrievances(): Grievance[] {
+    return grievances.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export function getGrievanceById(id: string): Grievance | undefined {

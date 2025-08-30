@@ -7,7 +7,8 @@ const translations = {
   en: {
     "header": {
       "fileReport": "File a Report",
-      "viewReports": "View Reports"
+      "viewReports": "View Reports",
+      "trackSubmission": "Track Submission"
     },
     "home": {
       "title": "Jana Awaz: Your Voice for Justice",
@@ -15,6 +16,7 @@ const translations = {
       "fileReport": "File a National Report",
       "voiceGrievance": "Voice a Grievance",
       "viewReports": "View Public Reports",
+      "trackSubmission": "Track a Submission",
       "transparentNepal": {
         "title": "A Transparent & Accountable Nepal",
         "description": "Jana Awaz provides a secure and anonymous platform for citizens to expose wrongdoing, ensuring that every voice is heard and every report is taken seriously.",
@@ -96,9 +98,11 @@ const translations = {
       "ciaaReports": "CIAA Reports",
       "policeReports": "Police Reports",
       "iccReports": "ICC Reports",
+      "grievances": "Grievances",
       "ciaaDescription": "Reports concerning government officials and corruption, routed to the Commission for the Investigation of Abuse of Authority (CIAA).",
       "policeDescription": "Reports concerning civilian-related crimes, routed to the Nepal Police.",
-      "iccDescription": "Reports concerning severe crimes escalated to the International Criminal Court (ICC)."
+      "iccDescription": "Reports concerning severe crimes escalated to the International Criminal Court (ICC).",
+      "grievancesDescription": "Public grievances concerning rules, governance, or social issues."
     },
     "reportsList": {
       "searchPlaceholder": "Search by keywords in reports...",
@@ -110,12 +114,51 @@ const translations = {
       "aiAnalysis": "AI Routing Analysis"
     },
     "confirmation": {
-      "title": "Report Submitted Successfully!",
-      "description": "Your report has been received and routed to the {recipient}. Thank you for your contribution.",
+      "title": "Submission Successful!",
+      "description": "Your submission has been received and routed to the {recipient}. Thank you for your contribution.",
       "saveId": "Please save your tracking ID. This ID will not be shown again.",
       "trackingId": "Your Tracking ID",
-      "viewReports": "View {recipient} Reports",
+      "trackButton": "Track Status",
       "backToHome": "Back to Home"
+    },
+    "track": {
+        "title": "Track Your Submission",
+        "description": "Enter the tracking ID you received after submitting your report or grievance to check its current status.",
+        "trackingIdLabel": "Tracking ID",
+        "placeholder": "Enter your tracking ID...",
+        "trackButton": "Track Submission",
+        "notFound": {
+            "title": "Submission Not Found",
+            "description": "We couldn't find a submission with that ID. Please check the ID and try again.",
+            "button": "Try Again"
+        },
+        "details": {
+            "reportTitle": "Report Details",
+            "grievanceTitle": "Grievance Details",
+            "evidenceAlt": "Evidence photo"
+        },
+        "status": {
+            "title": "Current Status",
+            "description": "This timeline shows the progress of your submission. Updates will appear here as they happen."
+        }
+    },
+    "timeline": {
+        "submitted": {
+            "title": "Submitted",
+            "description": "Your submission has been successfully received by our system."
+        },
+        "inReview": {
+            "title": "Under Review",
+            "description": "The appropriate authorities are currently reviewing your submission."
+        },
+        "actionTaken": {
+            "title": "Action Taken",
+            "description": "Initial action or investigation has been initiated based on your submission."
+        },
+        "resolved": {
+            "title": "Resolved",
+            "description": "The case has been resolved or closed. Thank you for your contribution."
+        }
     },
     "toast": {
       "submissionError": {
@@ -131,7 +174,8 @@ const translations = {
   ne: {
     "header": {
       "fileReport": "उजुरी दर्ता गर्नुहोस्",
-      "viewReports": "उजुरीहरू हेर्नुहोस्"
+      "viewReports": "उजुरीहरू हेर्नुहोस्",
+      "trackSubmission": "उजुरीको स्थिति हेर्नुहोस्"
     },
     "home": {
       "title": "जन आवाज: न्यायको लागि तपाईंको आवाज",
@@ -139,6 +183,7 @@ const translations = {
       "fileReport": "राष्ट्रिय उजुरी दर्ता गर्नुहोस्",
       "voiceGrievance": "गुनासो व्यक्त गर्नुहोस्",
       "viewReports": "सार्वजनिक उजुरीहरू हेर्नुहोस्",
+      "trackSubmission": "उजुरीको स्थिति हेर्नुहोस्",
       "transparentNepal": {
         "title": "एक पारदर्शी र जवाफदेही नेपाल",
         "description": "जन आवाजले नागरिकहरूलाई गलत कामको पर्दाफास गर्न एक सुरक्षित र गुमनाम प्लेटफर्म प्रदान गर्दछ, प्रत्येक आवाज सुनिएको र हरेक उजुरीलाई गम्भीरतापूर्वक लिइने सुनिश्चित गर्दछ।",
@@ -220,9 +265,11 @@ const translations = {
       "ciaaReports": "CIAA उजुरीहरू",
       "policeReports": "प्रहरी उजुरीहरू",
       "iccReports": "ICC उजुरीहरू",
+      "grievances": "गुनासोहरू",
       "ciaaDescription": "सरकारी अधिकारीहरू र भ्रष्टाचार सम्बन्धी उजुरीहरू, अख्तियार दुरुपयोग अनुसन्धान आयोग (CIAA) लाई पठाइएको।",
       "policeDescription": "नागरिक सम्बन्धी अपराधहरू सम्बन्धी उजुरीहरू, नेपाल प्रहरीलाई पठाइएको।",
-      "iccDescription": "अन्तर्राष्ट्रिय फौजदारी अदालत (ICC) मा पठाइएका गम्भीर अपराधहरू सम्बन्धी उजुरीहरू।"
+      "iccDescription": "अन्तर्राष्ट्रिय फौजदारी अदालत (ICC) मा पठाइएका गम्भीर अपराधहरू सम्बन्धी उजुरीहरू।",
+      "grievancesDescription": "नियम, शासन, वा सामाजिक मुद्दाहरू सम्बन्धी सार्वजनिक गुनासोहरू।"
     },
     "reportsList": {
       "searchPlaceholder": "उजुरीहरूमा किवर्डहरूद्वारा खोज्नुहोस्...",
@@ -238,8 +285,47 @@ const translations = {
       "description": "तपाईंको उजुरी प्राप्त भयो र {recipient} लाई पठाइएको छ। तपाईंको योगदानको लागि धन्यवाद।",
       "saveId": "कृपया आफ्नो ट्र्याकिङ आईडी सुरक्षित राख्नुहोस्। यो आईडी फेरि देखाइने छैन।",
       "trackingId": "तपाईंको ट्र्याकिङ आईडी",
-      "viewReports": "{recipient} का उजुरीहरू हेर्नुहोस्",
+      "trackButton": "स्थिति हेर्नुहोस्",
       "backToHome": "गृह पृष्ठमा फर्कनुहोस्"
+    },
+    "track": {
+        "title": "आफ्नो उजुरीको स्थिति हेर्नुहोस्",
+        "description": "आफ्नो उजुरी वा गुनासोको हालको स्थिति जाँच गर्न तपाईंले प्राप्त गर्नुभएको ट्र्याकिङ आईडी प्रविष्ट गर्नुहोस्।",
+        "trackingIdLabel": "ट्र्याकिङ आईडी",
+        "placeholder": "आफ्नो ट्र्याकिङ आईडी प्रविष्ट गर्नुहोस्...",
+        "trackButton": "उजुरीको स्थिति हेर्नुहोस्",
+        "notFound": {
+            "title": "उजुरी फेला परेन",
+            "description": "यो आईडी भएको कुनै उजुरी फेला परेन। कृपया आईडी जाँच गरी फेरि प्रयास गर्नुहोस्।",
+            "button": "फेरि प्रयास गर्नुहोस्"
+        },
+        "details": {
+            "reportTitle": "उजुरीको विवरण",
+            "grievanceTitle": "गुनासोको विवरण",
+            "evidenceAlt": "प्रमाणको फोटो"
+        },
+        "status": {
+            "title": "हालको स्थिति",
+            "description": "यो टाइमलाइनले तपाईंको उजुरीको प्रगति देखाउँछ। अद्यावधिकहरू यहाँ देखा पर्नेछन्।"
+        }
+    },
+     "timeline": {
+        "submitted": {
+            "title": "दर्ता भयो",
+            "description": "तपाईंको उजुरी हाम्रो प्रणालीमा सफलतापूर्वक प्राप्त भयो।"
+        },
+        "inReview": {
+            "title": "समीक्षामा",
+            "description": "सम्बन्धित अधिकारीहरूले हाल तपाईंको उजुरीको समीक्षा गरिरहेका छन्।"
+        },
+        "actionTaken": {
+            "title": "कारबाही सुरु भयो",
+            "description": "तपाईंको उजुरीको आधारमा प्रारम्भिक कारबाही वा अनुसन्धान सुरु गरिएको छ।"
+        },
+        "resolved": {
+            "title": "समाधान भयो",
+            "description": "यो केस समाधान वा बन्द गरिएको छ। तपाईंको योगदानको लागि धन्यवाद।"
+        }
     },
     "toast": {
       "submissionError": {
