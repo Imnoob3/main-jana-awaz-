@@ -14,9 +14,8 @@ import { Button } from '@/components/ui/button';
 
 export const dynamic = 'force-dynamic';
 
-export default function SubmissionStatusPage() {
-  const params = useParams();
-  const id = typeof params.id === 'string' ? params.id : '';
+export default function SubmissionStatusPage({ params }: { params: { id: string } }) {
+  const { id } = params;
   const { t } = useTranslation();
 
   const report = getReportById(id);

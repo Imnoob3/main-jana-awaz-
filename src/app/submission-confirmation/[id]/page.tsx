@@ -21,14 +21,14 @@ export default function SubmissionConfirmationPage() {
 
   let submission: Report | Grievance | undefined;
   let submissionType: 'Report' | 'Grievance';
-  let backLink: string = "/";
+  let backLink: string = "/reports";
   let recipient: string = "the relevant authorities";
 
   if (type === 'grievance') {
     submission = getGrievanceById(id);
     submissionType = 'Grievance';
-    recipient = "the grievance department"; // Or some other relevant entity
-    backLink = "/"; // No public grievance page for now
+    recipient = "the grievance department";
+    backLink = "/reports";
   } else {
     submission = getReportById(id);
     submissionType = 'Report';
@@ -73,7 +73,7 @@ export default function SubmissionConfirmationPage() {
                 </Link>
             </Button>
             <Button asChild variant="outline">
-              <Link href="/">{t('confirmation.backToHome')}</Link>
+              <Link href={backLink}>{t('confirmation.backToHome')}</Link>
             </Button>
         </CardFooter>
       </Card>
