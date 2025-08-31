@@ -38,10 +38,13 @@ function SubmitButton() {
 
 export function GrievanceForm() {
   const { t } = useTranslation();
-  const [state, formAction, isPending] = useActionState(submitGrievance, initialState);
+  const [state, formAction] = useActionState(submitGrievance, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  
+  // We need to get the pending state from the form status to disable inputs
+  const { pending: isPending } = useFormStatus();
 
   useEffect(() => {
     if (state?.message && state?.errors) {
@@ -90,7 +93,6 @@ export function GrievanceForm() {
   };
 
   return (
-    <>
       <form action={formAction}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
@@ -197,6 +199,5 @@ export function GrievanceForm() {
           </CardFooter>
         </Card>
       </form>
-    </>
   );
 }

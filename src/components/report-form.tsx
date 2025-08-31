@@ -42,11 +42,14 @@ function SubmitButton() {
 
 export function ReportForm() {
   const { t } = useTranslation();
-  const [state, formAction, isPending] = useActionState(submitReport, initialState);
+  const [state, formAction] = useActionState(submitReport, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
+
+  // We need to get the pending state from the form status to disable inputs
+  const { pending: isPending } = useFormStatus();
 
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export function ReportForm() {
         description: state.message,
       });
     }
-  }, [state]);
+  }, [state, t, toast]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -99,8 +102,7 @@ export function ReportForm() {
   };
 
   return (
-    <>
-      <form action={formAction}>
+    <form action={formAction}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <CardTitle>{t('reportForm.title')}</CardTitle>
@@ -277,6 +279,5 @@ export function ReportForm() {
           </CardFooter>
         </Card>
       </form>
-    </>
   );
 }
