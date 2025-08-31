@@ -35,7 +35,7 @@ export default function SubmissionConfirmationPage() {
         </CardContent>
         <CardFooter className="flex-col sm:flex-row justify-center gap-4 pt-6">
            <Button asChild>
-              <Link href={`/track/${id}`}>{t('confirmation.trackButton')}</Link>
+              <Link href={`/track/${id}`}>Track Submission</Link>
             </Button>
             <Button asChild variant="outline">
               <Link href="/">{t('confirmation.backToHome')}</Link>
