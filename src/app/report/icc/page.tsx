@@ -1,3 +1,6 @@
+
+'use client';
+
 import { IccReportForm } from '@/components/icc-report-form';
 
 export default function ReportPage() {
