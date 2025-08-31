@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRef, useState, useEffect } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -13,23 +13,45 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
+import { submitGrievance } from '@/app/grievance/actions';
+import { GrievanceFormState } from '@/app/grievance/schema';
+
+function SubmitButton() {
+    const { pending } = useFormStatus();
+    const { t } = useTranslation();
+    return (
+        <Button type="submit" className="w-full" disabled={pending}>
+        {pending ? (
+            <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            {t('reportForm.submitting')}
+            </>
+        ) : (
+            'Submit Grievance Anonymously'
+        )}
+        </Button>
+    );
+}
+
 
 export function GrievanceForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-  const [isPending, setIsPending] = useState(false);
-  const router = useRouter();
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsPending(true);
-    // In a real app, you would handle form data here.
-    // For now, we just redirect.
-    router.push('/submission-confirmation/success');
-  };
+  const initialState: GrievanceFormState = {};
+  const [state, dispatch] = useFormState(submitGrievance, initialState);
 
+   useEffect(() => {
+    if (state.message && state.errors) {
+      toast({
+        variant: 'destructive',
+        title: t('toast.submissionError.title'),
+        description: state.message,
+      });
+    }
+  }, [state, toast, t]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,7 +80,7 @@ export function GrievanceForm() {
   };
 
   return (
-      <form onSubmit={handleSubmit}>
+      <form action={dispatch}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -79,9 +101,9 @@ export function GrievanceForm() {
                 name="title"
                 placeholder="A brief title for your grievance"
                 required
-                disabled={isPending}
                 className="shadow-lg"
               />
+               {state.errors?.title && <p className="text-sm font-medium text-destructive">{state.errors.title[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -92,9 +114,9 @@ export function GrievanceForm() {
                 placeholder="Describe the issue in detail. What is the problem, who does it affect, and what change would you like to see?"
                 rows={8}
                 required
-                disabled={isPending}
                 className="shadow-lg"
               />
+              {state.errors?.description && <p className="text-sm font-medium text-destructive">{state.errors.description[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -103,7 +125,7 @@ export function GrievanceForm() {
               {photoPreview ? (
                 <div className="relative group">
                   <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border shadow-lg" />
-                  <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto} disabled={isPending}>
+                  <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto}>
                     <X className="h-4 w-4" />
                     <span className="sr-only">{t('reportForm.removePhoto')}</span>
                   </Button>
@@ -111,13 +133,11 @@ export function GrievanceForm() {
               ) : (
                 <div 
                   className={cn(
-                    "flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition-colors shadow-lg",
-                    !isPending && "cursor-pointer hover:border-primary",
-                    isPending && "opacity-50 cursor-not-allowed"
+                    "flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition-colors shadow-lg cursor-pointer hover:border-primary"
                   )}
-                  onClick={() => !isPending && photoInputRef.current?.click()}
-                  onKeyDown={(e) => !isPending && e.key === 'Enter' && photoInputRef.current?.click()}
-                  tabIndex={isPending ? -1 : 0}
+                  onClick={() => photoInputRef.current?.click()}
+                  onKeyDown={(e) => e.key === 'Enter' && photoInputRef.current?.click()}
+                  tabIndex={0}
                   role="button"
                   aria-label={t('reportForm.uploadPhotoAriaLabel')}
                 >
@@ -138,22 +158,12 @@ export function GrievanceForm() {
                   ref={photoInputRef}
                   accept="image/png, image/jpeg"
                   onChange={handlePhotoChange}
-                  disabled={isPending}
               />
             </div>
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t('reportForm.submitting')}
-                </>
-              ) : (
-                'Submit Grievance Anonymously'
-              )}
-            </Button>
+            <SubmitButton />
           </CardFooter>
         </Card>
       </form>

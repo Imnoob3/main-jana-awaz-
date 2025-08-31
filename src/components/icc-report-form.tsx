@@ -1,8 +1,8 @@
 
 'use client';
 
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRef, useState, useEffect } from 'react';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -14,22 +14,45 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { Checkbox } from './ui/checkbox';
+import { submitIccReport } from '@/app/report/icc/actions';
+import { IccFormState } from '@/app/report/icc/schema';
+
+function SubmitButton() {
+    const { pending } = useFormStatus();
+    const { t } = useTranslation();
+    return (
+        <Button type="submit" className="w-full" variant="destructive" disabled={pending}>
+            {pending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                {t('reportForm.submitting')}
+              </>
+            ) : (
+              t('home.iccSection.reportButton')
+            )}
+        </Button>
+    );
+}
 
 export function IccReportForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-  const [isPending, setIsPending] = useState(false);
-  const router = useRouter();
+  
+  const initialState: IccFormState = {};
+  const [state, dispatch] = useFormState(submitIccReport, initialState);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsPending(true);
-    // In a real app, you would handle form data here.
-    // For now, we just redirect.
-    router.push('/submission-confirmation/success');
-  };
+  useEffect(() => {
+    if (state.message && state.errors) {
+      toast({
+        variant: 'destructive',
+        title: t('toast.submissionError.title'),
+        description: state.message,
+      });
+    }
+  }, [state, toast, t]);
+
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -60,7 +83,7 @@ export function IccReportForm() {
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
+    <form action={dispatch}>
       <Card className="w-full max-w-2xl mx-auto border-destructive/50">
         <CardHeader>
           <div className="flex justify-center mb-4">
@@ -88,8 +111,8 @@ export function IccReportForm() {
               placeholder={t('reportForm.reportDetailsPlaceholder')}
               rows={8}
               required
-              disabled={isPending}
             />
+            {state.errors?.reportText && <p className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
           </div>
 
           <div className="space-y-2">
@@ -98,7 +121,7 @@ export function IccReportForm() {
             {photoPreview ? (
               <div className="relative group">
                 <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border" />
-                <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto} disabled={isPending}>
+                <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto}>
                   <X className="h-4 w-4" />
                   <span className="sr-only">{t('reportForm.removePhoto')}</span>
                 </Button>
@@ -106,9 +129,9 @@ export function IccReportForm() {
             ) : (
               <div 
                 className="flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md cursor-pointer hover:border-destructive transition-colors"
-                onClick={() => !isPending && photoInputRef.current?.click()}
-                onKeyDown={(e) => !isPending && e.key === 'Enter' && photoInputRef.current?.click()}
-                tabIndex={isPending ? -1 : 0}
+                onClick={() => photoInputRef.current?.click()}
+                onKeyDown={(e) => e.key === 'Enter' && photoInputRef.current?.click()}
+                tabIndex={0}
                 role="button"
                 aria-label={t('reportForm.uploadPhotoAriaLabel')}
               >
@@ -130,12 +153,12 @@ export function IccReportForm() {
                 accept="image/png, image/jpeg"
                 onChange={handlePhotoChange}
                 required
-                disabled={isPending}
             />
+            {state.errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
           </div>
           
            <div className="items-top flex space-x-2">
-            <Checkbox id="agreeWarning" name="agreeWarning" required disabled={isPending} />
+            <Checkbox id="agreeWarning" name="agreeWarning" required/>
             <div className="grid gap-1.5 leading-none">
                 <label
                 htmlFor="agreeWarning"
@@ -143,22 +166,14 @@ export function IccReportForm() {
                 >
                 {t('iccReportForm.agreeWarning')}
                 </label>
+                 {state.errors?.agreeWarning && <p className="text-sm font-medium text-destructive">{state.errors.agreeWarning[0]}</p>}
             </div>
           </div>
 
 
         </CardContent>
         <CardFooter className="flex-col items-stretch gap-4">
-          <Button type="submit" className="w-full" variant="destructive" disabled={isPending}>
-            {isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {t('reportForm.submitting')}
-              </>
-            ) : (
-              t('home.iccSection.reportButton')
-            )}
-          </Button>
+         <SubmitButton />
         </CardFooter>
       </Card>
     </form>

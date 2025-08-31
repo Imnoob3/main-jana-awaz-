@@ -6,9 +6,13 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
+import { useParams } from 'next/navigation';
 
 export default function SubmissionConfirmationPage() {
   const { t } = useTranslation();
+  const params = useParams();
+  const id = Array.isArray(params.id) ? params.id[0] : params.id;
+
 
   return (
     <main className="container mx-auto px-4 py-12 flex justify-center items-center">
@@ -26,10 +30,13 @@ export default function SubmissionConfirmationPage() {
           <p className="text-muted-foreground">{t('confirmation.saveId')}</p>
           <div className="p-4 bg-muted/50 dark:bg-muted/20 rounded-md border">
             <p className="text-sm font-semibold text-muted-foreground">{t('confirmation.trackingId')}</p>
-            <p className="text-lg font-mono tracking-widest break-all text-primary">submission-successful</p>
+            <p className="text-lg font-mono tracking-widest break-all text-primary">{id}</p>
           </div>
         </CardContent>
         <CardFooter className="flex-col sm:flex-row justify-center gap-4 pt-6">
+           <Button asChild>
+              <Link href={`/track/${id}`}>{t('confirmation.trackButton')}</Link>
+            </Button>
             <Button asChild variant="outline">
               <Link href="/">{t('confirmation.backToHome')}</Link>
             </Button>
