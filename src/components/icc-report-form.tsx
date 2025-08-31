@@ -2,7 +2,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -14,12 +14,15 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { Checkbox } from './ui/checkbox';
+import type { IccFormState } from '@/app/report/icc/schema';
+import { submitIccReport } from '@/app/report/icc/actions';
 
-function SubmitButton({ isPending }: { isPending: boolean }) {
+function SubmitButton() {
+    const { pending } = useFormStatus();
     const { t } = useTranslation();
     return (
-        <Button type="submit" className="w-full" variant="destructive" disabled={isPending}>
-            {isPending ? (
+        <Button type="submit" className="w-full" variant="destructive" disabled={pending}>
+            {pending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {t('reportForm.submitting')}
@@ -34,19 +37,21 @@ function SubmitButton({ isPending }: { isPending: boolean }) {
 export function IccReportForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
-  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-  const [isPending, setIsPending] = useState(false);
+
+  const initialState: IccFormState = {};
+  const [state, dispatch] = useFormState(submitIccReport, initialState);
   
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsPending(true);
-    // Simulate a network request
-    setTimeout(() => {
-        router.push('/submission-confirmation/success');
-    }, 1000);
-  };
+  useEffect(() => {
+    if (state.message && state.errors) {
+      toast({
+        variant: 'destructive',
+        title: t('toast.submissionError.title'),
+        description: state.message,
+      });
+    }
+  }, [state, toast, t]);
 
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +83,7 @@ export function IccReportForm() {
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
+    <form action={dispatch}>
       <Card className="w-full max-w-2xl mx-auto border-destructive/50">
         <CardHeader>
           <div className="flex justify-center mb-4">
@@ -107,6 +112,7 @@ export function IccReportForm() {
               rows={8}
               required
             />
+            {state.errors?.reportText && <p className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
           </div>
 
           <div className="space-y-2">
@@ -148,6 +154,7 @@ export function IccReportForm() {
                 onChange={handlePhotoChange}
                 required
             />
+            {state.errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
           </div>
           
            <div className="items-top flex space-x-2">
@@ -159,13 +166,14 @@ export function IccReportForm() {
                 >
                 {t('iccReportForm.agreeWarning')}
                 </label>
+                 {state.errors?.agreeWarning && <p className="text-sm font-medium text-destructive">{state.errors.agreeWarning[0]}</p>}
             </div>
           </div>
 
 
         </CardContent>
         <CardFooter className="flex-col items-stretch gap-4">
-         <SubmitButton isPending={isPending} />
+         <SubmitButton />
         </CardFooter>
       </Card>
     </form>
