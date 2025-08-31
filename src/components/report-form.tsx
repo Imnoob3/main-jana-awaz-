@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useActionState, useEffect, useRef, useState } from 'react';
+import { useActionState, useEffect, useRef, useState, useTransition } from 'react';
 import { useFormStatus } from 'react-dom';
 import { submitReport } from '@/app/report/actions';
 import type { FormState } from '@/app/report/schema';
@@ -42,15 +42,11 @@ function SubmitButton() {
 
 export function ReportForm() {
   const { t } = useTranslation();
-  const [state, formAction] = useActionState(submitReport, initialState);
+  const [state, formAction, isPending] = useActionState(submitReport, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
-
-  // We need to get the pending state from the form status to disable inputs
-  const { pending: isPending } = useFormStatus();
-
 
   useEffect(() => {
     if (state?.message && state?.errors) {
