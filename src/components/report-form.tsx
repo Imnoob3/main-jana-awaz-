@@ -2,8 +2,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -18,15 +17,13 @@ import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
-import { submitReport } from '@/app/report/actions';
-import { FormState } from '@/app/report/schema';
 
-function SubmitButton() {
-    const { pending } = useFormStatus();
+
+function SubmitButton({ isPending }: { isPending: boolean }) {
     const { t } = useTranslation();
     return (
-        <Button type="submit" className="w-full" disabled={pending}>
-            {pending ? (
+        <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? (
                 <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {t('reportForm.submitting')}
@@ -41,22 +38,20 @@ function SubmitButton() {
 export function ReportForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
-  const initialState: FormState = {};
-  const [state, dispatch] = useActionState(submitReport, initialState);
-
-  useEffect(() => {
-    if (state.message && state.errors) {
-      toast({
-        variant: 'destructive',
-        title: t('toast.submissionError.title'),
-        description: state.message,
-      });
-    }
-  }, [state, toast, t]);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPending(true);
+    // Simulate a network request
+    setTimeout(() => {
+        router.push('/submission-confirmation/success');
+    }, 1000);
+  };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -85,7 +80,7 @@ export function ReportForm() {
   };
 
   return (
-    <form action={dispatch}>
+    <form onSubmit={handleSubmit}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <CardTitle>{t('reportForm.title')}</CardTitle>
@@ -131,7 +126,6 @@ export function ReportForm() {
                     </Label>
                   </div>
                 </RadioGroup>
-                {state.errors?.crimeType && <p className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
               </div>
 
               {crimeType && (
@@ -160,7 +154,6 @@ export function ReportForm() {
                           ))}
                       </SelectContent>
                   </Select>
-                   {state.errors?.district && <p className="text-sm font-medium text-destructive">{state.errors.district[0]}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="localAddress">{t('reportForm.localAddress')}</Label>
@@ -171,7 +164,6 @@ export function ReportForm() {
                     required
                     className="shadow-lg"
                   />
-                  {state.errors?.localAddress && <p className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
                 </div>
               </div>
 
@@ -185,7 +177,6 @@ export function ReportForm() {
                 required
                 className="shadow-lg"
               />
-               {state.errors?.reportText && <p className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -229,12 +220,11 @@ export function ReportForm() {
                   onChange={handlePhotoChange}
                   required
               />
-               {state.errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
             </div>
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-             <SubmitButton />
+             <SubmitButton isPending={isPending} />
           </CardFooter>
         </Card>
       </form>

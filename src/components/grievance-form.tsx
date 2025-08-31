@@ -2,8 +2,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -14,15 +13,12 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
-import { submitGrievance } from '@/app/grievance/actions';
-import { GrievanceFormState } from '@/app/grievance/schema';
 
-function SubmitButton() {
-    const { pending } = useFormStatus();
+function SubmitButton({ isPending }: { isPending: boolean }) {
     const { t } = useTranslation();
     return (
-        <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? (
+        <Button type="submit" className="w-full" disabled={isPending}>
+        {isPending ? (
             <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             {t('reportForm.submitting')}
@@ -38,21 +34,20 @@ function SubmitButton() {
 export function GrievanceForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-  
-  const initialState: GrievanceFormState = {};
-  const [state, dispatch] = useActionState(submitGrievance, initialState);
+  const [isPending, setIsPending] = useState(false);
 
-   useEffect(() => {
-    if (state.message && state.errors) {
-      toast({
-        variant: 'destructive',
-        title: t('toast.submissionError.title'),
-        description: state.message,
-      });
-    }
-  }, [state, toast, t]);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPending(true);
+    // Simulate a network request
+    setTimeout(() => {
+        router.push('/submission-confirmation/success');
+    }, 1000);
+  };
+  
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -81,7 +76,7 @@ export function GrievanceForm() {
   };
 
   return (
-      <form action={dispatch}>
+      <form onSubmit={handleSubmit}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -104,7 +99,6 @@ export function GrievanceForm() {
                 required
                 className="shadow-lg"
               />
-               {state.errors?.title && <p className="text-sm font-medium text-destructive">{state.errors.title[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -117,7 +111,6 @@ export function GrievanceForm() {
                 required
                 className="shadow-lg"
               />
-              {state.errors?.description && <p className="text-sm font-medium text-destructive">{state.errors.description[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -164,7 +157,7 @@ export function GrievanceForm() {
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-            <SubmitButton />
+            <SubmitButton isPending={isPending} />
           </CardFooter>
         </Card>
       </form>

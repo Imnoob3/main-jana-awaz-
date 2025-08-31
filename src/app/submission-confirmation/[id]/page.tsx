@@ -12,6 +12,7 @@ export default function SubmissionConfirmationPage() {
   const { t } = useTranslation();
   const params = useParams();
   const id = Array.isArray(params.id) ? params.id[0] : params.id;
+  const isSuccessPage = id === 'success';
 
 
   return (
@@ -26,17 +27,21 @@ export default function SubmissionConfirmationPage() {
             {"Your submission has been successfully submitted for review."}
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <p className="text-muted-foreground">{t('confirmation.saveId')}</p>
-          <div className="p-4 bg-muted/50 dark:bg-muted/20 rounded-md border">
-            <p className="text-sm font-semibold text-muted-foreground">{t('confirmation.trackingId')}</p>
-            <p className="text-lg font-mono tracking-widest break-all text-primary">{id}</p>
-          </div>
-        </CardContent>
+        {!isSuccessPage && (
+          <CardContent className="space-y-4">
+            <p className="text-muted-foreground">{t('confirmation.saveId')}</p>
+            <div className="p-4 bg-muted/50 dark:bg-muted/20 rounded-md border">
+              <p className="text-sm font-semibold text-muted-foreground">{t('confirmation.trackingId')}</p>
+              <p className="text-lg font-mono tracking-widest break-all text-primary">{id}</p>
+            </div>
+          </CardContent>
+        )}
         <CardFooter className="flex-col sm:flex-row justify-center gap-4 pt-6">
-           <Button asChild>
+           {!isSuccessPage && (
+            <Button asChild>
               <Link href={`/track/${id}`}>Track Submission</Link>
             </Button>
+           )}
             <Button asChild variant="outline">
               <Link href="/">{t('confirmation.backToHome')}</Link>
             </Button>
