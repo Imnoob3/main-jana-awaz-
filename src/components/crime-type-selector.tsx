@@ -82,7 +82,7 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
           </button>
         ))}
       </div>
-       {error && <p className="text-sm font-medium text-destructive">{error}</p>}
+       {error & <p className="text-sm font-medium text-destructive">{error}</p>}
     </div>
   );
 }

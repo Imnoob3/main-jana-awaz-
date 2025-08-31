@@ -38,12 +38,10 @@ function SubmitButton() {
 
 export function IccReportForm() {
   const { t } = useTranslation();
-  const [state, formAction] = useActionState(submitIccReport, initialState);
+  const [state, formAction, isPending] = useActionState(submitIccReport, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
-
-  const { pending } = useFormStatus();
 
   useEffect(() => {
     if (state?.message && state?.errors) {
@@ -121,7 +119,7 @@ export function IccReportForm() {
               required
               aria-invalid={!!state?.errors?.reportText}
               aria-describedby="reportText-error"
-              disabled={pending}
+              disabled={isPending}
             />
             {state?.errors?.reportText && <p id="reportText-error" className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
           </div>
@@ -132,7 +130,7 @@ export function IccReportForm() {
             {photoPreview ? (
               <div className="relative group">
                 <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border" />
-                <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto} disabled={pending}>
+                <Button type="button" variant="destructive" size="icon" className="absolute top-2 right-2 h-8 w-8 opacity-0 group-hover:opacity-100 transition-opacity" onClick={removePhoto} disabled={isPending}>
                   <X className="h-4 w-4" />
                   <span className="sr-only">{t('reportForm.removePhoto')}</span>
                 </Button>
@@ -140,9 +138,9 @@ export function IccReportForm() {
             ) : (
               <div 
                 className="flex justify-center w-full h-48 px-6 pt-5 pb-6 border-2 border-dashed rounded-md cursor-pointer hover:border-destructive transition-colors"
-                onClick={() => !pending && photoInputRef.current?.click()}
-                onKeyDown={(e) => !pending && e.key === 'Enter' && photoInputRef.current?.click()}
-                tabIndex={pending ? -1 : 0}
+                onClick={() => !isPending && photoInputRef.current?.click()}
+                onKeyDown={(e) => !isPending && e.key === 'Enter' && photoInputRef.current?.click()}
+                tabIndex={isPending ? -1 : 0}
                 role="button"
                 aria-label={t('reportForm.uploadPhotoAriaLabel')}
               >
@@ -166,13 +164,13 @@ export function IccReportForm() {
                 required
                 aria-invalid={!!state?.errors?.photoDataUri}
                 aria-describedby="photo-error"
-                disabled={pending}
+                disabled={isPending}
             />
             {state?.errors?.photoDataUri && <p id="photo-error" className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
           </div>
           
            <div className="items-top flex space-x-2">
-            <Checkbox id="agreeWarning" name="agreeWarning" required aria-invalid={!!state?.errors?.agreeWarning} aria-describedby="agree-error" disabled={pending} />
+            <Checkbox id="agreeWarning" name="agreeWarning" required aria-invalid={!!state?.errors?.agreeWarning} aria-describedby="agree-error" disabled={isPending} />
             <div className="grid gap-1.5 leading-none">
                 <label
                 htmlFor="agreeWarning"
