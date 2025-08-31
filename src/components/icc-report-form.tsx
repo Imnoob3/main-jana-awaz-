@@ -2,7 +2,8 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -41,7 +42,7 @@ export function IccReportForm() {
   const photoInputRef = useRef<HTMLInputElement>(null);
 
   const initialState: IccFormState = {};
-  const [state, dispatch] = useFormState(submitIccReport, initialState);
+  const [state, dispatch] = useActionState(submitIccReport, initialState);
   
   useEffect(() => {
     if (state.message && state.errors) {
