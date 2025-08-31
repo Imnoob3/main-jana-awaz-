@@ -41,6 +41,7 @@ let grievances: Grievance[] = [
         title: 'Lack of Public Toilets in Ratna Park',
         description: 'The number of public toilets in the Ratna Park area is severely insufficient. This causes great inconvenience to the thousands of commuters and pedestrians who use the area daily. We request the local government to install more clean and accessible public toilets.',
         createdAt: new Date(Date.now() - 1000 * 60 * 60 * 24 * 5).toISOString(),
+        photoDataUri: 'https://picsum.photos/400/300'
     }
 ];
 
