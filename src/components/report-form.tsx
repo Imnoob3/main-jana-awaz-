@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -133,7 +133,6 @@ export function ReportForm() {
                     <CrimeTypeSelector
                       key={crimeType} // Re-mount when crimeType changes
                       crimeType={crimeType}
-                      isPending={false}
                     />
                 </div>
               )}
