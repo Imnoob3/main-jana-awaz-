@@ -40,5 +40,5 @@ export async function submitIccReport(prevState: IccFormState, formData: FormDat
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
+  return prevState;
 }
-

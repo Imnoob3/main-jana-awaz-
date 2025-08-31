@@ -37,4 +37,5 @@ export async function submitGrievance(prevState: GrievanceFormState, formData: F
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
+  return prevState;
 }

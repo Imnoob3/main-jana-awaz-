@@ -43,5 +43,5 @@ export async function submitReport(prevState: FormState, formData: FormData): Pr
       message: `An unexpected error occurred: ${errorMessage}`,
     };
   }
+  return prevState;
 }
-
