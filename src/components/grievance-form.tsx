@@ -1,70 +1,35 @@
 
 'use client';
 
-import { useActionState, useEffect, useRef, useState } from 'react';
-import { useFormStatus } from 'react-dom';
-import { submitGrievance } from '@/app/grievance/actions';
-import type { GrievanceFormState } from '@/app/grievance/schema';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { AlertCircle, Loader2, MessageSquareWarning, Upload, X } from 'lucide-react';
+import { Loader2, MessageSquareWarning, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
 
-const initialState: GrievanceFormState = {};
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  const { t } = useTranslation();
-  return (
-    <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {t('reportForm.submitting')}
-        </>
-      ) : (
-        'Submit Grievance Anonymously'
-      )}
-    </Button>
-  );
-}
-
 export function GrievanceForm() {
   const { t } = useTranslation();
-  const [state, formAction] = useActionState(submitGrievance, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
   
-  // We need to get the pending state from the form status to disable inputs
-  const { pending: isPending } = useFormStatus();
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPending(true);
+    // In a real app, you would handle form data here.
+    // For now, we just redirect.
+    router.push('/submission-confirmation/success');
+  };
 
-  useEffect(() => {
-    if (state?.message && state?.errors) {
-      const errorMsg = state.errors?.title?.[0] 
-        || state.errors?.description?.[0] 
-        || state.errors?.photoDataUri?.[0] 
-        || state.message;
-      toast({
-        variant: "destructive",
-        title: t('toast.submissionError.title'),
-        description: errorMsg,
-      });
-    } else if (state?.message) {
-       toast({
-        variant: "destructive",
-        title: t('toast.error'),
-        description: state.message,
-      });
-    }
-  }, [state, t, toast]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -93,7 +58,7 @@ export function GrievanceForm() {
   };
 
   return (
-      <form action={formAction}>
+      <form onSubmit={handleSubmit}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -114,12 +79,9 @@ export function GrievanceForm() {
                 name="title"
                 placeholder="A brief title for your grievance"
                 required
-                aria-invalid={!!state?.errors?.title}
-                aria-describedby="title-error"
                 disabled={isPending}
                 className="shadow-lg"
               />
-              {state?.errors?.title && <p id="title-error" className="text-sm font-medium text-destructive">{state.errors.title[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -130,12 +92,9 @@ export function GrievanceForm() {
                 placeholder="Describe the issue in detail. What is the problem, who does it affect, and what change would you like to see?"
                 rows={8}
                 required
-                aria-invalid={!!state?.errors?.description}
-                aria-describedby="description-error"
                 disabled={isPending}
                 className="shadow-lg"
               />
-              {state?.errors?.description && <p id="description-error" className="text-sm font-medium text-destructive">{state.errors.description[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -179,23 +138,22 @@ export function GrievanceForm() {
                   ref={photoInputRef}
                   accept="image/png, image/jpeg"
                   onChange={handlePhotoChange}
-                  aria-invalid={!!state?.errors?.photoDataUri}
-                  aria-describedby="photo-error"
                   disabled={isPending}
               />
-              {state?.errors?.photoDataUri && <p id="photo-error" className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
             </div>
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-            {state?.message && !state?.errors && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>{t('toast.error')}</AlertTitle>
-                <AlertDescription>{state.message}</AlertDescription>
-              </Alert>
-            )}
-            <SubmitButton />
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {t('reportForm.submitting')}
+                </>
+              ) : (
+                'Submit Grievance Anonymously'
+              )}
+            </Button>
           </CardFooter>
         </Card>
       </form>

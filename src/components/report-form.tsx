@@ -1,17 +1,14 @@
 
 'use client';
 
-import { useActionState, useEffect, useRef, useState, useTransition } from 'react';
-import { useFormStatus } from 'react-dom';
-import { submitReport } from '@/app/report/actions';
-import type { FormState } from '@/app/report/schema';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { AlertCircle, Loader2, Upload, X, Shield, Users } from 'lucide-react';
+import { Loader2, Upload, X, Shield, Users } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
@@ -21,55 +18,22 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
 
-const initialState: FormState = {};
-
-function SubmitButton() {
-  const { pending } = useFormStatus();
-  const { t } = useTranslation();
-  return (
-    <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? (
-        <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          {t('reportForm.submitting')}
-        </>
-      ) : (
-        t('reportForm.submitAnonymously')
-      )}
-    </Button>
-  );
-}
-
 export function ReportForm() {
   const { t } = useTranslation();
-  const [state, formAction, isPending] = useActionState(submitReport, initialState);
   const { toast } = useToast();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const photoInputRef = useRef<HTMLInputElement>(null);
   const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
 
-  useEffect(() => {
-    if (state?.message && state?.errors) {
-      const errorMsg = state.errors?.reportText?.[0] 
-        || state.errors?.photoDataUri?.[0] 
-        || state.errors?.crimeType?.[0]
-        || state.errors?.crimeSubType?.[0]
-        || state.errors?.district?.[0] 
-        || state.errors?.localAddress?.[0] 
-        || state.message;
-      toast({
-        variant: "destructive",
-        title: t('toast.submissionError.title'),
-        description: errorMsg,
-      });
-    } else if (state?.message) {
-       toast({
-        variant: "destructive",
-        title: t('toast.error'),
-        description: state.message,
-      });
-    }
-  }, [state, t, toast]);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsPending(true);
+    // In a real app, you would handle form data here.
+    // For now, we just redirect.
+    router.push('/submission-confirmation/success');
+  };
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -98,7 +62,7 @@ export function ReportForm() {
   };
 
   return (
-    <form action={formAction}>
+    <form onSubmit={handleSubmit}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <CardTitle>{t('reportForm.title')}</CardTitle>
@@ -114,8 +78,6 @@ export function ReportForm() {
                   className="grid grid-cols-1 md:grid-cols-2 gap-4" 
                   onValueChange={(value) => setCrimeType(value as 'government' | 'civilian')}
                   required
-                  aria-invalid={!!state?.errors?.crimeType}
-                  aria-describedby="crimeType-error"
                   disabled={isPending}
                 >
                   <div>
@@ -149,7 +111,6 @@ export function ReportForm() {
                     </Label>
                   </div>
                 </RadioGroup>
-                {state?.errors?.crimeType && <p id="crimeType-error" className="text-sm font-medium text-destructive">{state.errors.crimeType[0]}</p>}
               </div>
 
               {crimeType && (
@@ -158,7 +119,6 @@ export function ReportForm() {
                       key={crimeType} // Re-mount when crimeType changes
                       crimeType={crimeType}
                       isPending={isPending}
-                      error={state?.errors?.crimeSubType?.[0]}
                     />
                 </div>
               )}
@@ -168,7 +128,7 @@ export function ReportForm() {
                 <div className="space-y-2">
                   <Label htmlFor="district">{t('reportForm.district')}</Label>
                   <Select name="district" required disabled={isPending}>
-                      <SelectTrigger id="district" aria-invalid={!!state?.errors?.district} aria-describedby="district-error" className="shadow-lg">
+                      <SelectTrigger id="district" className="shadow-lg">
                           <SelectValue placeholder={t('reportForm.selectDistrict')} />
                       </SelectTrigger>
                       <SelectContent>
@@ -179,7 +139,6 @@ export function ReportForm() {
                           ))}
                       </SelectContent>
                   </Select>
-                  {state?.errors?.district && <p id="district-error" className="text-sm font-medium text-destructive">{state.errors.district[0]}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="localAddress">{t('reportForm.localAddress')}</Label>
@@ -188,12 +147,9 @@ export function ReportForm() {
                     name="localAddress" 
                     placeholder={t('reportForm.localAddressPlaceholder')} 
                     required
-                    aria-invalid={!!state?.errors?.localAddress}
-                    aria-describedby="localAddress-error"
                     disabled={isPending}
                     className="shadow-lg"
                   />
-                  {state?.errors?.localAddress && <p id="localAddress-error" className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
                 </div>
               </div>
 
@@ -205,12 +161,9 @@ export function ReportForm() {
                 placeholder={t('reportForm.reportDetailsPlaceholder')}
                 rows={8}
                 required
-                aria-invalid={!!state?.errors?.reportText}
-                aria-describedby="reportText-error"
                 disabled={isPending}
                 className="shadow-lg"
               />
-              {state?.errors?.reportText && <p id="reportText-error" className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -255,23 +208,22 @@ export function ReportForm() {
                   accept="image/png, image/jpeg"
                   onChange={handlePhotoChange}
                   required
-                  aria-invalid={!!state?.errors?.photoDataUri}
-                  aria-describedby="photo-error"
                   disabled={isPending}
               />
-              {state?.errors?.photoDataUri && <p id="photo-error" className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
             </div>
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-            {state?.message && !state?.errors && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>{t('toast.error')}</AlertTitle>
-                <AlertDescription>{state.message}</AlertDescription>
-              </Alert>
-            )}
-            <SubmitButton />
+             <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? (
+                    <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t('reportForm.submitting')}
+                    </>
+                ) : (
+                    t('reportForm.submitAnonymously')
+                )}
+                </Button>
           </CardFooter>
         </Card>
       </form>
