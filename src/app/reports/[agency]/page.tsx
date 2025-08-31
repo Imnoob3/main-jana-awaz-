@@ -1,12 +1,14 @@
 
+'use client';
+
+import { useEffect, useState } from 'react';
 import { getReportsByAgency } from '@/lib/reports';
 import { notFound } from 'next/navigation';
 import { ReportsList } from '@/components/reports-list';
 import { Shield, Users } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-
-export const dynamic = 'force-dynamic';
+import type { Report } from '@/lib/types';
 
 const agencyConfig = {
     ciaa: {
@@ -25,13 +27,31 @@ const agencyConfig = {
 
 export default function ReportsByAgencyPage({ params }: { params: { agency: 'ciaa' | 'police' } }) {
   const agencyKey = params.agency.toLowerCase();
+  const [reports, setReports] = useState<Report[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (agencyKey === 'ciaa' || agencyKey === 'police') {
+      const config = agencyConfig[agencyKey as keyof typeof agencyConfig];
+      const fetchedReports = getReportsByAgency(config.dbKey);
+      setReports(fetchedReports);
+    }
+    setLoading(false);
+  }, [agencyKey]);
   
   if (agencyKey !== 'ciaa' && agencyKey !== 'police') {
     notFound();
   }
   
   const config = agencyConfig[agencyKey as keyof typeof agencyConfig];
-  const reports = getReportsByAgency(config.dbKey);
+
+  if (loading) {
+    return (
+        <main className="container mx-auto px-4 py-12">
+            <p>Loading reports...</p>
+        </main>
+    )
+  }
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -48,7 +68,7 @@ export default function ReportsByAgencyPage({ params }: { params: { agency: 'cia
                     <p className="text-muted-foreground mt-1 max-w-3xl">{config.description}</p>
                 </div>
             </div>
-            <ReportsList initialReports={JSON.parse(JSON.stringify(reports))} />
+            <ReportsList initialReports={reports} />
         </div>
     </main>
   );

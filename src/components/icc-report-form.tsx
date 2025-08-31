@@ -1,9 +1,8 @@
 
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -15,15 +14,14 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { Checkbox } from './ui/checkbox';
-import type { IccFormState } from '@/app/report/icc/schema';
-import { submitIccReport } from '@/app/report/icc/actions';
+import { iccReportSchema } from '@/app/report/icc/schema';
+import { addReport } from '@/lib/reports';
 
-function SubmitButton() {
-    const { pending } = useFormStatus();
+function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
     return (
-        <Button type="submit" className="w-full" variant="destructive" disabled={pending}>
-            {pending ? (
+        <Button type="submit" className="w-full" variant="destructive" disabled={isSubmitting}>
+            {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {t('reportForm.submitting')}
@@ -38,22 +36,12 @@ function SubmitButton() {
 export function IccReportForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<any>({});
   const photoInputRef = useRef<HTMLInputElement>(null);
-
-  const initialState: IccFormState = {};
-  const [state, dispatch] = useActionState(submitIccReport, initialState);
-  
-  useEffect(() => {
-    if (state.message && state.errors) {
-      toast({
-        variant: 'destructive',
-        title: t('toast.submissionError.title'),
-        description: state.message,
-      });
-    }
-  }, [state, toast, t]);
-
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -81,10 +69,52 @@ export function IccReportForm() {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+    
+    const formData = new FormData(e.currentTarget);
+    const validatedFields = iccReportSchema.safeParse({
+        reportText: formData.get('reportText'),
+        photoDataUri: formData.get('photoDataUri'),
+        agreeWarning: formData.get('agreeWarning') === 'on',
+    });
+
+    if (!validatedFields.success) {
+        setErrors(validatedFields.error.flatten().fieldErrors);
+        toast({
+            variant: 'destructive',
+            title: t('toast.submissionError.title'),
+            description: 'Please check your input.',
+        });
+        setIsSubmitting(false);
+        return;
+    }
+
+    try {
+        const newReport = addReport({
+            reportText: validatedFields.data.reportText,
+            photoDataUri: validatedFields.data.photoDataUri,
+            crimeType: 'ICC',
+            crimeSubType: 'International Crime',
+            district: 'N/A',
+            localAddress: 'N/A',
+        });
+        router.push(`/submission-confirmation/${newReport.id}`);
+    } catch (error) {
+        toast({
+            variant: 'destructive',
+            title: t('toast.error'),
+            description: 'An unexpected error occurred.',
+        });
+        setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
-    <form action={dispatch}>
+    <form ref={formRef} onSubmit={handleSubmit}>
       <Card className="w-full max-w-2xl mx-auto border-destructive/50">
         <CardHeader>
           <div className="flex justify-center mb-4">
@@ -113,7 +143,7 @@ export function IccReportForm() {
               rows={8}
               required
             />
-            {state.errors?.reportText && <p className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
+            {errors?.reportText && <p className="text-sm font-medium text-destructive">{errors.reportText[0]}</p>}
           </div>
 
           <div className="space-y-2">
@@ -155,7 +185,7 @@ export function IccReportForm() {
                 onChange={handlePhotoChange}
                 required
             />
-            {state.errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
+            {errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{errors.photoDataUri[0]}</p>}
           </div>
           
            <div className="items-top flex space-x-2">
@@ -167,14 +197,14 @@ export function IccReportForm() {
                 >
                 {t('iccReportForm.agreeWarning')}
                 </label>
-                 {state.errors?.agreeWarning && <p className="text-sm font-medium text-destructive">{state.errors.agreeWarning[0]}</p>}
+                 {errors?.agreeWarning && <p className="text-sm font-medium text-destructive">{errors.agreeWarning[0]}</p>}
             </div>
           </div>
 
 
         </CardContent>
         <CardFooter className="flex-col items-stretch gap-4">
-         <SubmitButton />
+         <SubmitButton isSubmitting={isSubmitting} />
         </CardFooter>
       </Card>
     </form>

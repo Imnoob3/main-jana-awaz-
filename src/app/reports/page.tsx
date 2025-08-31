@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { ReportsList } from '@/components/reports-list';
 import { getReportsByAgency, getGrievances } from '@/lib/reports';
 import { Landmark, MessageSquareWarning, Shield, Users } from 'lucide-react';
@@ -8,17 +9,32 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTranslation } from '@/hooks/use-translation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Grievance } from '@/lib/types';
+import { Grievance, Report } from '@/lib/types';
 import { GrievanceCard } from '@/components/grievance-card';
 
 export default function ViewReportsPage() {
   const { t } = useTranslation();
-  // Fetching data on the client side for initial render can be inconsistent in dev.
-  // We re-fetch dynamically within the tabs content for consistency.
-  const ciaaReports = getReportsByAgency('Government');
-  const policeReports = getReportsByAgency('Civilian');
-  const iccReports = getReportsByAgency('ICC');
-  const grievances = getGrievances();
+  const [ciaaReports, setCiaaReports] = useState<Report[]>([]);
+  const [policeReports, setPoliceReports] = useState<Report[]>([]);
+  const [iccReports, setIccReports] = useState<Report[]>([]);
+  const [grievances, setGrievances] = useState<Grievance[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setCiaaReports(getReportsByAgency('Government'));
+    setPoliceReports(getReportsByAgency('Civilian'));
+    setIccReports(getReportsByAgency('ICC'));
+    setGrievances(getGrievances());
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+      return (
+          <main className="container mx-auto px-4 py-12">
+              <p>Loading reports...</p>
+          </main>
+      )
+  }
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -55,7 +71,7 @@ export default function ViewReportsPage() {
                         <p className="text-muted-foreground mt-1 max-w-3xl">{t('reportsPage.ciaaDescription')}</p>
                     </div>
                 </div>
-                <ReportsList initialReports={JSON.parse(JSON.stringify(ciaaReports))} />
+                <ReportsList initialReports={ciaaReports} />
             </div>
         </TabsContent>
         <TabsContent value="police" className="mt-8">
@@ -69,7 +85,7 @@ export default function ViewReportsPage() {
                         <p className="text-muted-foreground mt-1 max-w-3xl">{t('reportsPage.policeDescription')}</p>
                     </div>
                 </div>
-                <ReportsList initialReports={JSON.parse(JSON.stringify(policeReports))} />
+                <ReportsList initialReports={policeReports} />
             </div>
         </TabsContent>
         <TabsContent value="grievances" className="mt-8">
@@ -109,7 +125,7 @@ export default function ViewReportsPage() {
             </div>
         </CardHeader>
         <CardContent>
-             <ReportsList initialReports={JSON.parse(JSON.stringify(iccReports))} />
+             <ReportsList initialReports={iccReports} />
         </CardContent>
       </Card>
 

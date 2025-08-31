@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { getReportById, getGrievanceById } from '@/lib/reports';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,16 +13,36 @@ import Image from 'next/image';
 import { TrackingTimeline } from '@/components/tracking-timeline';
 import { Button } from '@/components/ui/button';
 
-export const dynamic = 'force-dynamic';
-
 export default function SubmissionStatusPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const { t } = useTranslation();
 
-  const report = getReportById(id);
-  const grievance = getGrievanceById(id);
-  const submission: Report | Grievance | undefined = report || grievance;
-  const submissionType = report ? 'Report' : 'Grievance';
+  const [submission, setSubmission] = useState<Report | Grievance | undefined>(undefined);
+  const [submissionType, setSubmissionType] = useState<'Report' | 'Grievance' | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const report = getReportById(id);
+    if (report) {
+      setSubmission(report);
+      setSubmissionType('Report');
+    } else {
+      const grievance = getGrievanceById(id);
+      if (grievance) {
+        setSubmission(grievance);
+        setSubmissionType('Grievance');
+      }
+    }
+    setLoading(false);
+  }, [id]);
+
+  if (loading) {
+    return (
+        <main className="container mx-auto px-4 py-12 flex justify-center items-center">
+            <p>Loading submission status...</p>
+        </main>
+    );
+  }
 
   if (!submission) {
     return (

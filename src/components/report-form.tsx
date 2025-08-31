@@ -1,9 +1,8 @@
 
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -18,16 +17,15 @@ import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
-import { submitReport } from '@/app/report/actions';
-import type { FormState } from '@/app/report/schema';
+import { addReport } from '@/lib/reports';
+import { reportSchema } from '@/app/report/schema';
+import type { Report } from '@/lib/types';
 
-
-function SubmitButton() {
-    const { pending } = useFormStatus();
+function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
     return (
-        <Button type="submit" className="w-full" disabled={pending}>
-            {pending ? (
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? (
                 <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 {t('reportForm.submitting')}
@@ -42,22 +40,13 @@ function SubmitButton() {
 export function ReportForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<any>({});
   const photoInputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [crimeType, setCrimeType] = useState<'government' | 'civilian' | null>(null);
-
-  const initialState: FormState = {};
-  const [state, dispatch] = useActionState(submitReport, initialState);
-
-  useEffect(() => {
-    if (state.message && state.errors) {
-      toast({
-        variant: 'destructive',
-        title: t('toast.submissionError.title'),
-        description: state.message,
-      });
-    }
-  }, [state, toast, t]);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -85,8 +74,51 @@ export function ReportForm() {
     }
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const validatedFields = reportSchema.safeParse({
+        reportText: formData.get('reportText'),
+        photoDataUri: formData.get('photoDataUri'),
+        crimeType: formData.get('crimeType'),
+        crimeSubType: formData.get('crimeSubType'),
+        district: formData.get('district'),
+        localAddress: formData.get('localAddress'),
+    });
+
+    if (!validatedFields.success) {
+        setErrors(validatedFields.error.flatten().fieldErrors);
+        toast({
+            variant: 'destructive',
+            title: t('toast.submissionError.title'),
+            description: 'Please check your input.',
+        });
+        setIsSubmitting(false);
+        return;
+    }
+
+    try {
+        const crimeTypeCapitalized = validatedFields.data.crimeType.charAt(0).toUpperCase() + validatedFields.data.crimeType.slice(1) as Report['crimeType'];
+        const newReport = addReport({
+            ...validatedFields.data,
+            crimeType: crimeTypeCapitalized,
+        });
+        router.push(`/submission-confirmation/${newReport.id}`);
+    } catch (error) {
+        toast({
+            variant: 'destructive',
+            title: t('toast.error'),
+            description: 'An unexpected error occurred.',
+        });
+        setIsSubmitting(false);
+    }
+  };
+
   return (
-    <form action={dispatch}>
+    <form ref={formRef} onSubmit={handleSubmit}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <CardTitle>{t('reportForm.title')}</CardTitle>
@@ -132,7 +164,7 @@ export function ReportForm() {
                     </Label>
                   </div>
                 </RadioGroup>
-                 {state.errors?.crimeType && <p className="text-sm font-medium text-destructive pt-2">{state.errors.crimeType[0]}</p>}
+                 {errors?.crimeType && <p className="text-sm font-medium text-destructive pt-2">{errors.crimeType[0]}</p>}
               </div>
 
               {crimeType && (
@@ -141,7 +173,7 @@ export function ReportForm() {
                       key={crimeType} // Re-mount when crimeType changes
                       crimeType={crimeType}
                     />
-                    {state.errors?.crimeSubType && <p className="text-sm font-medium text-destructive">{state.errors.crimeSubType[0]}</p>}
+                    {errors?.crimeSubType && <p className="text-sm font-medium text-destructive">{errors.crimeSubType[0]}</p>}
                 </div>
               )}
 
@@ -161,7 +193,7 @@ export function ReportForm() {
                           ))}
                       </SelectContent>
                   </Select>
-                  {state.errors?.district && <p className="text-sm font-medium text-destructive">{state.errors.district[0]}</p>}
+                  {errors?.district && <p className="text-sm font-medium text-destructive">{errors.district[0]}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="localAddress">{t('reportForm.localAddress')}</Label>
@@ -172,7 +204,7 @@ export function ReportForm() {
                     required
                     className="shadow-lg"
                   />
-                  {state.errors?.localAddress && <p className="text-sm font-medium text-destructive">{state.errors.localAddress[0]}</p>}
+                  {errors?.localAddress && <p className="text-sm font-medium text-destructive">{errors.localAddress[0]}</p>}
                 </div>
               </div>
 
@@ -186,7 +218,7 @@ export function ReportForm() {
                 required
                 className="shadow-lg"
               />
-               {state.errors?.reportText && <p className="text-sm font-medium text-destructive">{state.errors.reportText[0]}</p>}
+               {errors?.reportText && <p className="text-sm font-medium text-destructive">{errors.reportText[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -230,12 +262,12 @@ export function ReportForm() {
                   onChange={handlePhotoChange}
                   required
               />
-               {state.errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
+               {errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{errors.photoDataUri[0]}</p>}
             </div>
 
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-             <SubmitButton />
+             <SubmitButton isSubmitting={isSubmitting} />
           </CardFooter>
         </Card>
       </form>

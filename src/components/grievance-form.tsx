@@ -1,9 +1,8 @@
 
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
@@ -14,15 +13,14 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { useTranslation } from '@/hooks/use-translation';
 import { cn } from '@/lib/utils';
-import { submitGrievance } from '@/app/grievance/actions';
-import type { GrievanceFormState } from '@/app/grievance/schema';
+import { addGrievance } from '@/lib/reports';
+import { grievanceSchema } from '@/app/grievance/schema';
 
-function SubmitButton() {
-    const { pending } = useFormStatus();
+function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
     return (
-        <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? (
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        {isSubmitting ? (
             <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             {t('reportForm.submitting')}
@@ -34,25 +32,15 @@ function SubmitButton() {
     );
 }
 
-
 export function GrievanceForm() {
   const { t } = useTranslation();
   const { toast } = useToast();
+  const router = useRouter();
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState<any>({});
   const photoInputRef = useRef<HTMLInputElement>(null);
-  
-  const initialState: GrievanceFormState = {};
-  const [state, dispatch] = useActionState(submitGrievance, initialState);
-
-  useEffect(() => {
-    if (state.message && state.errors) {
-      toast({
-        variant: 'destructive',
-        title: t('toast.submissionError.title'),
-        description: state.message,
-      });
-    }
-  }, [state, toast, t]);
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -79,9 +67,46 @@ export function GrievanceForm() {
       photoInputRef.current.value = "";
     }
   };
+  
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+
+    const formData = new FormData(e.currentTarget);
+    const validatedFields = grievanceSchema.safeParse({
+        title: formData.get('title'),
+        description: formData.get('description'),
+        photoDataUri: formData.get('photoDataUri'),
+    });
+
+    if (!validatedFields.success) {
+        const fieldErrors = validatedFields.error.flatten().fieldErrors;
+        setErrors(fieldErrors);
+        toast({
+            variant: 'destructive',
+            title: t('toast.submissionError.title'),
+            description: 'Please check your input.',
+        });
+        setIsSubmitting(false);
+        return;
+    }
+
+    try {
+        const newGrievance = addGrievance(validatedFields.data);
+        router.push(`/submission-confirmation/${newGrievance.id}`);
+    } catch (error) {
+        toast({
+            variant: 'destructive',
+            title: t('toast.error'),
+            description: 'An unexpected error occurred.',
+        });
+        setIsSubmitting(false);
+    }
+  };
 
   return (
-      <form action={dispatch}>
+      <form ref={formRef} onSubmit={handleSubmit}>
         <Card className="w-full max-w-2xl mx-auto shadow-2xl">
           <CardHeader>
             <div className="flex justify-center mb-4">
@@ -104,7 +129,7 @@ export function GrievanceForm() {
                 required
                 className="shadow-lg"
               />
-               {state.errors?.title && <p className="text-sm font-medium text-destructive">{state.errors.title[0]}</p>}
+               {errors?.title && <p className="text-sm font-medium text-destructive">{errors.title[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -117,7 +142,7 @@ export function GrievanceForm() {
                 required
                 className="shadow-lg"
               />
-              {state.errors?.description && <p className="text-sm font-medium text-destructive">{state.errors.description[0]}</p>}
+              {errors?.description && <p className="text-sm font-medium text-destructive">{errors.description[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -161,10 +186,10 @@ export function GrievanceForm() {
                   onChange={handlePhotoChange}
               />
             </div>
-            {state.errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{state.errors.photoDataUri[0]}</p>}
+            {errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{errors.photoDataUri[0]}</p>}
           </CardContent>
           <CardFooter className="flex-col items-stretch gap-4">
-            <SubmitButton />
+            <SubmitButton isSubmitting={isSubmitting} />
           </CardFooter>
         </Card>
       </form>
