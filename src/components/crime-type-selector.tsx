@@ -34,10 +34,10 @@ export function CrimeTypeSelector({ crimeType }: CrimeTypeSelectorProps) {
 
   useEffect(() => {
     // Set initial value when the component mounts or options change
-    if (options.length > 0) {
+    if (options.length > 0 && !selectedValue) {
       setSelectedValue(options[0]);
     }
-  }, [crimeType]); // Dependency array ensures this runs when crimeType changes
+  }, [options, selectedValue]);
 
   return (
     <div className="space-y-3">
