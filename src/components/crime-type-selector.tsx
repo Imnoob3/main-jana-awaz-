@@ -26,10 +26,9 @@ const civilianCrimeTypes = [
 interface CrimeTypeSelectorProps {
   crimeType: 'government' | 'civilian';
   isPending: boolean;
-  error?: string;
 }
 
-export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSelectorProps) {
+export function CrimeTypeSelector({ crimeType, isPending }: CrimeTypeSelectorProps) {
   const { t } = useTranslation();
   const options = crimeType === 'government' ? governmentCrimeTypes : civilianCrimeTypes;
   const [selectedValue, setSelectedValue] = useState(options[0]);
@@ -82,7 +81,6 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
           </button>
         ))}
       </div>
-       {error & <p className="text-sm font-medium text-destructive">{error}</p>}
     </div>
   );
 }
