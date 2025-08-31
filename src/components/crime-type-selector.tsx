@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useLayoutEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
@@ -38,7 +38,7 @@ export function CrimeTypeSelector({ crimeType, isPending, error }: CrimeTypeSele
   const containerRef = useRef<HTMLDivElement>(null);
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const selectedIndex = options.indexOf(selectedValue);
     const selectedButton = buttonsRef.current[selectedIndex];
     const container = containerRef.current;
