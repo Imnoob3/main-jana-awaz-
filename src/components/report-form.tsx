@@ -138,6 +138,7 @@ export function ReportForm() {
                     <CrimeTypeSelector
                       key={crimeType} // Re-mount when crimeType changes
                       crimeType={crimeType}
+                      isPending={false}
                     />
                 </div>
               )}
