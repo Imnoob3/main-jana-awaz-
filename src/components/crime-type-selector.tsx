@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { useTranslation } from '@/hooks/use-translation';
@@ -30,7 +30,13 @@ interface CrimeTypeSelectorProps {
 export function CrimeTypeSelector({ crimeType }: CrimeTypeSelectorProps) {
   const { t } = useTranslation();
   const options = crimeType === 'government' ? governmentCrimeTypes : civilianCrimeTypes;
-  const [selectedValue, setSelectedValue] = useState(options[0]);
+  const [selectedValue, setSelectedValue] = useState('');
+
+  useEffect(() => {
+    if (options.length > 0) {
+      setSelectedValue(options[0]);
+    }
+  }, [options]);
 
   return (
     <div className="space-y-3">
