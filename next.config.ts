@@ -1,4 +1,5 @@
 import type {NextConfig} from 'next';
+require('dotenv').config();
 
 const nextConfig: NextConfig = {
   output: 'standalone',
@@ -16,6 +17,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };
