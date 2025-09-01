@@ -108,7 +108,6 @@ export function ReportForm() {
         type_of_crime: validatedFields.data.crimeType,
         "Specific Type of Crime": validatedFields.data.crimeSubType,
         "Report Details": validatedFields.data.reportText,
-        image: validatedFields.data.photoDataUri,
         District: validatedFields.data.district,
         "Local _Address _Tole": validatedFields.data.localAddress
       });
@@ -283,3 +282,5 @@ export function ReportForm() {
       </form>
   );
 }
+
+    
