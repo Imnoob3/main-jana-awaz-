@@ -17,9 +17,8 @@ import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
-import { addReport } from '@/lib/reports';
 import { reportSchema } from '@/app/report/schema';
-import type { Report } from '@/lib/types';
+import { supabase } from '@/lib/supabase';
 
 function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
@@ -74,7 +73,7 @@ export function ReportForm() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrors({});
@@ -99,21 +98,32 @@ export function ReportForm() {
         setIsSubmitting(false);
         return;
     }
+    
+    const track_id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
-    try {
-        const crimeTypeCapitalized = validatedFields.data.crimeType.charAt(0).toUpperCase() + validatedFields.data.crimeType.slice(1) as Report['crimeType'];
-        const newReport = addReport({
-            ...validatedFields.data,
-            crimeType: crimeTypeCapitalized,
-        });
-        router.push(`/submission-confirmation/${newReport.id}`);
-    } catch (error) {
+    const { error } = await supabase
+      .from('police')
+      .insert({ 
+        track_id: track_id,
+        type_of_crime: validatedFields.data.crimeType,
+        "Specific Type of Crime": validatedFields.data.crimeSubType,
+        "Report Details": validatedFields.data.reportText,
+        image: validatedFields.data.photoDataUri,
+        District: validatedFields.data.district,
+        "Local _Address _Tole": validatedFields.data.localAddress
+      });
+
+
+    if (error) {
+        console.error('Supabase error:', error);
         toast({
             variant: 'destructive',
             title: t('toast.error'),
-            description: 'An unexpected error occurred.',
+            description: 'Failed to submit report to the database.',
         });
         setIsSubmitting(false);
+    } else {
+        router.push(`/submission-confirmation/${track_id}`);
     }
   };
 
