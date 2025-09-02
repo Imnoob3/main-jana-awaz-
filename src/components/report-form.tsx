@@ -19,7 +19,6 @@ import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
 import { reportSchema } from '@/app/report/schema';
 import { supabase } from '@/lib/supabase';
-import { Report } from '@/lib/types';
 
 function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
@@ -111,7 +110,7 @@ export function ReportForm() {
 
     const { data, error } = await supabase
       .from("police")
-      .insert(submissionData)
+      .insert([submissionData])
       .select()
       .single();
 
