@@ -19,6 +19,7 @@ import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
 import { reportSchema } from '@/app/report/schema';
 import { supabase } from '@/lib/supabase';
+import { Report } from '@/lib/types';
 
 function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
@@ -85,7 +86,7 @@ export function ReportForm() {
         district: formData.get('district'),
         localAddress: formData.get('localAddress'),
         incident_details: formData.get('incident_details'),
-        photoDataUri: formData.get('photoDataUri'),
+        photoDataUri: photoPreview,
     });
 
     if (!validatedFields.success) {
@@ -99,14 +100,18 @@ export function ReportForm() {
         return;
     }
     
-    const submissionData = {
-        type_of_crime: validatedFields.data.crimeType,
+    const submissionData: Omit<Report, 'track_id' | 'created_at'> = {
+        type_of_crime: String(validatedFields.data.crimeType) as 'government' | 'civilian',
         Specific_Type_of_Crime: validatedFields.data.crimeSubType,
         Report_Details: validatedFields.data.incident_details,
         District: validatedFields.data.district,
         "Local _Address _Tole": validatedFields.data.localAddress,
-        ...(validatedFields.data.photoDataUri && { image: validatedFields.data.photoDataUri }),
+        image: null,
     };
+
+    if (validatedFields.data.photoDataUri) {
+        submissionData.image = validatedFields.data.photoDataUri;
+    }
 
     const { data, error } = await supabase
       .from("police")
