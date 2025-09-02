@@ -99,17 +99,14 @@ export function ReportForm() {
         return;
     }
     
-    const submissionData: any = {
-      type_of_crime: validatedFields.data.crimeType,
-      Specific_Type_of_Crime: validatedFields.data.crimeSubType,
-      Report_Details: validatedFields.data.incident_details,
-      District: validatedFields.data.district,
-      Local_Address_Tole: validatedFields.data.localAddress,
+    const submissionData = {
+        type_of_crime: validatedFields.data.crimeType,
+        Specific_Type_of_Crime: validatedFields.data.crimeSubType,
+        Report_Details: validatedFields.data.incident_details,
+        District: validatedFields.data.district,
+        "Local _Address _Tole": validatedFields.data.localAddress,
+        ...(validatedFields.data.photoDataUri && { image: validatedFields.data.photoDataUri }),
     };
-
-    if (validatedFields.data.photoDataUri) {
-      submissionData.image = validatedFields.data.photoDataUri;
-    }
 
     const { data, error } = await supabase
       .from("police")
@@ -285,3 +282,5 @@ export function ReportForm() {
       </form>
   );
 }
+
+    
