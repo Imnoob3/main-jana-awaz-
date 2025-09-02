@@ -99,21 +99,18 @@ export function ReportForm() {
         return;
     }
     
-    const track_id = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-
-    const { error } = await supabase
-    .from("police")
-    .insert({
-      track_id: track_id,
-      type_of_crime: validatedFields.data.crimeType,
-      Specific_Type_of_Crime: validatedFields.data.crimeSubType,
-      Report_Details: validatedFields.data.incident_details,
-      District: validatedFields.data.district,
-      Local_Address_Tole: validatedFields.data.localAddress,
-      image: validatedFields.data.photoDataUri,
-    });
-  
-
+    const { data, error } = await supabase
+      .from("police")
+      .insert({
+        type_of_crime: validatedFields.data.crimeType,
+        Specific_Type_of_Crime: validatedFields.data.crimeSubType,
+        Report_Details: validatedFields.data.incident_details,
+        District: validatedFields.data.district,
+        Local_Address_Tole: validatedFields.data.localAddress,
+        image: validatedFields.data.photoDataUri,
+      })
+      .select()
+      .single();
 
     if (error) {
         console.error('Supabase error:', error);
@@ -124,7 +121,7 @@ export function ReportForm() {
         });
         setIsSubmitting(false);
     } else {
-        router.push(`/submission-confirmation/${track_id}`);
+        router.push(`/submission-confirmation/${data.track_id}`);
     }
   };
 
@@ -284,7 +281,5 @@ export function ReportForm() {
       </form>
   );
 }
-
-    
 
     
