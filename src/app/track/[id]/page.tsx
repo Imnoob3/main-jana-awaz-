@@ -2,38 +2,44 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getReportById, getGrievanceById } from '@/lib/reports';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { FileText, MessageSquareQuote, AlertCircle } from 'lucide-react';
 import { useTranslation } from '@/hooks/use-translation';
-import { Report, Grievance } from '@/lib/types';
+import { Report } from '@/lib/types';
 import Image from 'next/image';
 import { TrackingTimeline } from '@/components/tracking-timeline';
 import { Button } from '@/components/ui/button';
+import { supabase } from '@/lib/supabase';
 
 export default function SubmissionStatusPage({ params }: { params: { id: string } }) {
   const { id } = params;
   const { t } = useTranslation();
 
-  const [submission, setSubmission] = useState<Report | Grievance | undefined>(undefined);
-  const [submissionType, setSubmissionType] = useState<'Report' | 'Grievance' | null>(null);
+  const [submission, setSubmission] = useState<Report | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const report = getReportById(id);
-    if (report) {
-      setSubmission(report);
-      setSubmissionType('Report');
-    } else {
-      const grievance = getGrievanceById(id);
-      if (grievance) {
-        setSubmission(grievance);
-        setSubmissionType('Grievance');
-      }
+    const fetchReport = async () => {
+        setLoading(true);
+        const { data, error } = await supabase
+            .from('police')
+            .select('*')
+            .eq('track_id', id)
+            .single();
+
+        if (error) {
+            console.error('Error fetching report:', error);
+        } else if (data) {
+            setSubmission(data);
+        }
+        setLoading(false);
+    };
+
+    if (id) {
+        fetchReport();
     }
-    setLoading(false);
   }, [id]);
 
   if (loading) {
@@ -67,7 +73,7 @@ export default function SubmissionStatusPage({ params }: { params: { id: string 
     );
   }
 
-  const hasPhoto = submission.photoDataUri && submission.photoDataUri.length > 0;
+  const hasPhoto = submission.image && submission.image.length > 0;
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -76,21 +82,21 @@ export default function SubmissionStatusPage({ params }: { params: { id: string 
                  <Card>
                     <CardHeader className="flex-row items-start gap-4 space-y-0">
                         <div className="bg-primary/10 p-3 rounded-lg w-fit">
-                            {submissionType === 'Report' ? <FileText className="h-6 w-6 text-primary" /> : <MessageSquareQuote className="h-6 w-6 text-primary" />}
+                            <FileText className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                            <CardTitle className="text-xl">{submissionType === 'Report' ? t('track.details.reportTitle') : t('track.details.grievanceTitle')}</CardTitle>
-                            <CardDescription className="font-mono text-xs pt-1 break-all">{submission.id}</CardDescription>
+                            <CardTitle className="text-xl">{t('track.details.reportTitle')}</CardTitle>
+                            <CardDescription className="font-mono text-xs pt-1 break-all">{submission.track_id}</CardDescription>
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <p className="text-sm text-muted-foreground line-clamp-6">
-                            {submissionType === 'Report' ? (submission as Report).reportText : (submission as Grievance).description}
+                            {submission.Report_Details}
                         </p>
                         {hasPhoto && (
                              <div className="aspect-video relative rounded-md overflow-hidden border">
                                 <Image
-                                src={submission.photoDataUri!}
+                                src={submission.image!}
                                 alt={t('track.details.evidenceAlt')}
                                 fill
                                 className="object-cover"

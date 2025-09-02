@@ -1,13 +1,14 @@
 
 export type Report = {
-  id: string;
-  reportText: string;
-  photoDataUri: string;
-  crimeType: 'Government' | 'Civilian' | 'ICC';
-  crimeSubType: string;
-  createdAt: string; // Using string to avoid serialization issues between server/client
-  district: string;
-  localAddress: string;
+  id: number; // default from supabase
+  created_at: string; // default from supabase
+  track_id: string;
+  type_of_crime: 'government' | 'civilian';
+  Specific_Type_of_Crime: string;
+  Report_Details: string;
+  District: string;
+  Local_Address_Tole: string;
+  image: string;
 };
 
 export type Grievance = {
