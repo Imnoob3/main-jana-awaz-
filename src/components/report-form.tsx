@@ -99,16 +99,21 @@ export function ReportForm() {
         return;
     }
     
+    const submissionData: any = {
+      type_of_crime: validatedFields.data.crimeType,
+      Specific_Type_of_Crime: validatedFields.data.crimeSubType,
+      Report_Details: validatedFields.data.incident_details,
+      District: validatedFields.data.district,
+      Local_Address_Tole: validatedFields.data.localAddress,
+    };
+
+    if (validatedFields.data.photoDataUri) {
+      submissionData.image = validatedFields.data.photoDataUri;
+    }
+
     const { data, error } = await supabase
       .from("police")
-      .insert({
-        type_of_crime: validatedFields.data.crimeType,
-        Specific_Type_of_Crime: validatedFields.data.crimeSubType,
-        Report_Details: validatedFields.data.incident_details,
-        District: validatedFields.data.district,
-        Local_Address_Tole: validatedFields.data.localAddress,
-        image: validatedFields.data.photoDataUri,
-      })
+      .insert(submissionData)
       .select()
       .single();
 
@@ -268,7 +273,6 @@ export function ReportForm() {
                   ref={photoInputRef}
                   accept="image/png, image/jpeg"
                   onChange={handlePhotoChange}
-                  required
               />
                {errors?.photoDataUri && <p className="text-sm font-medium text-destructive">{errors.photoDataUri[0]}</p>}
             </div>
