@@ -80,12 +80,12 @@ export function ReportForm() {
 
     const formData = new FormData(e.currentTarget);
     const validatedFields = reportSchema.safeParse({
-        reportText: formData.get('reportText'),
-        photoDataUri: formData.get('photoDataUri'),
         crimeType: formData.get('crimeType'),
         crimeSubType: formData.get('crimeSubType'),
         district: formData.get('district'),
         localAddress: formData.get('localAddress'),
+        incident_details: formData.get('incident_details'),
+        photoDataUri: formData.get('photoDataUri'),
     });
 
     if (!validatedFields.success) {
@@ -107,7 +107,7 @@ export function ReportForm() {
         track_id: track_id,
         type_of_crime: validatedFields.data.crimeType,
         Specific_Type_of_Crime: validatedFields.data.crimeSubType,
-        Report_Details: validatedFields.data.reportText,
+        Report_Details: validatedFields.data.incident_details,
         District: validatedFields.data.district,
         "Local_Address_Tole": validatedFields.data.localAddress,
         image: validatedFields.data.photoDataUri,
@@ -219,16 +219,16 @@ export function ReportForm() {
               </div>
 
             <div className="space-y-2">
-              <Label htmlFor="reportText">{t('reportForm.reportDetails')}</Label>
+              <Label htmlFor="incident_details">{t('reportForm.reportDetails')}</Label>
               <Textarea
-                id="reportText"
-                name="reportText"
+                id="incident_details"
+                name="incident_details"
                 placeholder={t('reportForm.reportDetailsPlaceholder')}
                 rows={8}
                 required
                 className="shadow-lg"
               />
-               {errors?.reportText && <p className="text-sm font-medium text-destructive">{errors.reportText[0]}</p>}
+               {errors?.incident_details && <p className="text-sm font-medium text-destructive">{errors.incident_details[0]}</p>}
             </div>
 
             <div className="space-y-2">
@@ -282,7 +282,6 @@ export function ReportForm() {
         </Card>
       </form>
   );
-
-    
+}
 
     
