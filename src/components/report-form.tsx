@@ -107,7 +107,7 @@ export function ReportForm() {
         type_of_crime: validatedFields.data.crimeType,
         "Specific_Type_of_Crime": validatedFields.data.crimeSubType,
         "Report_Details": validatedFields.data.reportText,
-        District: validatedFields.data.district,
+        "District": validatedFields.data.district,
         "Local_Address_Tole": validatedFields.data.localAddress
       });
 
@@ -280,4 +280,3 @@ export function ReportForm() {
         </Card>
       </form>
   );
-}
