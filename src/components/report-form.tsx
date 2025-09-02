@@ -100,13 +100,12 @@ export function ReportForm() {
         return;
     }
     
-    const submissionData: Omit<Report, 'track_id' | 'created_at'> = {
+    const submissionData: Partial<Report> = {
         type_of_crime: String(validatedFields.data.crimeType) as 'government' | 'civilian',
         Specific_Type_of_Crime: validatedFields.data.crimeSubType,
         Report_Details: validatedFields.data.incident_details,
         District: validatedFields.data.district,
-        "Local _Address _Tole": validatedFields.data.localAddress,
-        image: null,
+        "Local_Address_Tole": validatedFields.data.localAddress,
     };
 
     if (validatedFields.data.photoDataUri) {
