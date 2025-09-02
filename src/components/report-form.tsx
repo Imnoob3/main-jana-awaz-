@@ -106,12 +106,11 @@ export function ReportForm() {
       .insert({ 
         track_id: track_id,
         type_of_crime: validatedFields.data.crimeType,
-        image: validatedFields.data.photoDataUri,
+        Specific_Type_of_Crime: validatedFields.data.crimeSubType,
+        Report_Details: validatedFields.data.reportText,
         District: validatedFields.data.district,
-        // The following fields are not in the screenshot, so they are commented out.
-        // "Specific_Type_of_Crime": validatedFields.data.crimeSubType,
-        // "Report_Details": validatedFields.data.reportText,
-        // "Local_Address_Tole": validatedFields.data.localAddress
+        "Local_Address_Tole": validatedFields.data.localAddress,
+        image: validatedFields.data.photoDataUri,
       });
 
 
