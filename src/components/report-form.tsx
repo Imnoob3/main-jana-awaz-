@@ -19,6 +19,8 @@ import { districtsOfNepal } from '@/lib/districts';
 import { CrimeTypeSelector } from './crime-type-selector';
 import { reportSchema } from '@/app/report/schema';
 import { supabase } from '@/lib/supabase';
+import type { Report } from '@/lib/types';
+
 
 function SubmitButton({ isSubmitting }: { isSubmitting: boolean }) {
     const { t } = useTranslation();
@@ -100,12 +102,12 @@ export function ReportForm() {
     }
     
     const submissionData = {
-        type_of_crime: validatedFields.data.crimeType,
+        type_of_crime: String(validatedFields.data.crimeType),
         Specific_Type_of_Crime: validatedFields.data.crimeSubType,
         Report_Details: validatedFields.data.incident_details,
         District: validatedFields.data.district,
-        "Local_Address_Tole": validatedFields.data.localAddress,
-        image: validatedFields.data.photoDataUri ? validatedFields.data.photoDataUri : null
+        Local_Address_Tole: validatedFields.data.localAddress,
+        image: validatedFields.data.photoDataUri || 'https://picsum.photos/400/300',
     };
 
     const { data, error } = await supabase
@@ -233,7 +235,7 @@ export function ReportForm() {
 
             <div className="space-y-2">
               <Label htmlFor="photo">{t('reportForm.uploadEvidence')}</Label>
-              <input type="hidden" name="photoDataUri" value={photoPreview || ''} />
+              
               {photoPreview ? (
                 <div className="relative group">
                   <Image src={photoPreview} alt="Photo preview" width={500} height={300} className="rounded-md object-cover w-full h-auto max-h-80 border shadow-lg" />
