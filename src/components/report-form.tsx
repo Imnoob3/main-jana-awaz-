@@ -102,7 +102,7 @@ export function ReportForm() {
     }
     
     const submissionData = {
-        type_of_crime: String(validatedFields.data.crimeType),
+        type_of_crime: validatedFields.data.crimeType,
         Specific_Type_of_Crime: validatedFields.data.crimeSubType,
         Report_Details: validatedFields.data.incident_details,
         District: validatedFields.data.district,
